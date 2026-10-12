@@ -62,8 +62,8 @@
         "HTML5 Canvas API",
         "Web Audio API",
         "Redux / 狀態管理",
-        "Sass / SCSS",
-        "Material UI (MUI)"
+        "Tailwind CSS",
+        "Vite / Webpack"
       ]
     },
     {
@@ -72,7 +72,7 @@
         "Turborepo",
         "pnpm",
         "Docker",
-        "Webpack / 打包優化",
+        "Cloudflare Workers",
         "CircleCI",
         "GCP",
         "Verdaccio (私有 NPM)",
@@ -82,18 +82,18 @@
     {
       "category": "Systems & Integration",
       "skills": [
-        "Node.js",
+        "Node.js (遊戲/服務核心)",
         "WebSocket 即時通訊",
+        "權威伺服器與狀態同步",
         "Electron 桌面應用",
         "RESTful API 設計",
-        "硬體串流資料橋接",
         "Dual-package (ESM / CJS)"
       ]
     },
     {
       "category": "Forward-Looking & Tools",
       "skills": [
-        "AI Agent 架構探索",
+        "AI Agent 自主驅動全端開發",
         "LLM 工作流與 Tool Calling",
         "Git 版本控管",
         "VS Code / Antigravity"
@@ -101,6 +101,26 @@
     }
   ],
   "projects": [
+    {
+      "id": "dreamcity",
+      "title": "多人非對稱對抗 (DreamCity)",
+      "subtitle": "即時在線非對稱陣營博弈桌遊 • AI Agent 全自主驅動開發",
+      "period": "2024 ~ 至今",
+      "role": "個人獨立架構與開發 (AI Agent Autonomous Development)",
+      "featured": true,
+      "links": {
+        "live": "https://dreamcity.2jo4u4.workers.dev/"
+      },
+      "tags": ["React", "TypeScript", "Tailwind CSS", "Vite", "Node.js", "Cloudflare Workers", "Monorepo", "AI Agent Built"],
+      "summary": "4~10 人在線非對稱陣營博弈桌遊。前端採用 Monorepo + React + TS + Tailwind CSS + Vite，後端以 Node.js 為即時遊戲運算核心，並部署於 Cloudflare Workers 邊緣節點；整套系統 100% 由 AI Agent 自主驅動開發完成。",
+      "highlights": [
+        "AI Agent 自主全端研發：從需求規格、遊戲規則引擎、雙端通訊到 UI/UX 與邊緣部署，全程由 AI Agent 自主協同開發並驗證交付。",
+        "前端 Monorepo 架構：採用現代 Monorepo 結構整合共用型別、狀態協議與 Vite 極速建置流水線，確保跨端代碼高度復用。",
+        "Node.js 權威遊戲核心與防作弊：後端採用權威伺服器視角，動態過濾防透視狀態分發，支援 4~10 人動態房間與斷線重連。",
+        "單機智慧 Bot 沙盒對局：自研單人模擬沙盒演算法，自動補足 3 位智慧 Bot 實現即時決策與非對稱陣營博弈。"
+      ],
+      "image": "assets/projects/dreamcity.png"
+    },
     {
       "id": "creative-board",
       "title": "Optoma Whiteboard (Creative Board)",
@@ -116,7 +136,7 @@
       "tags": ["React", "TypeScript", "HTML5 Canvas", "WebSocket", "Webpack", "SASS", "CI/CD"],
       "summary": "結合硬體電子白板產品的雲端協同教學與會議系統，支援多端即時繪圖、筆記、影音嵌入與課後回放。",
       "highlights": [
-        "獨立白板繪圖核心庫：解耦業務邏輯與繪圖引擎，使用瀏覽器原生 Canvas API 實作純物件導向 (OOP) 圖形管理，大幅提升擴充性與跨平台（如 Electron）移植能力。",
+        "獨立白板繪圖核心庫：解耦業務邏輯與繪圖引擎，使用瀏覽器原生 Canvas API 實作純物件導向 (OOP) 圖形管理，大幅提升擴充性與跨平台移植能力。",
         "即時多人協同架構：整合 WebSocket 雙向通訊協議，維持多裝置低延遲的筆跡同步與狀態共享。",
         "工程規範與團隊領導：制定統一代碼規範，主持每週 Code Review，帶領 4 位前端工程師穩健交付。"
       ],

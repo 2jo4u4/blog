@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ExternalLink, CheckCircle2, Layers, Cpu, Sparkles } from "lucide-react";
+import { ExternalLink, CheckCircle2, Layers, Cpu, Sparkles, Bot, Gamepad2 } from "lucide-react";
 import { useApp } from "@/lib/AppContext";
 import { data } from "@/lib/data";
 
@@ -31,7 +31,101 @@ export function Projects() {
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* Bento Item 1: Optoma Whiteboard */}
+          {/* Bento Item 1: DreamCity (多人非對稱對抗 - 旗艦主打, Span 12) */}
+          {(() => {
+            const raw = rawProjects.find((item) => item.id === "dreamcity");
+            const item = t.projects.items.dreamcity;
+            if (!raw || !item) return null;
+            return (
+              <div className="lg:col-span-12 rounded-3xl theme-surface border border-cyan-500/30 hover:border-cyan-400/60 transition-all p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden group">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  
+                  {/* Left Column: Details */}
+                  <div className="lg:col-span-7 space-y-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center gap-1">
+                        <Gamepad2 className="w-3.5 h-3.5" />
+                        {t.projects.featuredBadge}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1">
+                        <Bot className="w-3.5 h-3.5" />
+                        {t.projects.aiAgentBadge}
+                      </span>
+                      <span className="text-xs font-mono theme-text-secondary">
+                        {item.role} • {item.period}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-1 group-hover:text-cyan-400 transition-colors" style={{ color: "var(--text-primary)" }}>
+                        {item.title}
+                      </h3>
+                      <p className="text-cyan-400 font-medium text-sm sm:text-base">
+                        {item.subtitle}
+                      </p>
+                    </div>
+
+                    <p className="text-sm sm:text-base leading-relaxed theme-text-secondary">
+                      {item.summary}
+                    </p>
+
+                    {/* Highlights */}
+                    <div className="space-y-2.5 pt-2">
+                      {item.highlights.map((h, i) => (
+                        <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm theme-text-secondary">
+                          <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-0.5 shrink-0" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {raw.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Live Play CTA */}
+                    {raw.links?.live && (
+                      <div className="pt-2">
+                        <a
+                          href={raw.links.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 text-gray-950 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-cyan-500/25"
+                        >
+                          {t.projects.viewLive}
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right Column: Screenshot */}
+                  <div className="lg:col-span-5">
+                    <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
+                      <Image
+                        src="/images/projects/dreamcity.png"
+                        alt={item.title}
+                        width={1280}
+                        height={800}
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Bento Item 2: Optoma Whiteboard (Span 12) */}
           {(() => {
             const raw = rawProjects.find((item) => item.id === "creative-board");
             const item = t.projects.items.creativeBoard;
@@ -95,7 +189,7 @@ export function Projects() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-gray-950 transition-all shadow-lg shadow-cyan-500/20"
                         >
-                          {t.projects.viewLive}
+                          {t.projects.viewLiveAuth}
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
                       </div>
@@ -120,7 +214,7 @@ export function Projects() {
             );
           })()}
 
-          {/* Bento Item 2: Infrastructure & Performance */}
+          {/* Bento Item 3: Infrastructure & Performance (Span 12) */}
           {(() => {
             const raw = rawProjects.find((item) => item.id === "infra-performance");
             const item = t.projects.items.infra;
@@ -189,7 +283,7 @@ export function Projects() {
             );
           })()}
 
-          {/* Bento Item 3: Web Audio Equalizer */}
+          {/* Bento Item 4: Web Audio Equalizer (Span 6) */}
           {(() => {
             const raw = rawProjects.find((item) => item.id === "web-audio-equalizer");
             const item = t.projects.items.equalizer;
@@ -257,7 +351,7 @@ export function Projects() {
             );
           })()}
 
-          {/* Bento Item 4: Vegeking E-commerce */}
+          {/* Bento Item 5: Vegeking E-commerce (Span 6) */}
           {(() => {
             const raw = rawProjects.find((item) => item.id === "vegeking-ecommerce");
             const item = t.projects.items.vegeking;

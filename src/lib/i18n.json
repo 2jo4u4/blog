@@ -52,15 +52,30 @@
       "badge": "Engineering Showcases",
       "title": "精選專案與架構實踐",
       "subtitle": "涵蓋自研原生 Canvas 繪圖引擎、WebSocket 即時協同、工程發布調優到底層 Web Audio 擴充應用。",
-      "viewLive": "前往線上體驗 (需要註冊登入)",
+      "viewLive": "前往線上體驗 ↗",
+      "viewLiveAuth": "前往線上體驗 (需要註冊登入)",
       "viewStore": "前往 Firefox Add-ons 商店 ↗",
       "viewShop": "前往菜霸子線上商城 ↗",
       "featuredBadge": "Featured",
+      "aiAgentBadge": "AI Agent 自主研發",
       "infraBadge": "Architecture & Performance",
       "infraTagline": "生產環境工程革新",
       "sideProjectBadge": "Personal Side Project",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
+        "dreamcity": {
+          "title": "多人非對稱對抗 (DreamCity)",
+          "subtitle": "即時在線非對稱陣營博弈桌遊 • AI Agent 全自主驅動開發",
+          "role": "個人獨立架構與研發",
+          "period": "2024 ~ 至今",
+          "summary": "4~10 人在線非對稱陣營博弈桌遊。前端採用 Monorepo 架構整合 React + TS + Tailwind CSS + Vite，後端以 Node.js 為即時遊戲運算核心，並部署於 Cloudflare Workers 邊緣節點；整套應用 100% 由 AI Agent 自主驅動開發完成。",
+          "highlights": [
+            "AI Agent 全自主研發：從需求規格、遊戲規則引擎、雙端通訊到 UI/UX 與邊緣部署，全程由 AI Agent 自主協同開發並驗證交付。",
+            "前端 Monorepo 架構：採用現代 Monorepo 結構整合共用型別、狀態協議與 Vite 極速建置流水線，確保跨端代碼高度復用。",
+            "Node.js 權威遊戲核心與防作弊：後端採用權威伺服器視角，動態過濾防透視狀態分發，支援 4~10 人動態房間與斷線重連。",
+            "單機智慧 Bot 沙盒對局：自研單人模擬沙盒演算法，自動補足 3 位智慧 Bot 實現即時決策與非對稱陣營博弈。"
+          ]
+        },
         "creativeBoard": {
           "title": "Optoma Whiteboard (Creative Board)",
           "subtitle": "跨平台即時協同虛擬白板系統",
@@ -174,7 +189,7 @@
       "greeting": "Hi, I'm",
       "name": "Jay Huang",
       "title": "Senior Frontend & Web Infrastructure Engineer",
-      "bio": "Software engineer with 5~6 years of experience building scalable Web applications and developer tooling. Proficient in React and TypeScript. Proven track record building complex systems from ground up (such as an OOP Canvas-based real-time collaborative whiteboard and Web Audio extensions), with deep production expertise in Monorepo, Docker containerization, and modern CI/CD automation. Actively exploring AI Agent architectures and LLM workflow automation.",
+      "bio": "Software engineer with 5~6 years of experience building scalable Web applications and developer tooling. Proficient in React and TypeScript. Proven track record building complex systems from ground up (such as an OOP Canvas-based real-time collaborative whiteboard, real-time multiplayer games, and Web Audio extensions), with deep production expertise in Monorepo, Docker containerization, and modern CI/CD automation. Actively exploring AI Agent architectures and LLM workflow automation.",
       "location": "Taipei / New Taipei, Taiwan",
       "exploreProjects": "Explore Projects",
       "contactMe": "Get In Touch"
@@ -212,16 +227,31 @@
     "projects": {
       "badge": "Engineering Showcases",
       "title": "Featured Projects & Architecture",
-      "subtitle": "From proprietary Canvas graphic engines and WebSocket collaboration to infra optimization and low-level Web Audio extensions.",
-      "viewLive": "Launch Live Demo (Auth Required)",
+      "subtitle": "From proprietary Canvas graphic engines and real-time multiplayer games to infra optimization and Web Audio extensions.",
+      "viewLive": "Launch Live Demo ↗",
+      "viewLiveAuth": "Launch Live Demo (Auth Required)",
       "viewStore": "View Firefox Add-on ↗",
       "viewShop": "Visit Vegeking Store ↗",
       "featuredBadge": "Featured Project",
+      "aiAgentBadge": "Built with AI Agents",
       "infraBadge": "Architecture & Performance",
       "infraTagline": "Production Engineering",
       "sideProjectBadge": "Personal Side Project",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
+        "dreamcity": {
+          "title": "DreamCity (Asymmetrical Multiplayer Battle)",
+          "subtitle": "Real-time Online Asymmetrical Strategy Board Game • 100% Autonomous AI Agent Engineering",
+          "role": "Solo Architecture & Engineering (AI Agent Driven)",
+          "period": "2024 ~ Present",
+          "summary": "4~10 player real-time online asymmetrical board game. Engineered with a frontend Monorepo using React + TS + Tailwind CSS + Vite, a Node.js authoritative game engine server, and deployed edge-first on Cloudflare Workers; 100% autonomously designed and implemented via AI Agents.",
+          "highlights": [
+            "100% Autonomous AI Agent Development: From requirement specs, game mechanics, dual-end protocols to UI/UX and edge deployment, entirely built and validated by AI Agents.",
+            "Frontend Monorepo Architecture: Built modern Monorepo structure unifying shared game types, state protocols, and Vite blazing-fast build pipelines for maximum reusability.",
+            "Node.js Authoritative Game Core & Anti-Cheat: Backend enforces authoritative fog-of-war state filtering, handling dynamic 4~10 player rooms and state reconnects.",
+            "Single-Player Intelligent Bot Sandbox: Crafted custom simulation sandbox logic with 3 AI Bots for offline testing and strategic balance verification."
+          ]
+        },
         "creativeBoard": {
           "title": "Optoma Whiteboard (Creative Board)",
           "subtitle": "Cross-Platform Collaborative Whiteboard Solution",
