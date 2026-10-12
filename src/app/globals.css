@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #0b0f19;
+    --surface-card: #111827;
+    --surface-card-subtle: #0e1424;
+    --surface-hover: #1f2937;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --accent-cyan: #06b6d4;
+    --accent-emerald: #10b981;
+    --nav-bg: rgba(11, 15, 25, 0.85);
+  }
+
+  html.light {
+    --bg-main: #f8fafc;
+    --surface-card: #ffffff;
+    --surface-card-subtle: #f1f5f9;
+    --surface-hover: #e2e8f0;
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --accent-cyan: #0284c7;
+    --accent-emerald: #059669;
+    --nav-bg: rgba(255, 255, 255, 0.85);
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom UI utilities */
+.theme-surface {
+  background-color: var(--surface-card);
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.theme-surface-subtle {
+  background-color: var(--surface-card-subtle);
+  border-color: var(--border-subtle);
+}
+
+.theme-text-secondary {
+  color: var(--text-secondary);
+}
+
+.theme-border {
+  border-color: var(--border-subtle);
+}

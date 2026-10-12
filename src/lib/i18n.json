@@ -1,0 +1,324 @@
+{
+  "zh": {
+    "nav": {
+      "about": "關於我",
+      "metrics": "量化成就",
+      "projects": "核心專案",
+      "skills": "技術技能",
+      "experience": "職涯經歷",
+      "contact": "聯絡我"
+    },
+    "hero": {
+      "badge": "5+ 年經驗 • Web 工匠與架構實踐",
+      "greeting": "嗨，我是",
+      "name": "黃冠傑",
+      "title": "資深前端 / Web 軟體工程師",
+      "bio": "擁有 5~6 年 Web 應用程式開發與架構經驗，核心技術圍繞 React 與 TypeScript。擅長從 0 到 1 打造複雜前端系統（如原生 Canvas 即時協同白板、Web Audio 擴充應用），並深度實踐 Monorepo、Docker 容器化與 CI/CD 現代工程化基礎設施。對技術底層抱持強烈好奇心，持續探索 AI Agent 架構與 LLM 自動化工作流。",
+      "location": "新北市 / 台北市, 台灣",
+      "exploreProjects": "探索專案成就",
+      "contactMe": "聯絡我"
+    },
+    "terminal": {
+      "title": "jay@craftsman-dev:~",
+      "status": "UTF-8 • Next.js 16",
+      "ready": "TypeScript Ready"
+    },
+    "metrics": {
+      "sectionTitle": "量化成果指標",
+      "items": [
+        {
+          "label": "專案部署時間縮減",
+          "value": "2m → <10s",
+          "description": "導入 Docker 容器化發布與 CI/CD 自動化優化"
+        },
+        {
+          "label": "主打包體積優化",
+          "value": ">1MB → <100KB",
+          "description": "程式碼分割 (Code Splitting) 與按需載入機制"
+        },
+        {
+          "label": "專業年資",
+          "value": "5~6 年",
+          "description": "從前端精細互動到全端系統與基礎設施"
+        },
+        {
+          "label": "工程協作與領導",
+          "value": "4 人團隊",
+          "description": "主導架構決策、模組解耦與 Code Review 機制"
+        }
+      ]
+    },
+    "projects": {
+      "badge": "Engineering Showcases",
+      "title": "精選專案與架構實踐",
+      "subtitle": "涵蓋自研原生 Canvas 繪圖引擎、WebSocket 即時協同、工程發布調優到底層 Web Audio 擴充應用。",
+      "viewLive": "前往線上體驗 (需要註冊登入)",
+      "viewStore": "前往 Firefox Add-ons 商店 ↗",
+      "viewShop": "前往菜霸子線上商城 ↗",
+      "featuredBadge": "Featured",
+      "infraBadge": "Architecture & Performance",
+      "infraTagline": "生產環境工程革新",
+      "sideProjectBadge": "Personal Side Project",
+      "commercialBadge": "Commercial B2C / B2B Platform",
+      "items": {
+        "creativeBoard": {
+          "title": "Optoma Whiteboard (Creative Board)",
+          "subtitle": "跨平台即時協同虛擬白板系統",
+          "company": "奧圖碼科技 (Optoma)",
+          "period": "2022/5 ~ 2023/7",
+          "summary": "結合硬體電子白板產品的雲端協同教學與會議系統，支援多端即時繪圖、筆記、影音嵌入與課後回放。",
+          "highlights": [
+            "獨立白板繪圖核心庫：解耦業務邏輯與繪圖引擎，使用瀏覽器原生 Canvas API 實作純物件導向 (OOP) 圖形管理，大幅提升擴充性與跨平台移植能力。",
+            "即時多人協同架構：整合 WebSocket 雙向通訊協議，維持多裝置低延遲的筆跡同步與狀態共享。",
+            "工程規範與團隊領導：制定統一代碼規範，主持每週 Code Review，帶領 4 位前端工程師穩健交付。"
+          ]
+        },
+        "infra": {
+          "title": "現代化前端工程基礎設施與極致效能調優",
+          "subtitle": "Monorepo、容器化發布與打包體積最佳化實踐",
+          "period": "2024/8 ~ 2026/8",
+          "summary": "重構既有專案基礎架構，全面推動 TypeScript 標準化、容器化部屬流程與私有套件生態系，實現交付速度與載入效能的質變突破。",
+          "highlights": [
+            "部署效能極限壓縮：導入 Docker 容器化發布搭配 CircleCI / GCP 自動化流水線，將完整部署時間由 2 分鐘大幅壓縮至 10 秒以內。",
+            "打包體積突破性優化：導入 Code Splitting、按需載入 (On-demand loading) 與最小化打包策略，將 >1MB 的主體積降至 <100KB，次級路由頁面降至數 KB，秒開首頁首屏。",
+            "Monorepo 架構遷移：採用 pnpm + Turborepo 統一管理多專案與共用模組，減少冗餘代碼並顯著提升團隊建置速度。",
+            "私有套件生態系：架設 Verdaccio NPM 鏡像庫，設計支援 ESM + CJS 雙模組格式 (Dual-package) 的內部基礎套件，大幅提高跨專案模組復用率。"
+          ]
+        },
+        "equalizer": {
+          "title": "網頁等化器 (Web Audio Equalizer)",
+          "subtitle": "瀏覽器音訊增強與頻率調校擴充套件",
+          "summary": "專為瀏覽器分頁設計的擴充套件，能即時攔截並處理網頁中所有影音元素的音訊串流，提供多頻段 EQ 調校與個人化設定儲存。",
+          "highlights": [
+            "底層 Web Audio 串流接軌：透過 AudioContext 與 BiquadFilterNode 陣列即時重整聲音訊號，提供無延遲的即時濾波回饋。",
+            "個人化喜好持久化：設計頻率配置記錄與即時切換設定檔功能，兼具極簡清爽的 MUI 操作面板。"
+          ]
+        },
+        "vegeking": {
+          "title": "菜霸子 (Vegeking) 蔬果電商前後台雙系統",
+          "subtitle": "B2C 冷鏈蔬果生鮮平台與營運權限管理後台",
+          "summary": "面向終端消費者的生鮮農產電商網站，搭配高客製化後台營運管理平台，支援商品上下架、庫存進出貨及精細的角色權限控管。",
+          "highlights": [
+            "全客製化管理後台獨立開發：主導後台管理系統建置，因應內部無專職 UI Designer 需求，以 MUI 模組化組件快速搭建高可用性後台介面。",
+            "全域通訊與攔截機制：利用 Axios 攔截器 (Interceptors) 集中管理 API 認證、錯誤捕捉與全域訊息彈窗提示。"
+          ]
+        }
+      }
+    },
+    "skills": {
+      "badge": "Tech Stack Matrix",
+      "title": "核心專業與技術棧",
+      "subtitle": "不僅限於 Web 介面開發，更深耕於前端工程化基礎架構、打包編譯調優與現代分散式協同機制。"
+    },
+    "experience": {
+      "badge": "Career Journey",
+      "title": "職涯軌跡與專業歷程",
+      "subtitle": "從紮實前端基礎，逐步深耕至模組化架構、效能調優與團隊領導。",
+      "education": {
+        "school": "國立勤益科技大學 (NCUT)",
+        "department": "資訊工程系 • 學士學位",
+        "period": "2015/9 ~ 2019/6"
+      },
+      "items": [
+        {
+          "period": "2024/8 ~ 2026/8",
+          "company": "軟體及網路相關公司",
+          "role": "軟體開發工程師",
+          "summary": "負責 Monorepo 基礎設施重構、Docker 容器化發布、CircleCI/GCP 自動化、前端載入與打包體積深度調優、Verdaccio 私有套件生態管理，以及 Electron 桌面軟體與硬體串流整合開發。"
+        },
+        {
+          "period": "2022/3 ~ 2023/7",
+          "company": "奧圖碼科技 (Optoma)",
+          "role": "網頁前端工程師 / 團隊 Leader",
+          "summary": "帶領 4 人前端團隊開發 Creative Board 協同白板專案。自研基於原生 Canvas API 的物件導向白板核心函式庫，整合 WebSocket 即時通訊，主持週度 Code Review 與架構標準制定。"
+        },
+        {
+          "period": "2020/9 ~ 2022/2",
+          "company": "博疄有限公司",
+          "role": "React 前端工程師",
+          "summary": "獨立負責大型蔬果電商之營運管理後台（權限系統、訂單庫存、報表）及支援前台電商購物流程，落實 Axios 全域請求攔截機制。"
+        },
+        {
+          "period": "2019/8 ~ 2020/7",
+          "company": "凌發科技有限公司",
+          "role": "前端工程師",
+          "summary": "參與 React Web 專案開發與維護，並跨領域完成一項 React Native 跨平台行動應用專案與內部 React 系統。"
+        },
+        {
+          "period": "2019/2 ~ 2019/6",
+          "company": "陸豪科技有限公司",
+          "role": "前端開發人員",
+          "summary": "資訊工程系實習/初入行階段，精進 HTML/CSS/JavaScript/React 基礎架構，參與官方形象網站開發與 Git 工作流實務。"
+        }
+      ]
+    },
+    "contact": {
+      "badge": "Get In Touch",
+      "title": "讓我們一起打造卓越的 Web 產品",
+      "subtitle": "開放評估資深前端、Web 架構或全端相關工作機會。歡迎隨時來信討論或交流技術！",
+      "designedWith": "Designed & Built with",
+      "by": "by Jay Huang © 2026"
+    }
+  },
+  "en": {
+    "nav": {
+      "about": "About",
+      "metrics": "Metrics",
+      "projects": "Projects",
+      "skills": "Skills",
+      "experience": "Experience",
+      "contact": "Contact"
+    },
+    "hero": {
+      "badge": "5+ Years Experience • Web Craftsman & Architect",
+      "greeting": "Hi, I'm",
+      "name": "Jay Huang",
+      "title": "Senior Frontend & Web Infrastructure Engineer",
+      "bio": "Software engineer with 5~6 years of experience building scalable Web applications and developer tooling. Proficient in React and TypeScript. Proven track record building complex systems from ground up (such as an OOP Canvas-based real-time collaborative whiteboard and Web Audio extensions), with deep production expertise in Monorepo, Docker containerization, and modern CI/CD automation. Actively exploring AI Agent architectures and LLM workflow automation.",
+      "location": "Taipei / New Taipei, Taiwan",
+      "exploreProjects": "Explore Projects",
+      "contactMe": "Get In Touch"
+    },
+    "terminal": {
+      "title": "jay@craftsman-dev:~",
+      "status": "UTF-8 • Next.js 16",
+      "ready": "TypeScript Ready"
+    },
+    "metrics": {
+      "sectionTitle": "Key Performance Metrics",
+      "items": [
+        {
+          "label": "Deployment Pipeline",
+          "value": "2m → <10s",
+          "description": "Docker containerization with automated CI/CD workflows"
+        },
+        {
+          "label": "Main Bundle Size",
+          "value": ">1MB → <100KB",
+          "description": "Code Splitting and on-demand dynamic route loading"
+        },
+        {
+          "label": "Engineering Experience",
+          "value": "5~6 Years",
+          "description": "From granular UI interactions to backend and infra systems"
+        },
+        {
+          "label": "Team & Tech Leadership",
+          "value": "4 Devs",
+          "description": "Leading architecture decisions, modularization & Code Reviews"
+        }
+      ]
+    },
+    "projects": {
+      "badge": "Engineering Showcases",
+      "title": "Featured Projects & Architecture",
+      "subtitle": "From proprietary Canvas graphic engines and WebSocket collaboration to infra optimization and low-level Web Audio extensions.",
+      "viewLive": "Launch Live Demo (Auth Required)",
+      "viewStore": "View Firefox Add-on ↗",
+      "viewShop": "Visit Vegeking Store ↗",
+      "featuredBadge": "Featured Project",
+      "infraBadge": "Architecture & Performance",
+      "infraTagline": "Production Engineering",
+      "sideProjectBadge": "Personal Side Project",
+      "commercialBadge": "Commercial B2C / B2B Platform",
+      "items": {
+        "creativeBoard": {
+          "title": "Optoma Whiteboard (Creative Board)",
+          "subtitle": "Cross-Platform Collaborative Whiteboard Solution",
+          "company": "Optoma Technology",
+          "period": "2022/5 ~ 2023/7",
+          "summary": "Cloud collaborative whiteboard integrated with physical IFP display systems, supporting multi-client drawing, rich media embedding, and session replay.",
+          "highlights": [
+            "Independent Canvas OOP Graphic Engine: Decoupled business logic from the drawing engine, using pure browser Canvas API with Object-Oriented architecture for high extensibility and desktop (Electron) portability.",
+            "Low-Latency Multi-user Collaboration: Integrated WebSocket full-duplex protocol for real-time stroke synchronization across distributed devices.",
+            "Engineering Quality & Leadership: Established code standards, conducted weekly Code Reviews, and led a 4-engineer frontend team to successful deliveries."
+          ]
+        },
+        "infra": {
+          "title": "Modern Frontend Infrastructure & Performance Tuning",
+          "subtitle": "Monorepo Migration, Containerization & Bundle Optimization",
+          "period": "2024/8 ~ 2026/8",
+          "summary": "Re-architected core frontend pipelines, enforcing TypeScript standardization, Dockerized deployments, and private dual-package publishing for significant velocity gains.",
+          "highlights": [
+            "Deployment Pipeline Optimization: Cut full deployment turnaround from 2 minutes down to under 10 seconds using Docker containerization and CircleCI / GCP pipelines.",
+            "Extreme Bundle Optimization: Implemented code splitting and on-demand chunk loading, compressing main bundles from >1MB to <100KB with sub-pages under a few KBs.",
+            "Monorepo Architecture: Built pnpm + Turborepo setup to unify multi-repo builds and shared packages, drastically speeding up CI and developer builds.",
+            "Private Package Ecosystem: Hosted Verdaccio private registry and engineered dual-package (ESM + CJS) internal libraries, maximizing reusability across projects."
+          ]
+        },
+        "equalizer": {
+          "title": "Web Audio Equalizer",
+          "subtitle": "Browser Audio Enhancement & Frequency Filter Extension",
+          "summary": "WebExtension that intercepts and processes audio streams from any active web media element, providing multi-band equalization and custom preference persistence.",
+          "highlights": [
+            "Low-level Web Audio Processing: Built with AudioContext and BiquadFilterNode cascades to provide zero-latency real-time audio filtering.",
+            "Preference State Persistence: Designed custom preset storage with instant profile toggles and an intuitive MUI control interface."
+          ]
+        },
+        "vegeking": {
+          "title": "Vegeking E-commerce Dual Platform",
+          "subtitle": "B2C Cold-Chain Fresh Produce & B2B Inventory Management Portal",
+          "summary": "Consumer-facing online grocery platform paired with a comprehensive operational management portal for inventory tracking, order fulfillment, and role-based access control.",
+          "highlights": [
+            "Independent Admin Portal Development: Led end-to-end admin portal implementation without dedicated UI designers, leveraging Material UI components for complex operational workflows.",
+            "Global API Interceptors: Standardized authentication, token refreshing, and global error notification toast dispatching via Axios interceptors."
+          ]
+        }
+      }
+    },
+    "skills": {
+      "badge": "Tech Stack Matrix",
+      "title": "Core Competencies & Technologies",
+      "subtitle": "Spanning modern Web application interfaces, build tooling pipelines, performance optimization, and distributed systems."
+    },
+    "experience": {
+      "badge": "Career Journey",
+      "title": "Work Experience & Career Progression",
+      "subtitle": "Progressing from foundational Web development to modular architecture, performance tuning, and technical leadership.",
+      "education": {
+        "school": "National Chin-Yi University of Technology (NCUT)",
+        "department": "Computer Science & Information Engineering • B.S.",
+        "period": "2015/9 ~ 2019/6"
+      },
+      "items": [
+        {
+          "period": "2024/8 ~ 2026/8",
+          "company": "Software & Internet Industry Company",
+          "role": "Software Engineer",
+          "summary": "Led Monorepo restructuring, Dockerized deployments, CircleCI/GCP CI/CD, deep bundle optimization, Verdaccio private package management, Electron desktop apps, and hardware media streaming integration."
+        },
+        {
+          "period": "2022/3 ~ 2023/7",
+          "company": "Optoma Technology, Inc.",
+          "role": "Frontend Engineer / Team Lead",
+          "summary": "Led 4-member frontend team on Creative Board. Architected native Canvas OOP whiteboard library, WebSocket real-time sync, and instituted team Code Review practices."
+        },
+        {
+          "period": "2020/9 ~ 2022/2",
+          "company": "Bolin Co., Ltd.",
+          "role": "React Frontend Engineer",
+          "summary": "Independently developed operation management system (RBAC permissions, inventory, analytics) for fresh produce e-commerce, plus B2C store enhancements and Axios interceptors."
+        },
+        {
+          "period": "2019/8 ~ 2020/7",
+          "company": "Lingfa Technology Co., Ltd.",
+          "role": "Frontend Engineer",
+          "summary": "Developed and maintained React web applications, and delivered a cross-platform React Native mobile app alongside internal enterprise tools."
+        },
+        {
+          "period": "2019/2 ~ 2019/6",
+          "company": "Luhao Technology Co., Ltd.",
+          "role": "Frontend Developer Intern",
+          "summary": "Established foundational Web engineering skills (HTML/CSS/JS/React), collaborated on official company website, and practiced Git version control workflows."
+        }
+      ]
+    },
+    "contact": {
+      "badge": "Get In Touch",
+      "title": "Let's Build Exceptional Web Experiences Together",
+      "subtitle": "Open to exploring Senior Frontend, Web Infrastructure, or Full-stack engineering opportunities. Feel free to reach out!",
+      "designedWith": "Designed & Built with",
+      "by": "by Jay Huang © 2026"
+    }
+  }
+}
