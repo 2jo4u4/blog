@@ -11,7 +11,7 @@
     "hero": {
       "badge": "5+ 年經驗 • Web 工匠與架構實踐",
       "greeting": "嗨，我是",
-      "name": "黃冠傑",
+      "name": "Jay",
       "title": "資深前端 / Web 軟體工程師",
       "bio": "擁有 5~6 年 Web 應用程式開發與架構經驗，核心技術圍繞 React 與 TypeScript。擅長從 0 到 1 打造複雜前端系統（如原生 Canvas 即時協同白板、Web Audio 擴充應用），並深度實踐 Monorepo、Docker 容器化與 CI/CD 現代工程化基礎設施。對技術底層抱持強烈好奇心，持續探索 AI Agent 架構與 LLM 自動化工作流。",
       "location": "新北市 / 台北市, 台灣",
