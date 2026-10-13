@@ -141,7 +141,7 @@ export function Projects() {
                         {t.projects.featuredBadge}
                       </span>
                       <span className="text-xs font-mono theme-text-secondary">
-                        {item.company} • {item.period}
+                        {item.period}
                       </span>
                     </div>
 
