@@ -171,7 +171,7 @@
       "title": "讓我們一起打造卓越的 Web 產品",
       "subtitle": "開放評估資深前端、Web 架構或全端相關工作機會。歡迎隨時來信討論或交流技術！",
       "designedWith": "Designed & Built with",
-      "by": "by Jay Huang © 2026"
+      "by": "by Jay © 2026"
     }
   },
   "en": {
@@ -186,7 +186,7 @@
     "hero": {
       "badge": "5+ Years Experience • Web Craftsman & Architect",
       "greeting": "Hi, I'm",
-      "name": "Jay Huang",
+      "name": "Jay",
       "title": "Senior Frontend & Web Infrastructure Engineer",
       "bio": "Software engineer with 5~6 years of experience building scalable Web applications and developer tooling. Proficient in React and TypeScript. Proven track record building complex systems from ground up (such as an OOP Canvas-based real-time collaborative whiteboard, real-time multiplayer games, and Web Audio extensions), with deep production expertise in Monorepo, Docker containerization, and modern CI/CD automation. Actively exploring AI Agent architectures and LLM workflow automation.",
       "location": "Taipei / New Taipei, Taiwan",
@@ -346,7 +346,7 @@
       "title": "Let's Build Exceptional Web Experiences Together",
       "subtitle": "Open to exploring Senior Frontend, Web Infrastructure, or Full-stack engineering opportunities. Feel free to reach out!",
       "designedWith": "Designed & Built with",
-      "by": "by Jay Huang © 2026"
+      "by": "by Jay © 2026"
     }
   }
 }
