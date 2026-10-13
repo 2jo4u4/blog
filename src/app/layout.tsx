@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jay Huang (黃冠傑) | Senior Frontend & Web Infrastructure Engineer",
+  title: "Jay Huang | Senior Frontend & Web Infrastructure Engineer",
   description:
-    "黃冠傑 (Jay Huang) 的個人專案成就與技術作品集。專注於 React、TypeScript、Canvas 原生白板、前端效能優化與現代工程基礎設施。",
+    "Jay Huang 的個人專案成就與技術作品集。專注於 React、TypeScript、Canvas 原生白板、前端效能優化與現代工程基礎設施。",
   keywords: [
     "黃冠傑",
     "Jay Huang",
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Jay Huang" }],
   openGraph: {
-    title: "Jay Huang (黃冠傑) | Senior Frontend & Web Infrastructure Engineer",
+    title: "Jay Huang | Senior Frontend & Web Infrastructure Engineer",
     description:
-      "專注於現代 Web 架構、前端工程化與極致效能調優的軟體工程師。",
+      "專注於現代 Web 架構、前端工程化與效能調優的軟體工程師。",
     type: "website",
   },
 };

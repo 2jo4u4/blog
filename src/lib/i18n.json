@@ -67,7 +67,7 @@
           "title": "多人非對稱對抗",
           "subtitle": "即時在線非對稱陣營博弈桌遊 • AI Agent 全自主驅動開發",
           "role": "個人獨立架構與研發",
-          "period": "2024 ~ 至今",
+          "period": "2026 ~ 至今",
           "summary": "4~10 人在線非對稱陣營博弈桌遊。前端採用 Monorepo 架構整合 React + TS + Tailwind CSS + Vite，後端以 Node.js 為即時遊戲運算核心，並部署於 Cloudflare Workers 邊緣節點；整套應用 100% 由 AI Agent 自主驅動開發完成。",
           "highlights": [
             "AI Agent 全自主研發：從需求規格、遊戲規則引擎、雙端通訊到 UI/UX 與邊緣部署，全程由 AI Agent 自主協同開發並驗證交付。",
@@ -77,9 +77,8 @@
           ]
         },
         "creativeBoard": {
-          "title": "Creative Board",
+          "title": "多人線上協作平台",
           "subtitle": "跨平台即時協同虛擬白板系統",
-          "company": "奧圖碼科技",
           "period": "2022/5 ~ 2023/7",
           "summary": "結合硬體電子白板產品的雲端協同教學與會議系統，支援多端即時繪圖、筆記、影音嵌入與課後回放。",
           "highlights": [
@@ -243,7 +242,7 @@
           "title": "Asymmetrical Multiplayer Battle",
           "subtitle": "Real-time Online Asymmetrical Strategy Board Game • 100% Autonomous AI Agent Engineering",
           "role": "Solo Architecture & Engineering (AI Agent Driven)",
-          "period": "2024 ~ Present",
+          "period": "2026 ~ Present",
           "summary": "4~10 player real-time online asymmetrical board game. Engineered with a frontend Monorepo using React + TS + Tailwind CSS + Vite, a Node.js authoritative game engine server, and deployed edge-first on Cloudflare Workers; 100% autonomously designed and implemented via AI Agents.",
           "highlights": [
             "100% Autonomous AI Agent Development: From requirement specs, game mechanics, dual-end protocols to UI/UX and edge deployment, entirely built and validated by AI Agents.",
@@ -253,9 +252,8 @@
           ]
         },
         "creativeBoard": {
-          "title": "Creative Board",
+          "title": "Multi-person online collaboration platform",
           "subtitle": "Cross-Platform Collaborative Whiteboard Solution",
-          "company": "Optoma Technology",
           "period": "2022/5 ~ 2023/7",
           "summary": "Cloud collaborative whiteboard integrated with physical IFP display systems, supporting multi-client drawing, rich media embedding, and session replay.",
           "highlights": [
