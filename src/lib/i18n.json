@@ -64,7 +64,7 @@
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
         "dreamcity": {
-          "title": "多人非對稱對抗 (DreamCity)",
+          "title": "多人非對稱對抗",
           "subtitle": "即時在線非對稱陣營博弈桌遊 • AI Agent 全自主驅動開發",
           "role": "個人獨立架構與研發",
           "period": "2024 ~ 至今",
@@ -77,9 +77,9 @@
           ]
         },
         "creativeBoard": {
-          "title": "Optoma Whiteboard (Creative Board)",
+          "title": "Creative Board",
           "subtitle": "跨平台即時協同虛擬白板系統",
-          "company": "奧圖碼科技 (Optoma)",
+          "company": "奧圖碼科技",
           "period": "2022/5 ~ 2023/7",
           "summary": "結合硬體電子白板產品的雲端協同教學與會議系統，支援多端即時繪圖、筆記、影音嵌入與課後回放。",
           "highlights": [
@@ -110,7 +110,7 @@
           ]
         },
         "vegeking": {
-          "title": "菜霸子 (Vegeking) 蔬果電商前後台雙系統",
+          "title": "電商平台",
           "subtitle": "B2C 冷鏈蔬果生鮮平台與營運權限管理後台",
           "summary": "面向終端消費者的生鮮農產電商網站，搭配高客製化後台營運管理平台，支援商品上下架、庫存進出貨及精細的角色權限控管。",
           "highlights": [
@@ -240,7 +240,7 @@
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
         "dreamcity": {
-          "title": "DreamCity (Asymmetrical Multiplayer Battle)",
+          "title": "Asymmetrical Multiplayer Battle",
           "subtitle": "Real-time Online Asymmetrical Strategy Board Game • 100% Autonomous AI Agent Engineering",
           "role": "Solo Architecture & Engineering (AI Agent Driven)",
           "period": "2024 ~ Present",
@@ -253,7 +253,7 @@
           ]
         },
         "creativeBoard": {
-          "title": "Optoma Whiteboard (Creative Board)",
+          "title": "Creative Board",
           "subtitle": "Cross-Platform Collaborative Whiteboard Solution",
           "company": "Optoma Technology",
           "period": "2022/5 ~ 2023/7",
@@ -286,7 +286,7 @@
           ]
         },
         "vegeking": {
-          "title": "Vegeking E-commerce Dual Platform",
+          "title": "E-commerce Platform",
           "subtitle": "B2C Cold-Chain Fresh Produce & B2B Inventory Management Portal",
           "summary": "Consumer-facing online grocery platform paired with a comprehensive operational management portal for inventory tracking, order fulfillment, and role-based access control.",
           "highlights": [

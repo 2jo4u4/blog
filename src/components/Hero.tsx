@@ -2,7 +2,6 @@
 
 import { ArrowRight, Sparkles, MapPin, Mail, Layers, Cpu, Zap, Code2 } from "lucide-react";
 import { useApp } from "@/lib/AppContext";
-import { data } from "@/lib/data";
 
 export function Hero() {
   const { t } = useApp();
