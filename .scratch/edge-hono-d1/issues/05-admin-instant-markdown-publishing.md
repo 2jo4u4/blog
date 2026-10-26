@@ -5,12 +5,12 @@ Implement the secure admin workspace and instant publishing flow under `/admin`.
 
 **Blocked by:** 04-dynamic-article-reader-ssr
 
-**Status:** ready-for-agent
+**Status:** closed
 
-- [ ] `/admin` route redirects unauthenticated visitors to `/admin/login`.
-- [ ] Login endpoint validates credentials using Web Crypto API and sets secure HTTP-only session cookie.
-- [ ] Authenticated dashboard lists all articles (drafts and published) with options to create, edit, or delete.
-- [ ] Markdown editor provides title, slug, summary, tags, and content fields with live preview.
-- [ ] Submitting a new or edited article saves directly to Cloudflare D1 edge database.
-- [ ] Newly published articles become visible at `/blog` and `/blog/:slug` immediately without rebuild.
-- [ ] API routes (`POST /api/posts`, `PUT /api/posts/:id`, `DELETE /api/posts/:id`) reject unauthenticated requests with HTTP 401/403.
+- [x] `/admin` route redirects unauthenticated visitors to `/admin/login`.
+- [x] Login endpoint validates credentials using Web Crypto API and sets secure HTTP-only session cookie.
+- [x] Authenticated dashboard lists all articles (drafts and published) with options to create, edit, or delete.
+- [x] Markdown editor provides title, slug, summary, tags, and content fields with live preview.
+- [x] Submitting a new or edited article saves directly to Cloudflare D1 edge database.
+- [x] Newly published articles become visible at `/blog` and `/blog/:slug` immediately without rebuild.
+- [x] API routes (`POST /api/posts`, `PUT /api/posts/:id`, `DELETE /api/posts/:id`) reject unauthenticated requests with HTTP 401/403.

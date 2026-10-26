@@ -53,6 +53,14 @@ export async function getPublishedPosts(db: D1Database): Promise<Post[]> {
   return (result.results || []).map(parsePostRow);
 }
 
+export async function getAllPostsAdmin(db: D1Database): Promise<Post[]> {
+  const result = await db
+    .prepare("SELECT * FROM posts ORDER BY created_at DESC")
+    .all<RawPostRow>();
+
+  return (result.results || []).map(parsePostRow);
+}
+
 export async function getPostBySlug(db: D1Database, slug: string): Promise<Post | null> {
   const row = await db
     .prepare("SELECT * FROM posts WHERE slug = ?")

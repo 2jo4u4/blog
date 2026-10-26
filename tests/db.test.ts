@@ -100,7 +100,7 @@ class MockD1Database implements Partial<D1Database> {
         }
         return { results: [], success: true, meta: {} as any };
       },
-      async run(): Promise<D1Response> {
+      async run(): Promise<any> {
         if (query.includes("UPDATE posts SET views = views + 1 WHERE slug = ?")) {
           const slug = boundArgs[0];
           const post = db.posts.find((p) => p.slug === slug);
@@ -138,7 +138,7 @@ class MockD1Database implements Partial<D1Database> {
             created_at: new Date().toISOString(),
           });
         }
-        return { success: true, meta: {} as any };
+        return { results: [], success: true, meta: {} as any } as any;
       },
     };
 
