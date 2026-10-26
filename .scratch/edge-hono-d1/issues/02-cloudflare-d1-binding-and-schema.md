@@ -5,10 +5,10 @@ Configure Cloudflare D1 distributed edge SQLite database bindings in `wrangler.j
 
 **Blocked by:** 01-hono-edge-ssr-landing-page
 
-**Status:** ready-for-agent
+**Status:** closed
 
-- [ ] Cloudflare D1 database binding (e.g. `DB`) is declared in `wrangler.jsonc`.
-- [ ] Database migration files define the `posts` table (`id`, `slug` unique index, `title`, `summary`, `content`, `tags`, `is_published`, `views`, `created_at`, `updated_at`).
-- [ ] Database migration files define the `admin_users` table for password authentication.
-- [ ] Migration scripts (via Wrangler CLI or Drizzle) run cleanly against local Miniflare D1 simulations and cloud D1 instances.
-- [ ] An edge verification test confirms successful execution of parameterized queries against D1 without SQL injection vulnerabilities or runtime exceptions.
+- [x] Cloudflare D1 database binding (e.g. `DB`) is declared in `wrangler.jsonc`.
+- [x] Database migration files define the `posts` table (`id`, `slug` unique index, `title`, `summary`, `content`, `tags`, `is_published`, `views`, `created_at`, `updated_at`).
+- [x] Database migration files define the `admin_users` table for password authentication.
+- [x] Migration scripts (via Wrangler CLI or Drizzle) run cleanly against local Miniflare D1 simulations and cloud D1 instances.
+- [x] An edge verification test confirms successful execution of parameterized queries against D1 without SQL injection vulnerabilities or runtime exceptions.

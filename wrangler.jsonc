@@ -8,5 +8,13 @@
   ],
   "assets": {
     "directory": "./public"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio-db",
+      "database_id": "portfolio-db",
+      "migrations_dir": "migrations"
+    }
+  ]
 }
