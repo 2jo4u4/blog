@@ -79,8 +79,7 @@ describe("D1 Database Migrations", () => {
       .get() as { username: string; password_hash: string } | undefined;
 
     expect(adminUser).toBeDefined();
-    expect(adminUser?.username).toBeTruthy();
-    expect(adminUser?.username.length).toBeGreaterThan(0);
+    expect(adminUser?.username?.length).toBeGreaterThan(0);
     // SHA-256 hash format (64-character hex string)
     expect(adminUser?.password_hash).toMatch(/^[a-f0-9]{64}$/i);
   });
