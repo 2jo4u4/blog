@@ -5,13 +5,12 @@ import { DatabaseSync } from "node:sqlite";
 
 describe("D1 Database Migrations", () => {
   const migrationsDir = path.resolve(__dirname, "../migrations");
+  const files = fs
+    .readdirSync(migrationsDir)
+    .filter((file) => file.endsWith(".sql"))
+    .sort();
 
   it("should find migration files in migrations directory", () => {
-    const files = fs
-      .readdirSync(migrationsDir)
-      .filter((file) => file.endsWith(".sql"))
-      .sort();
-
     expect(files.length).toBeGreaterThanOrEqual(4);
     expect(files).toContain("0001_initial.sql");
     expect(files).toContain("0002_post_revisions.sql");
@@ -21,10 +20,6 @@ describe("D1 Database Migrations", () => {
 
   it("should apply all migrations sequentially to an in-memory SQLite database without syntax errors", () => {
     const db = new DatabaseSync(":memory:");
-    const files = fs
-      .readdirSync(migrationsDir)
-      .filter((file) => file.endsWith(".sql"))
-      .sort();
 
     for (const file of files) {
       const sql = fs.readFileSync(path.join(migrationsDir, file), "utf-8");
@@ -59,6 +54,16 @@ describe("D1 Database Migrations", () => {
     expect(columnNames).toContain("views");
     expect(columnNames).toContain("created_at");
     expect(columnNames).toContain("updated_at");
+
+    // Verify post_revisions table columns
+    const revisionColumns = db.prepare("PRAGMA table_info(post_revisions)").all() as {
+      name: string;
+    }[];
+    const revisionColumnNames = revisionColumns.map((c) => c.name);
+    expect(revisionColumnNames).toContain("id");
+    expect(revisionColumnNames).toContain("post_slug");
+    expect(revisionColumnNames).toContain("updated_at");
+    expect(revisionColumnNames).toContain("note");
 
     // Verify admin_users table columns
     const userColumns = db.prepare("PRAGMA table_info(admin_users)").all() as {

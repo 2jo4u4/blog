@@ -8,7 +8,7 @@ This project is an edge-native portfolio and technical blog built with **Cloudfl
 - **Styling**: Tailwind CSS v4 compiled via `@tailwindcss/cli -i ./src/styles/globals.css -o ./public/styles.css --minify`.
 - **Static Assets**: Stored in `./public` and served by Cloudflare Workers Static Assets.
 - **Data Persistence**: Articles and tags stored in Cloudflare D1. Migrations live in `./migrations/`.
-- **Standards & Invariants**: Enforce [CODING_STANDARDS.md](file:///d:/project/cv/CODING_STANDARDS.md) for database-only auth, fail-closed handling, and test isolation.
+- **Standards & Invariants**: Enforce [CODING_STANDARDS.md](./CODING_STANDARDS.md) for database-only auth, fail-closed handling, and test isolation.
 - **Testing & Mock Seam**: Tests in `tests/` supply mock D1 via `tests/helpers/mockDb.ts`.
 - **Verification Guardrail**: Run `npm run check` (TypeScript typecheck and Vitest suite in parallel). Enforced by Husky pre-commit hook and GitHub Actions CI.
 - **Environment**: On Windows PowerShell, invoke npm/npx tools via `.cmd` (e.g. `npm.cmd`, `npx.cmd`); invoke native executables (e.g. `git`, `node`) directly without `.cmd`. Chain commands with `;` and search with `git grep`.
