@@ -109,7 +109,7 @@ export function AdminDashboardPage({ posts }: AdminDashboardPageProps) {
                             >
                               {post.is_published === 1 ? "PUBLISHED" : "DRAFT"}
                             </span>
-                            {post.is_ai_generated === 1 && (
+                            {Boolean(Number(post.is_ai_generated)) && (
                               <span className="px-1.5 py-0.5 rounded-full font-mono font-bold text-[10px] bg-purple-500/20 text-purple-400 border border-purple-500/30">
                                 🤖 AI
                               </span>

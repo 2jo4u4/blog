@@ -102,7 +102,7 @@ export function ArticleReaderPage({
           {/* Article Header */}
           <header className="max-w-3xl mb-12 space-y-4">
             <div className="flex flex-wrap items-center gap-2">
-              {post.is_ai_generated === 1 && (
+              {Boolean(Number(post.is_ai_generated)) && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-purple-500/15 text-purple-400 border border-purple-500/30">
                   <Bot className="w-3.5 h-3.5" />
                   <span>{locale === "zh" ? "AI 協同/生成內容" : "AI Generated"}</span>

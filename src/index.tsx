@@ -18,6 +18,7 @@ import {
   updatePost,
   deletePost,
   incrementPostViews,
+  ensureSchema,
   Post,
   PostRevision,
 } from "./lib/db";
@@ -97,6 +98,24 @@ async function isAuthorized(c: any): Promise<boolean> {
   }
   return false;
 }
+
+let schemaInitialized = false;
+async function ensureDb(db?: D1Database) {
+  if (!db || schemaInitialized) return;
+  try {
+    await ensureSchema(db);
+    schemaInitialized = true;
+  } catch (err) {
+    console.warn("ensureDb failed:", err);
+  }
+}
+
+app.use("*", async (c, next) => {
+  if (c.env?.DB) {
+    await ensureDb(c.env.DB);
+  }
+  await next();
+});
 
 /* =========================================================
    PUBLIC ROUTES

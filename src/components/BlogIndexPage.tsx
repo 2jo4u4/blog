@@ -135,7 +135,7 @@ export function BlogIndexPage({
                         <span>•</span>
                         <span>{readingMinutes} min read</span>
 
-                        {post.is_ai_generated === 1 && (
+                        {Boolean(Number(post.is_ai_generated)) && (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/15 text-purple-400 border border-purple-500/30">
                             <Bot className="w-3 h-3" />
                             <span>{locale === "zh" ? "AI 協作/生成" : "AI Generated"}</span>

@@ -55,6 +55,10 @@ class MockD1Database implements Partial<D1Database> {
     this.nextId = 3;
   }
 
+  async exec(query: string): Promise<D1ExecResult> {
+    return { count: 0, duration: 0 };
+  }
+
   prepare(query: string): D1PreparedStatement {
     const db = this;
     let boundArgs: any[] = [];

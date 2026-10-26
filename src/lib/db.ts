@@ -55,6 +55,47 @@ function parsePostRow(row: RawPostRow): Post {
   };
 }
 
+export async function ensureSchema(db: D1Database): Promise<void> {
+  try {
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        slug TEXT NOT NULL UNIQUE,
+        title TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        content TEXT NOT NULL,
+        tags TEXT NOT NULL DEFAULT '[]',
+        is_published INTEGER NOT NULL DEFAULT 1,
+        is_ai_generated INTEGER NOT NULL DEFAULT 0,
+        views INTEGER NOT NULL DEFAULT 0,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_posts_slug ON posts (slug);
+      CREATE INDEX IF NOT EXISTS idx_posts_published_created ON posts (is_published, created_at DESC);
+
+      CREATE TABLE IF NOT EXISTS post_revisions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_slug TEXT NOT NULL,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        note TEXT NOT NULL DEFAULT '內容更新'
+      );
+      CREATE INDEX IF NOT EXISTS idx_revisions_slug ON post_revisions (post_slug, updated_at DESC);
+    `);
+  } catch (err) {
+    console.warn("ensureSchema initial exec warning:", err);
+  }
+
+  // Ensure is_ai_generated column exists even if table was created previously without it
+  try {
+    await db.exec(
+      "ALTER TABLE posts ADD COLUMN is_ai_generated INTEGER NOT NULL DEFAULT 0;"
+    );
+  } catch {
+    // Column already exists, safe to ignore
+  }
+}
+
 export async function getPublishedPosts(db: D1Database): Promise<Post[]> {
   const result = await db
     .prepare("SELECT * FROM posts WHERE is_published = 1 ORDER BY created_at DESC")

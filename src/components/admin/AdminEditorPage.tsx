@@ -139,7 +139,7 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                     name="is_ai_generated"
                     id="is_ai_generated"
                     value="1"
-                    checked={post ? post.is_ai_generated === 1 : false}
+                    checked={post ? Boolean(Number(post.is_ai_generated)) : false}
                     className="w-4 h-4 rounded text-purple-500 focus:ring-purple-500 focus:ring-offset-0 bg-gray-900 border-gray-700 cursor-pointer"
                   />
                   <label
