@@ -9,6 +9,9 @@ describe("Landing Page Edge SSR Seam", () => {
 
     const html = await res.text();
 
+    // Verification of standard HTML doctype
+    expect(html).toContain("<!DOCTYPE html>");
+
     // Verification of SEO meta tags in <head>
     expect(html).toContain("<title>");
     expect(html).toContain("黃冠傑 (Jay)");

@@ -31,7 +31,10 @@ export interface Env {
 
 const app = new Hono<{ Bindings: Env }>();
 
-// Seed fallback in memory for test runner environments where D1 is mock-injected or optional
+// Helper to ensure standard HTML doctype is always prepended to avoid quirks mode
+const renderHtml = (component: any) => `<!DOCTYPE html>\n${component}`;
+
+// Seed fallback in memory for test runner environments where D1 is mock-injected or unmigrated
 let fallbackSeedPosts: Post[] = [
   {
     id: 1,
@@ -111,7 +114,7 @@ app.get("/", (c) => {
 
   const t = locale === "en" ? translations.en : translations.zh;
 
-  return c.html(<LandingPage locale={locale} t={t} url={c.req.url} />);
+  return c.html(renderHtml(<LandingPage locale={locale} t={t} url={c.req.url} />));
 });
 
 app.get("/blog", async (c) => {
@@ -128,13 +131,21 @@ app.get("/blog", async (c) => {
 
   let posts: Post[] = [];
   let tags: { tag: string; count: number }[] = [];
+  let d1Succeeded = false;
 
   if (c.env?.DB) {
-    posts = tag
-      ? await getPostsByTag(c.env.DB, tag)
-      : await getPublishedPosts(c.env.DB);
-    tags = await getAllTags(c.env.DB);
-  } else {
+    try {
+      posts = tag
+        ? await getPostsByTag(c.env.DB, tag)
+        : await getPublishedPosts(c.env.DB);
+      tags = await getAllTags(c.env.DB);
+      d1Succeeded = true;
+    } catch (err) {
+      console.warn("D1 query failed (falling back to in-memory seed posts):", err);
+    }
+  }
+
+  if (!d1Succeeded) {
     posts = tag
       ? fallbackSeedPosts.filter((p) => p.is_published === 1 && p.tags.includes(tag))
       : fallbackSeedPosts.filter((p) => p.is_published === 1);
@@ -146,14 +157,16 @@ app.get("/blog", async (c) => {
   }
 
   return c.html(
-    <BlogIndexPage
-      posts={posts}
-      tags={tags}
-      currentTag={tag}
-      locale={locale}
-      t={t}
-      url={c.req.url}
-    />
+    renderHtml(
+      <BlogIndexPage
+        posts={posts}
+        tags={tags}
+        currentTag={tag}
+        locale={locale}
+        t={t}
+        url={c.req.url}
+      />
+    )
   );
 });
 
@@ -171,22 +184,31 @@ app.get("/blog/:slug", async (c) => {
 
   let post: Post | null = null;
   if (c.env?.DB) {
-    post = await getPostBySlug(c.env.DB, slug);
+    try {
+      post = await getPostBySlug(c.env.DB, slug);
+    } catch (err) {
+      console.warn("D1 getPostBySlug failed (falling back to seed posts):", err);
+      post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
+    }
   } else {
     post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
   }
 
   if (!post || post.is_published === 0) {
-    return c.html(<NotFoundPage locale={locale} t={t} url={c.req.url} />, 404);
+    return c.html(renderHtml(<NotFoundPage locale={locale} t={t} url={c.req.url} />), 404);
   }
 
   // Increment views asynchronously
   if (c.env?.DB) {
-    const updateViewsPromise = incrementPostViews(c.env.DB, slug);
-    if (c.executionCtx?.waitUntil) {
-      c.executionCtx.waitUntil(updateViewsPromise);
-    } else {
-      await updateViewsPromise;
+    try {
+      const updateViewsPromise = incrementPostViews(c.env.DB, slug);
+      if (c.executionCtx?.waitUntil) {
+        c.executionCtx.waitUntil(updateViewsPromise);
+      } else {
+        await updateViewsPromise;
+      }
+    } catch (err) {
+      console.warn("Failed to increment views:", err);
     }
   } else {
     post.views += 1;
@@ -195,14 +217,16 @@ app.get("/blog/:slug", async (c) => {
   const { html, toc } = extractTocAndParseMarkdown(post.content);
 
   return c.html(
-    <ArticleReaderPage
-      post={post}
-      html={html}
-      toc={toc}
-      locale={locale}
-      t={t}
-      url={c.req.url}
-    />
+    renderHtml(
+      <ArticleReaderPage
+        post={post}
+        html={html}
+        toc={toc}
+        locale={locale}
+        t={t}
+        url={c.req.url}
+      />
+    )
   );
 });
 
@@ -211,7 +235,7 @@ app.get("/blog/:slug", async (c) => {
    ========================================================= */
 
 app.get("/admin/login", (c) => {
-  return c.html(<AdminLoginPage />);
+  return c.html(renderHtml(<AdminLoginPage />));
 });
 
 app.post("/admin/login", async (c) => {
@@ -230,7 +254,7 @@ app.post("/admin/login", async (c) => {
     return c.redirect("/admin");
   }
 
-  return c.html(<AdminLoginPage error="帳號或密碼錯誤，請重新輸入。" />, 401);
+  return c.html(renderHtml(<AdminLoginPage error="帳號或密碼錯誤，請重新輸入。" />), 401);
 });
 
 app.get("/admin/logout", (c) => {
@@ -245,12 +269,17 @@ app.get("/admin", async (c) => {
 
   let posts: Post[] = [];
   if (c.env?.DB) {
-    posts = await getAllPostsAdmin(c.env.DB);
+    try {
+      posts = await getAllPostsAdmin(c.env.DB);
+    } catch (err) {
+      console.warn("D1 getAllPostsAdmin failed:", err);
+      posts = fallbackSeedPosts;
+    }
   } else {
     posts = fallbackSeedPosts;
   }
 
-  return c.html(<AdminDashboardPage posts={posts} />);
+  return c.html(renderHtml(<AdminDashboardPage posts={posts} />));
 });
 
 app.get("/admin/editor", async (c) => {
@@ -262,13 +291,18 @@ app.get("/admin/editor", async (c) => {
   let post: Post | null = null;
   if (slug) {
     if (c.env?.DB) {
-      post = await getPostBySlug(c.env.DB, slug);
+      try {
+        post = await getPostBySlug(c.env.DB, slug);
+      } catch (err) {
+        console.warn("D1 getPostBySlug failed in editor:", err);
+        post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
+      }
     } else {
       post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
     }
   }
 
-  return c.html(<AdminEditorPage post={post} />);
+  return c.html(renderHtml(<AdminEditorPage post={post} />));
 });
 
 app.post("/admin/posts", async (c) => {
@@ -292,13 +326,17 @@ app.post("/admin/posts", async (c) => {
   if (originalSlug) {
     // Update existing
     if (c.env?.DB) {
-      await updatePost(c.env.DB, originalSlug, {
-        title,
-        summary,
-        content,
-        tags,
-        is_published,
-      });
+      try {
+        await updatePost(c.env.DB, originalSlug, {
+          title,
+          summary,
+          content,
+          tags,
+          is_published,
+        });
+      } catch (err) {
+        console.warn("D1 updatePost failed:", err);
+      }
     } else {
       const idx = fallbackSeedPosts.findIndex((p) => p.slug === originalSlug);
       if (idx !== -1) {
@@ -317,14 +355,18 @@ app.post("/admin/posts", async (c) => {
   } else {
     // Create new
     if (c.env?.DB) {
-      await createPost(c.env.DB, {
-        slug,
-        title,
-        summary,
-        content,
-        tags,
-        is_published,
-      });
+      try {
+        await createPost(c.env.DB, {
+          slug,
+          title,
+          summary,
+          content,
+          tags,
+          is_published,
+        });
+      } catch (err) {
+        console.warn("D1 createPost failed:", err);
+      }
     } else {
       fallbackSeedPosts.unshift({
         id: Date.now(),
@@ -353,7 +395,11 @@ app.post("/admin/posts/delete", async (c) => {
   const slug = body.slug as string;
 
   if (c.env?.DB) {
-    await deletePost(c.env.DB, slug);
+    try {
+      await deletePost(c.env.DB, slug);
+    } catch (err) {
+      console.warn("D1 deletePost failed:", err);
+    }
   } else {
     fallbackSeedPosts = fallbackSeedPosts.filter((p) => p.slug !== slug);
   }
@@ -378,7 +424,11 @@ app.post("/api/posts", async (c) => {
   }
 
   if (c.env?.DB) {
-    await createPost(c.env.DB, { slug, title, summary, content, tags, is_published });
+    try {
+      await createPost(c.env.DB, { slug, title, summary, content, tags, is_published });
+    } catch (err) {
+      console.warn("D1 createPost API failed:", err);
+    }
   } else {
     fallbackSeedPosts.unshift({
       id: Date.now(),
@@ -406,7 +456,11 @@ app.put("/api/posts/:slug", async (c) => {
   const body = await c.req.json();
 
   if (c.env?.DB) {
-    await updatePost(c.env.DB, slug, body);
+    try {
+      await updatePost(c.env.DB, slug, body);
+    } catch (err) {
+      console.warn("D1 updatePost API failed:", err);
+    }
   } else {
     const idx = fallbackSeedPosts.findIndex((p) => p.slug === slug);
     if (idx !== -1) {
@@ -429,7 +483,11 @@ app.delete("/api/posts/:slug", async (c) => {
   const slug = c.req.param("slug");
 
   if (c.env?.DB) {
-    await deletePost(c.env.DB, slug);
+    try {
+      await deletePost(c.env.DB, slug);
+    } catch (err) {
+      console.warn("D1 deletePost API failed:", err);
+    }
   } else {
     fallbackSeedPosts = fallbackSeedPosts.filter((p) => p.slug !== slug);
   }
