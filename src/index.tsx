@@ -21,10 +21,6 @@ import {
   incrementPostViews,
   ensureSchema,
   getAdminUser,
-  DEFAULT_POST_SLUG,
-  DEFAULT_POST_TITLE,
-  DEFAULT_POST_SUMMARY,
-  DEFAULT_POST_CONTENT,
   Post,
   PostRevision,
 } from "./lib/db";
@@ -34,7 +30,6 @@ import translations from "./lib/i18n.json";
 
 export interface Env {
   DB?: D1Database;
-  ADMIN_PASSWORD?: string;
   AUTH_SECRET?: string;
 }
 
@@ -42,9 +37,6 @@ const app = new Hono<{ Bindings: Env }>();
 
 // Helper to ensure standard HTML doctype is always prepended to avoid quirks mode
 const renderHtml = (component: any) => `<!DOCTYPE html>\n${component}`;
-
-// In-memory fallback (defaults to empty array)
-let fallbackSeedPosts: Post[] = [];
 
 const DEFAULT_SECRET = "portfolio-auth-secret-key-2026";
 
@@ -94,38 +86,6 @@ app.get("/health", (c) => {
   return c.json({ status: "ok", runtime: "edge-hono" });
 });
 
-app.get("/api/db-diagnostics", async (c) => {
-  if (!c.env?.DB) {
-    return c.json({ hasDb: false, message: "c.env.DB is undefined" });
-  }
-
-  try {
-    await ensureSchema(c.env.DB);
-    const tables = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
-    const countRes = await c.env.DB.prepare("SELECT COUNT(*) as count FROM posts").first<{ count: number }>();
-    const postsCols = await c.env.DB.prepare("PRAGMA table_info(posts)").all();
-    const firstPost = await c.env.DB.prepare("SELECT id, slug, title, is_published, is_ai_generated, views FROM posts LIMIT 1").first();
-    const revisions = await c.env.DB.prepare("SELECT * FROM post_revisions LIMIT 5").all();
-    const users = await c.env.DB.prepare("SELECT id, username, created_at FROM admin_users").all();
-
-    return c.json({
-      hasDb: true,
-      tables: tables.results,
-      postsCount: countRes?.count ?? 0,
-      columns: postsCols.results,
-      samplePost: firstPost,
-      revisions: revisions.results,
-      adminUsers: users.results,
-    });
-  } catch (err: any) {
-    return c.json({
-      hasDb: true,
-      error: err.message || String(err),
-      stack: err.stack,
-    }, 500);
-  }
-});
-
 app.get("/", (c) => {
   const queryLang = c.req.query("lang");
   const cookieLang = getCookie(c, "portfolio-locale");
@@ -155,7 +115,6 @@ app.get("/blog", async (c) => {
   let posts: Post[] = [];
   let tags: { tag: string; count: number }[] = [];
   let totalPostsCount = 0;
-  let d1Succeeded = false;
 
   if (c.env?.DB) {
     try {
@@ -167,22 +126,9 @@ app.get("/blog", async (c) => {
         totalPostsCount = posts.length;
       }
       tags = await getAllTags(c.env.DB);
-      d1Succeeded = true;
     } catch (err) {
-      console.warn("D1 query failed (falling back to in-memory seed posts):", err);
+      console.error("D1 query failed:", err);
     }
-  }
-
-  if (!d1Succeeded) {
-    posts = tag
-      ? fallbackSeedPosts.filter((p) => p.is_published === 1 && p.tags.includes(tag))
-      : fallbackSeedPosts.filter((p) => p.is_published === 1);
-    totalPostsCount = fallbackSeedPosts.filter((p) => p.is_published === 1).length;
-    const tagMap = new Map<string, number>();
-    for (const p of fallbackSeedPosts.filter((p) => p.is_published === 1)) {
-      for (const itemTag of p.tags) tagMap.set(itemTag, (tagMap.get(itemTag) || 0) + 1);
-    }
-    tags = Array.from(tagMap.entries()).map(([tName, count]) => ({ tag: tName, count }));
   }
 
   return c.html(
@@ -217,11 +163,8 @@ app.get("/blog/:slug", async (c) => {
     try {
       post = await getPostBySlug(c.env.DB, slug);
     } catch (err) {
-      console.warn("D1 getPostBySlug failed (falling back to seed posts):", err);
-      post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
+      console.error("D1 getPostBySlug failed:", err);
     }
-  } else {
-    post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
   }
 
   if (!post || post.is_published === 0) {
@@ -337,11 +280,8 @@ app.get("/admin", async (c) => {
     try {
       posts = await getAllPostsAdmin(c.env.DB);
     } catch (err) {
-      console.warn("D1 getAllPostsAdmin failed:", err);
-      posts = fallbackSeedPosts;
+      console.error("D1 getAllPostsAdmin failed:", err);
     }
-  } else {
-    posts = fallbackSeedPosts;
   }
 
   return c.html(renderHtml(<AdminDashboardPage posts={posts} />));
@@ -354,16 +294,11 @@ app.get("/admin/editor", async (c) => {
 
   const slug = c.req.query("slug");
   let post: Post | null = null;
-  if (slug) {
-    if (c.env?.DB) {
-      try {
-        post = await getPostBySlug(c.env.DB, slug);
-      } catch (err) {
-        console.warn("D1 getPostBySlug failed in editor:", err);
-        post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
-      }
-    } else {
-      post = fallbackSeedPosts.find((p) => p.slug === slug) || null;
+  if (slug && c.env?.DB) {
+    try {
+      post = await getPostBySlug(c.env.DB, slug);
+    } catch (err) {
+      console.error("D1 getPostBySlug failed in editor:", err);
     }
   }
 
@@ -392,29 +327,23 @@ app.post("/admin/posts", async (c) => {
     ((body.revision_note as string) || "").trim() ||
     (originalSlug ? "內容更新" : "初版發布");
 
-  if (originalSlug) {
-    // Update existing
-    if (c.env?.DB) {
-      try {
-        await updatePost(c.env.DB, originalSlug, {
-          title,
-          summary,
-          content,
-          tags,
-          is_published,
-          is_ai_generated,
-          revisionNote: revision_note,
-        });
-      } catch (err) {
-        console.error("D1 updatePost failed:", err);
-      }
-    }
+  if (!c.env?.DB) {
+    return c.text("Database connection unavailable", 500);
+  }
 
-    // Keep fallbackSeedPosts synchronized as well
-    const idx = fallbackSeedPosts.findIndex((p) => p.slug === originalSlug);
-    if (idx !== -1) {
-      fallbackSeedPosts[idx] = {
-        ...fallbackSeedPosts[idx],
+  try {
+    if (originalSlug) {
+      await updatePost(c.env.DB, originalSlug, {
+        title,
+        summary,
+        content,
+        tags,
+        is_published,
+        is_ai_generated,
+        revisionNote: revision_note,
+      });
+    } else {
+      await createPost(c.env.DB, {
         slug,
         title,
         summary,
@@ -422,41 +351,11 @@ app.post("/admin/posts", async (c) => {
         tags,
         is_published,
         is_ai_generated,
-        updated_at: new Date().toISOString(),
-      };
+        revisionNote: revision_note,
+      });
     }
-  } else {
-    // Create new
-    if (c.env?.DB) {
-      try {
-        await createPost(c.env.DB, {
-          slug,
-          title,
-          summary,
-          content,
-          tags,
-          is_published,
-          is_ai_generated,
-          revisionNote: revision_note,
-        });
-      } catch (err) {
-        console.error("D1 createPost failed:", err);
-      }
-    }
-
-    fallbackSeedPosts.unshift({
-      id: Date.now(),
-      slug,
-      title,
-      summary,
-      content,
-      tags,
-      is_published,
-      is_ai_generated,
-      views: 0,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
+  } catch (err) {
+    console.error("D1 save post failed:", err);
   }
 
   return c.redirect("/admin");
@@ -470,14 +369,12 @@ app.post("/admin/posts/delete", async (c) => {
   const body = await c.req.parseBody();
   const slug = body.slug as string;
 
-  if (c.env?.DB) {
+  if (slug && c.env?.DB) {
     try {
       await deletePost(c.env.DB, slug);
     } catch (err) {
-      console.warn("D1 deletePost failed:", err);
+      console.error("D1 deletePost failed:", err);
     }
-  } else {
-    fallbackSeedPosts = fallbackSeedPosts.filter((p) => p.slug !== slug);
   }
 
   return c.redirect("/admin");
@@ -499,23 +396,12 @@ app.post("/api/posts", async (c) => {
     return c.json({ error: "Missing required fields" }, 400);
   }
 
-  if (c.env?.DB) {
-    try {
-      await createPost(c.env.DB, {
-        slug,
-        title,
-        summary,
-        content,
-        tags,
-        is_published,
-        is_ai_generated,
-      });
-    } catch (err) {
-      console.warn("D1 createPost API failed:", err);
-    }
-  } else {
-    fallbackSeedPosts.unshift({
-      id: Date.now(),
+  if (!c.env?.DB) {
+    return c.json({ error: "Database connection unavailable" }, 500);
+  }
+
+  try {
+    await createPost(c.env.DB, {
       slug,
       title,
       summary,
@@ -523,13 +409,12 @@ app.post("/api/posts", async (c) => {
       tags,
       is_published,
       is_ai_generated,
-      views: 0,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
     });
+    return c.json({ success: true, slug }, 201);
+  } catch (err: any) {
+    console.error("D1 createPost API failed:", err);
+    return c.json({ error: err.message || "Failed to create post" }, 500);
   }
-
-  return c.json({ success: true, slug }, 201);
 });
 
 app.put("/api/posts/:slug", async (c) => {
@@ -540,24 +425,17 @@ app.put("/api/posts/:slug", async (c) => {
   const slug = c.req.param("slug");
   const body = await c.req.json();
 
-  if (c.env?.DB) {
-    try {
-      await updatePost(c.env.DB, slug, body);
-    } catch (err) {
-      console.warn("D1 updatePost API failed:", err);
-    }
-  } else {
-    const idx = fallbackSeedPosts.findIndex((p) => p.slug === slug);
-    if (idx !== -1) {
-      fallbackSeedPosts[idx] = {
-        ...fallbackSeedPosts[idx],
-        ...body,
-        updated_at: new Date().toISOString(),
-      };
-    }
+  if (!c.env?.DB) {
+    return c.json({ error: "Database connection unavailable" }, 500);
   }
 
-  return c.json({ success: true, slug });
+  try {
+    await updatePost(c.env.DB, slug, body);
+    return c.json({ success: true, slug });
+  } catch (err: any) {
+    console.error("D1 updatePost API failed:", err);
+    return c.json({ error: err.message || "Failed to update post" }, 500);
+  }
 });
 
 app.delete("/api/posts/:slug", async (c) => {
@@ -567,17 +445,17 @@ app.delete("/api/posts/:slug", async (c) => {
 
   const slug = c.req.param("slug");
 
-  if (c.env?.DB) {
-    try {
-      await deletePost(c.env.DB, slug);
-    } catch (err) {
-      console.warn("D1 deletePost API failed:", err);
-    }
-  } else {
-    fallbackSeedPosts = fallbackSeedPosts.filter((p) => p.slug !== slug);
+  if (!c.env?.DB) {
+    return c.json({ error: "Database connection unavailable" }, 500);
   }
 
-  return c.json({ success: true, deleted: slug });
+  try {
+    await deletePost(c.env.DB, slug);
+    return c.json({ success: true, deleted: slug });
+  } catch (err: any) {
+    console.error("D1 deletePost API failed:", err);
+    return c.json({ error: err.message || "Failed to delete post" }, 500);
+  }
 });
 
 export default app;
