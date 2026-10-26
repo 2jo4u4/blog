@@ -1,3 +1,5 @@
+import { hashPassword } from "./auth";
+
 export interface Post {
   id: number;
   slug: string;
@@ -154,6 +156,43 @@ export async function ensureSchema(db: D1Database): Promise<void> {
     }
   } catch (err) {
     console.warn("Seed post warning:", err);
+  }
+
+  // 6. Ensure admin_users table exists and seed default admin user
+  try {
+    await db
+      .prepare(
+        `CREATE TABLE IF NOT EXISTS admin_users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT NOT NULL UNIQUE,
+          password_hash TEXT NOT NULL,
+          created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )`
+      )
+      .run();
+
+    const adminUser = "huangjay_is_admin";
+    const adminPass = "qwe159753aa";
+    const passwordHash = await hashPassword(adminPass);
+
+    const existing = await db
+      .prepare("SELECT id FROM admin_users WHERE username = ?")
+      .bind(adminUser)
+      .first<{ id: number }>();
+
+    if (!existing) {
+      await db
+        .prepare("INSERT INTO admin_users (username, password_hash) VALUES (?, ?)")
+        .bind(adminUser, passwordHash)
+        .run();
+    } else {
+      await db
+        .prepare("UPDATE admin_users SET password_hash = ? WHERE username = ?")
+        .bind(passwordHash, adminUser)
+        .run();
+    }
+  } catch (err) {
+    console.warn("admin_users migration/seed warning:", err);
   }
 }
 

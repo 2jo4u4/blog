@@ -33,7 +33,14 @@ export class MockD1Database implements Partial<D1Database> {
         updated_at: "2026-10-26 12:00:00",
       },
     ];
-    this.users = [];
+    this.users = [
+      {
+        id: 1,
+        username: "huangjay_is_admin",
+        password_hash: "8afdd9bdf9cff0505fe36b1e36b5587259db7e84d5b87aafc14cbb39f0de04b1",
+        created_at: "2026-10-26 12:00:00",
+      },
+    ];
     this.revisions = [
       {
         id: 1,

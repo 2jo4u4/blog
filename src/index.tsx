@@ -20,6 +20,7 @@ import {
   deletePost,
   incrementPostViews,
   ensureSchema,
+  getAdminUser,
   DEFAULT_POST_SLUG,
   DEFAULT_POST_TITLE,
   DEFAULT_POST_SUMMARY,
@@ -28,7 +29,7 @@ import {
   PostRevision,
 } from "./lib/db";
 import { extractTocAndParseMarkdown } from "./lib/markdown";
-import { createSessionToken, verifySessionToken } from "./lib/auth";
+import { createSessionToken, verifySessionToken, verifyPassword } from "./lib/auth";
 import translations from "./lib/i18n.json";
 
 export interface Env {
@@ -109,6 +110,7 @@ app.get("/api/db-diagnostics", async (c) => {
     const postsCols = await c.env.DB.prepare("PRAGMA table_info(posts)").all();
     const firstPost = await c.env.DB.prepare("SELECT id, slug, title, is_published, is_ai_generated, views FROM posts LIMIT 1").first();
     const revisions = await c.env.DB.prepare("SELECT * FROM post_revisions LIMIT 5").all();
+    const users = await c.env.DB.prepare("SELECT id, username, created_at FROM admin_users").all();
 
     return c.json({
       hasDb: true,
@@ -117,6 +119,7 @@ app.get("/api/db-diagnostics", async (c) => {
       columns: postsCols.results,
       samplePost: firstPost,
       revisions: revisions.results,
+      adminUsers: users.results,
     });
   } catch (err: any) {
     return c.json({
@@ -288,9 +291,33 @@ app.get("/admin/login", (c) => {
 
 app.post("/admin/login", async (c) => {
   const body = await c.req.parseBody();
-  const password = body.password as string;
+  const username = ((body.username as string) || "").trim();
+  const password = (body.password as string) || "";
 
-  if (password === getAdminPassword(c.env)) {
+  let authenticated = false;
+
+  // 1. Check D1 database admin_users
+  if (c.env?.DB) {
+    try {
+      const user = await getAdminUser(c.env.DB, username);
+      if (user && (await verifyPassword(password, user.password_hash))) {
+        authenticated = true;
+      }
+    } catch (err) {
+      console.warn("D1 getAdminUser check failed:", err);
+    }
+  }
+
+  // 2. Allow fallback credentials (huangjay_is_admin / qwe159753aa or legacy admin / DEFAULT_PASSWORD)
+  if (!authenticated) {
+    if (username === "huangjay_is_admin" && password === "qwe159753aa") {
+      authenticated = true;
+    } else if (username === "admin" && password === getAdminPassword(c.env)) {
+      authenticated = true;
+    }
+  }
+
+  if (authenticated) {
     const token = await createSessionToken(getSecret(c.env));
     setCookie(c, "admin_session", token, {
       path: "/",
@@ -302,7 +329,10 @@ app.post("/admin/login", async (c) => {
     return c.redirect("/admin");
   }
 
-  return c.html(renderHtml(<AdminLoginPage error="帳號或密碼錯誤，請重新輸入。" />), 401);
+  return c.html(
+    renderHtml(<AdminLoginPage error="帳號或密碼錯誤，請重新輸入。" initialUsername={username} />),
+    401
+  );
 });
 
 app.get("/admin/logout", (c) => {

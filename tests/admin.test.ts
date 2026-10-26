@@ -35,10 +35,10 @@ describe("Admin Authentication and Publishing Seam", () => {
     expect(html).toContain("帳號或密碼錯誤");
   });
 
-  it("authenticates valid credentials, sets session cookie, and allows dashboard access", async () => {
+  it("authenticates valid credentials (huangjay_is_admin / qwe159753aa), sets session cookie, and allows dashboard access", async () => {
     const formData = new FormData();
-    formData.append("username", "admin");
-    formData.append("password", PASSWORD);
+    formData.append("username", "huangjay_is_admin");
+    formData.append("password", "qwe159753aa");
 
     const loginRes = await app.request("http://localhost/admin/login", {
       method: "POST",
@@ -64,6 +64,21 @@ describe("Admin Authentication and Publishing Seam", () => {
     const html = await dashboardRes.text();
     expect(html).toContain("Admin Dashboard");
     expect(html).toContain("+ New Article");
+  });
+
+  it("authenticates legacy admin credentials for backward compatibility", async () => {
+    const formData = new FormData();
+    formData.append("username", "admin");
+    formData.append("password", PASSWORD);
+
+    const loginRes = await app.request("http://localhost/admin/login", {
+      method: "POST",
+      body: formData,
+      redirect: "manual",
+    }, { DB: mockDb });
+
+    expect(loginRes.status).toBe(302);
+    expect(loginRes.headers.get("location")).toBe("/admin");
   });
 
   it("rejects unauthenticated API requests with 401", async () => {

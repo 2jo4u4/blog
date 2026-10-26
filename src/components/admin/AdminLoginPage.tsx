@@ -2,9 +2,11 @@ import { Terminal, ArrowRight } from "../Icons";
 
 export interface AdminLoginPageProps {
   error?: string;
+  initialUsername?: string;
 }
 
-export function AdminLoginPage({ error }: AdminLoginPageProps) {
+export function AdminLoginPage({ error, initialUsername }: AdminLoginPageProps) {
+  const defaultUsername = initialUsername !== undefined ? initialUsername : "huangjay_is_admin";
   return (
     <html lang="zh" class="dark">
       <head>
@@ -42,7 +44,8 @@ export function AdminLoginPage({ error }: AdminLoginPageProps) {
               <input
                 type="text"
                 name="username"
-                value="admin"
+                value={defaultUsername}
+                placeholder="e.g. huangjay_is_admin"
                 required
                 className="w-full px-4 py-2.5 rounded-xl text-sm theme-surface-subtle border theme-border focus:outline-none focus:border-cyan-500"
                 style={{ color: "var(--text-primary)" }}
