@@ -42,7 +42,7 @@ export function AdminLoginPage({ error }: AdminLoginPageProps) {
               <input
                 type="text"
                 name="username"
-                defaultValue="admin"
+                value="admin"
                 required
                 className="w-full px-4 py-2.5 rounded-xl text-sm theme-surface-subtle border theme-border focus:outline-none focus:border-cyan-500"
                 style={{ color: "var(--text-primary)" }}

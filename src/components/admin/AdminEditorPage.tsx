@@ -1,4 +1,4 @@
-import { Terminal, ArrowRight, ArrowUpRight } from "../Icons";
+import { Terminal, ArrowRight, Calendar, Sparkles } from "../Icons";
 import type { Post } from "../../lib/db";
 
 export interface AdminEditorPageProps {
@@ -21,7 +21,7 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
       <body className="min-h-screen p-4 sm:p-8">
         <div className="max-w-5xl mx-auto space-y-6">
           {/* Header */}
-          <div className="flex items-center justify-between pb-4 border-b theme-border">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b theme-border">
             <div className="flex items-center gap-3">
               <a
                 href="/admin"
@@ -34,10 +34,21 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                   {isEditing ? "Edit Article" : "Create New Article"}
                 </h1>
                 <p className="text-xs theme-text-secondary">
-                  即時發布至 Cloudflare D1 邊緣分散式資料庫
+                  {isEditing ? `正在編輯：${post.slug}` : "即時發布至 Cloudflare D1 邊緣分散式資料庫"}
                 </p>
               </div>
             </div>
+
+            {isEditing && (
+              <div className="flex flex-wrap items-center gap-3 text-xs font-mono theme-text-secondary">
+                <div className="flex items-center gap-1 text-cyan-500">
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>發布：{post.created_at}</span>
+                </div>
+                <span>•</span>
+                <span>更新：{post.updated_at}</span>
+              </div>
+            )}
 
             <a
               href="/admin"
@@ -66,7 +77,7 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                   type="text"
                   name="title"
                   required
-                  defaultValue={post?.title || ""}
+                  value={post?.title || ""}
                   placeholder="e.g. 深入解析 Cloudflare Workers 與 Hono SSR"
                   className="w-full px-4 py-2.5 rounded-xl text-sm theme-surface border theme-border focus:outline-none focus:border-cyan-500"
                   style={{ color: "var(--text-primary)" }}
@@ -81,7 +92,7 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                   type="text"
                   name="slug"
                   required
-                  defaultValue={post?.slug || ""}
+                  value={post?.slug || ""}
                   placeholder="e.g. cloudflare-workers-hono-ssr"
                   className="w-full px-4 py-2.5 rounded-xl text-sm font-mono theme-surface border theme-border focus:outline-none focus:border-cyan-500"
                   style={{ color: "var(--text-primary)" }}
@@ -97,7 +108,7 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                 <input
                   type="text"
                   name="tags"
-                  defaultValue={initialTags}
+                  value={initialTags}
                   placeholder="e.g. Architecture, Cloudflare, TypeScript"
                   className="w-full px-4 py-2.5 rounded-xl text-sm font-mono theme-surface border theme-border focus:outline-none focus:border-cyan-500"
                   style={{ color: "var(--text-primary)" }}
@@ -110,7 +121,7 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                   name="is_published"
                   id="is_published"
                   value="1"
-                  defaultChecked={post ? post.is_published === 1 : true}
+                  checked={post ? post.is_published === 1 : true}
                   className="w-4 h-4 rounded text-cyan-500 focus:ring-cyan-500 focus:ring-offset-0 bg-gray-900 border-gray-700"
                 />
                 <label
@@ -122,6 +133,21 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
               </div>
             </div>
 
+            {/* Revision Note (修訂說明) */}
+            <div>
+              <label className="block text-xs font-mono font-medium theme-text-secondary mb-1">
+                Revision Note (本次更新/修訂備註，將記入文章歷史紀錄)
+              </label>
+              <input
+                type="text"
+                name="revision_note"
+                placeholder={isEditing ? "e.g. 補充效能基準測試數據與圖表" : "初版發布"}
+                defaultValue={isEditing ? "內容更新" : "初版發布"}
+                className="w-full px-4 py-2.5 rounded-xl text-sm font-mono theme-surface border theme-border focus:outline-none focus:border-cyan-500"
+                style={{ color: "var(--text-primary)" }}
+              />
+            </div>
+
             <div>
               <label className="block text-xs font-mono font-medium theme-text-secondary mb-1">
                 Summary / Excerpt (文章摘要，用於 SEO 與列表預覽) *
@@ -130,11 +156,10 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                 name="summary"
                 rows={2}
                 required
-                defaultValue={post?.summary || ""}
                 placeholder="簡短描述文章重點與精要..."
                 className="w-full px-4 py-2.5 rounded-xl text-sm theme-surface border theme-border focus:outline-none focus:border-cyan-500 leading-relaxed"
                 style={{ color: "var(--text-primary)" }}
-              />
+              >{post?.summary || ""}</textarea>
             </div>
 
             {/* Markdown Content Area */}
@@ -152,11 +177,10 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                 name="content"
                 rows={18}
                 required
-                defaultValue={post?.content || ""}
                 placeholder="在此撰寫 Markdown 內容..."
                 className="w-full p-4 rounded-2xl text-xs sm:text-sm font-mono theme-surface border theme-border focus:outline-none focus:border-cyan-500 leading-relaxed"
                 style={{ color: "var(--text-primary)" }}
-              />
+              >{post?.content || ""}</textarea>
             </div>
 
             {/* Submit Button */}

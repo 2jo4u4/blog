@@ -110,4 +110,25 @@ describe("Admin Authentication and Publishing Seam", () => {
     expect(readerHtml).toContain("即時發布邊緣測試文章");
     expect(readerHtml).toContain("文章已在邊緣節點立即可見！");
   });
+
+  it("populates existing title, slug, summary, and markdown content when editing an article", async () => {
+    const validToken = await createSessionToken(SECRET);
+
+    const res = await app.request("http://localhost/admin/editor?slug=edge-native-hono-d1-architecture", {
+      headers: {
+        Cookie: `admin_session=${validToken}`,
+      },
+    });
+
+    expect(res.status).toBe(200);
+    const html = await res.text();
+
+    // Verify title and slug populated in input value
+    expect(html).toContain('value="從 Next.js 遷移至 Cloudflare Workers');
+    expect(html).toContain('value="edge-native-hono-d1-architecture"');
+
+    // Verify summary and markdown content populated inside textarea children
+    expect(html).toContain('>分享如何徹底摒棄肥大的客戶端運行時');
+    expect(html).toContain('>## 為什麼需要邊緣原生');
+  });
 });

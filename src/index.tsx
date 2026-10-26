@@ -13,11 +13,13 @@ import {
   getPostBySlug,
   getPostsByTag,
   getAllTags,
+  getPostRevisions,
   createPost,
   updatePost,
   deletePost,
   incrementPostViews,
   Post,
+  PostRevision,
 } from "./lib/db";
 import { extractTocAndParseMarkdown } from "./lib/markdown";
 import { createSessionToken, verifySessionToken } from "./lib/auth";
@@ -216,10 +218,20 @@ app.get("/blog/:slug", async (c) => {
 
   const { html, toc } = extractTocAndParseMarkdown(post.content);
 
+  let revisions: PostRevision[] = [];
+  if (c.env?.DB) {
+    try {
+      revisions = await getPostRevisions(c.env.DB, slug);
+    } catch (err) {
+      console.warn("getPostRevisions failed:", err);
+    }
+  }
+
   return c.html(
     renderHtml(
       <ArticleReaderPage
         post={post}
+        revisions={revisions}
         html={html}
         toc={toc}
         locale={locale}
@@ -322,6 +334,9 @@ app.post("/admin/posts", async (c) => {
     .map((t) => t.trim())
     .filter(Boolean);
   const is_published = body.is_published === "1" ? 1 : 0;
+  const revision_note =
+    ((body.revision_note as string) || "").trim() ||
+    (originalSlug ? "內容更新" : "初版發布");
 
   if (originalSlug) {
     // Update existing
@@ -333,6 +348,7 @@ app.post("/admin/posts", async (c) => {
           content,
           tags,
           is_published,
+          revisionNote: revision_note,
         });
       } catch (err) {
         console.warn("D1 updatePost failed:", err);
@@ -363,6 +379,7 @@ app.post("/admin/posts", async (c) => {
           content,
           tags,
           is_published,
+          revisionNote: revision_note,
         });
       } catch (err) {
         console.warn("D1 createPost failed:", err);

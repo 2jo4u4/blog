@@ -122,11 +122,16 @@ export function BlogIndexPage({
                     className="p-6 sm:p-8 rounded-2xl theme-surface border theme-border hover:border-cyan-500/40 transition-all shadow-sm group relative"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                      <div className="flex items-center gap-2 text-xs font-mono text-cyan-500">
+                      <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-cyan-400">
                         <Calendar className="w-3.5 h-3.5" />
                         <time dateTime={post.created_at}>
                           {post.created_at.split(" ")[0]}
                         </time>
+                        {post.updated_at && post.updated_at !== post.created_at && (
+                          <span className="text-[11px] text-amber-400 font-mono">
+                            (修訂於 {post.updated_at.split(" ")[0]})
+                          </span>
+                        )}
                         <span>•</span>
                         <span>{readingMinutes} min read</span>
                       </div>

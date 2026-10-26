@@ -1,12 +1,13 @@
 import { Layout } from "./Layout";
 import { Navbar } from "./Navbar";
 import { Contact } from "./Contact";
-import { Calendar, ArrowRight, ArrowUpRight, Github, Sparkles, Terminal } from "./Icons";
-import type { Post } from "../lib/db";
+import { Calendar, ArrowRight, ArrowUpRight, Github, Sparkles, Terminal, History } from "./Icons";
+import type { Post, PostRevision } from "../lib/db";
 import type { TocItem } from "../lib/markdown";
 
 export interface ArticleReaderPageProps {
   post: Post;
+  revisions?: PostRevision[];
   html: string;
   toc: TocItem[];
   locale: "zh" | "en";
@@ -16,6 +17,7 @@ export interface ArticleReaderPageProps {
 
 export function ArticleReaderPage({
   post,
+  revisions = [],
   html,
   toc,
   locale,
@@ -24,6 +26,18 @@ export function ArticleReaderPage({
 }: ArticleReaderPageProps) {
   const canonicalUrl = url.split("?")[0];
   const readingMinutes = Math.max(1, Math.ceil(post.content.length / 400));
+  const isEdited = post.updated_at && post.updated_at !== post.created_at;
+
+  // Fallback revision timeline if no separate revisions table records exist yet
+  const displayRevisions: { updated_at: string; note: string }[] =
+    revisions.length > 0
+      ? revisions
+      : [
+          ...(isEdited
+            ? [{ updated_at: post.updated_at, note: locale === "zh" ? "最新修訂" : "Latest Update" }]
+            : []),
+          { updated_at: post.created_at, note: locale === "zh" ? "初版發布" : "Initial Publication" },
+        ];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -92,7 +106,7 @@ export function ArticleReaderPage({
                 <a
                   key={tag}
                   href={`/blog?tag=${encodeURIComponent(tag)}`}
-                  className="px-2.5 py-0.5 rounded-md text-xs font-mono font-semibold bg-cyan-500/10 text-cyan-500 border border-cyan-500/20 hover:border-cyan-500/40 transition-colors"
+                  className="px-2.5 py-0.5 rounded-md text-xs font-mono font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400 transition-colors"
                 >
                   #{tag}
                 </a>
@@ -106,11 +120,22 @@ export function ArticleReaderPage({
               {post.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 text-xs font-mono theme-text-secondary pt-2 border-b theme-border pb-6">
-              <div className="flex items-center gap-1.5 text-cyan-500">
+            {/* Date & Meta Information */}
+            <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs font-mono theme-text-secondary pt-2 border-b theme-border pb-6">
+              <div className="flex items-center gap-1.5 text-cyan-400">
                 <Calendar className="w-3.5 h-3.5" />
-                <time dateTime={post.created_at}>{post.created_at.split(" ")[0]}</time>
+                <span>{locale === "zh" ? "發布：" : "Published: "}</span>
+                <time dateTime={post.created_at}>{post.created_at}</time>
               </div>
+
+              {isEdited && (
+                <div className="flex items-center gap-1.5 text-amber-400">
+                  <History className="w-3.5 h-3.5" />
+                  <span>{locale === "zh" ? "修訂：" : "Updated: "}</span>
+                  <time dateTime={post.updated_at}>{post.updated_at}</time>
+                </div>
+              )}
+
               <span>•</span>
               <span>{readingMinutes} min read</span>
               <span>•</span>
@@ -122,7 +147,7 @@ export function ArticleReaderPage({
             </p>
           </header>
 
-          {/* Content & TOC Grid */}
+          {/* Content & Sidebar Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Article Prose */}
             <div className="lg:col-span-8">
@@ -144,7 +169,7 @@ export function ArticleReaderPage({
 
                 <a
                   href="/#projects"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-500 hover:opacity-80"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:opacity-80"
                 >
                   <span>{locale === "zh" ? "探索專案作品集" : "Explore Portfolio"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -152,21 +177,21 @@ export function ArticleReaderPage({
               </div>
             </div>
 
-            {/* Sidebar: Table of Contents & Author */}
+            {/* Sidebar: Table of Contents, Revision History, Author */}
             <aside className="lg:col-span-4 space-y-8">
               {/* Table of Contents */}
               {toc.length > 0 && (
                 <div className="sticky top-28 p-6 rounded-2xl theme-surface border theme-border shadow-sm">
-                  <div className="flex items-center gap-2 font-mono text-xs font-bold text-cyan-500 uppercase tracking-wider mb-4 pb-2 border-b theme-border">
+                  <div className="flex items-center gap-2 font-mono text-xs font-bold text-cyan-400 uppercase tracking-wider mb-4 pb-2 border-b theme-border">
                     <Terminal className="w-3.5 h-3.5" />
                     <span>Table of Contents</span>
                   </div>
-                  <nav className="space-y-2 text-xs font-mono">
+                  <nav className="space-y-2 text-xs font-mono max-h-[40vh] overflow-y-auto">
                     {toc.map((item) => (
                       <a
                         key={item.id}
                         href={`#${item.id}`}
-                        className={`block transition-colors hover:text-cyan-500 leading-snug ${
+                        className={`block transition-colors hover:text-cyan-400 leading-snug ${
                           item.level === 3 ? "pl-3 theme-text-secondary" : "font-medium"
                         }`}
                         style={{ color: "var(--text-secondary)" }}
@@ -178,9 +203,37 @@ export function ArticleReaderPage({
                 </div>
               )}
 
+              {/* Revision / Edit History Card */}
+              <div className="p-6 rounded-2xl theme-surface border theme-border shadow-sm space-y-4">
+                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider pb-2 border-b theme-border">
+                  <History className="w-3.5 h-3.5" />
+                  <span>{locale === "zh" ? "文章歷史紀錄" : "Revision History"}</span>
+                </div>
+
+                <div className="relative pl-4 border-l border-cyan-500/30 space-y-3 font-mono text-xs">
+                  {displayRevisions.map((rev, idx) => (
+                    <div key={idx} className="relative group">
+                      <div
+                        className={`absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 ${
+                          idx === 0
+                            ? "bg-cyan-500 border-cyan-300 shadow-sm shadow-cyan-500/50"
+                            : "bg-gray-700 border-gray-600"
+                        }`}
+                      />
+                      <div className="font-semibold text-cyan-400 mb-0.5">
+                        {rev.note}
+                      </div>
+                      <div className="text-[11px] theme-text-secondary">
+                        {rev.updated_at}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Author Card */}
               <div className="p-6 rounded-2xl theme-surface-subtle border theme-border space-y-3">
-                <div className="flex items-center gap-2 text-xs font-mono text-cyan-500 font-bold uppercase tracking-wider">
+                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Author</span>
                 </div>
@@ -195,7 +248,7 @@ export function ArticleReaderPage({
                     href="https://github.com/2jo4u4"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs font-mono text-cyan-500 hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-mono text-cyan-400 hover:underline"
                   >
                     <span>GitHub Profile</span>
                     <ArrowUpRight className="w-3 h-3" />

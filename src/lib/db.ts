@@ -31,6 +31,13 @@ export interface AdminUser {
   created_at: string;
 }
 
+export interface PostRevision {
+  id: number;
+  post_slug: string;
+  updated_at: string;
+  note: string;
+}
+
 function parsePostRow(row: RawPostRow): Post {
   let parsedTags: string[] = [];
   try {
@@ -103,6 +110,41 @@ export async function incrementPostViews(db: D1Database, slug: string): Promise<
     .run();
 }
 
+export async function getPostRevisions(
+  db: D1Database,
+  slug: string
+): Promise<PostRevision[]> {
+  try {
+    const result = await db
+      .prepare(
+        "SELECT * FROM post_revisions WHERE post_slug = ? ORDER BY updated_at DESC"
+      )
+      .bind(slug)
+      .all<PostRevision>();
+
+    return result.results || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function addPostRevision(
+  db: D1Database,
+  slug: string,
+  note = "內容更新"
+): Promise<void> {
+  try {
+    await db
+      .prepare(
+        "INSERT INTO post_revisions (post_slug, updated_at, note) VALUES (?, CURRENT_TIMESTAMP, ?)"
+      )
+      .bind(slug, note)
+      .run();
+  } catch {
+    // Ignore if table not created yet
+  }
+}
+
 export async function createPost(
   db: D1Database,
   data: {
@@ -112,6 +154,7 @@ export async function createPost(
     content: string;
     tags: string[];
     is_published?: number;
+    revisionNote?: string;
   }
 ): Promise<void> {
   await db
@@ -128,6 +171,8 @@ export async function createPost(
       data.is_published ?? 1
     )
     .run();
+
+  await addPostRevision(db, data.slug, data.revisionNote || "初版發布");
 }
 
 export async function updatePost(
@@ -139,6 +184,7 @@ export async function updatePost(
     content?: string;
     tags?: string[];
     is_published?: number;
+    revisionNote?: string;
   }
 ): Promise<void> {
   const updates: string[] = ["updated_at = CURRENT_TIMESTAMP"];
@@ -171,6 +217,8 @@ export async function updatePost(
     .prepare(`UPDATE posts SET ${updates.join(", ")} WHERE slug = ?`)
     .bind(...values)
     .run();
+
+  await addPostRevision(db, slug, data.revisionNote || "內容更新");
 }
 
 export async function deletePost(db: D1Database, slug: string): Promise<void> {
