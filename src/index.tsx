@@ -19,6 +19,10 @@ import {
   deletePost,
   incrementPostViews,
   ensureSchema,
+  DEFAULT_POST_SLUG,
+  DEFAULT_POST_TITLE,
+  DEFAULT_POST_SUMMARY,
+  DEFAULT_POST_CONTENT,
   Post,
   PostRevision,
 } from "./lib/db";
@@ -41,29 +45,10 @@ const renderHtml = (component: any) => `<!DOCTYPE html>\n${component}`;
 let fallbackSeedPosts: Post[] = [
   {
     id: 1,
-    slug: "edge-native-hono-d1-architecture",
-    title: "從 Next.js 遷移至 Cloudflare Workers + Hono Edge SSR + D1 的極速架構實踐",
-    summary:
-      "分享如何徹底摒棄肥大的客戶端運行時，改採 Cloudflare Workers 搭配 Hono Edge SSR 與 D1 分散式資料庫，實現毫秒級首屏渲染與 100/100 完整 SEO。",
-    content: `## 為什麼需要邊緣原生 (Edge-Native)？
-
-在現代 Web 開發中，傳統全端框架往往夾帶龐大的客戶端 JavaScript runtime 與複雜的水合 (Hydration) 機制。當我們的目標是追求極致的效能、100/100 的 SEO 表現以及極低的邊緣延遲時，**Edge-Native Architecture** 成為了最佳解法。
-
-### 核心技術選型
-1. **Cloudflare Workers (V8 Isolates)**：全球超過 300+ 邊緣節點，毫秒級就近回應。
-2. **Hono + Hono JSX**：極簡零客戶端開銷的 JSX SSR 引擎，在 Edge 端直接輸出純粹語義化 HTML。
-3. **Cloudflare D1**：邊緣原生 SQLite，具備低延遲讀取與強一致性。
-4. **Tailwind CSS v4 AOT**：預先編譯並透過 Cloudflare Workers Static Assets 全球快取。
-
-\`\`\`typescript
-import { Hono } from 'hono';
-
-const app = new Hono();
-app.get('/', (c) => c.text('Hello from the Edge!'));
-export default app;
-\`\`\`
-
-隨時可以在後台直接以 Markdown 發布新文章，無需漫長的 CI/CD 構建，資料立即可見！`,
+    slug: DEFAULT_POST_SLUG,
+    title: DEFAULT_POST_TITLE,
+    summary: DEFAULT_POST_SUMMARY,
+    content: DEFAULT_POST_CONTENT,
     tags: ["Architecture", "Cloudflare", "Hono", "Edge Computing"],
     is_published: 1,
     is_ai_generated: 0,
@@ -106,7 +91,7 @@ async function ensureDb(db?: D1Database) {
     await ensureSchema(db);
     schemaInitialized = true;
   } catch (err) {
-    console.warn("ensureDb failed:", err);
+    console.error("ensureDb error:", err);
   }
 }
 
@@ -123,6 +108,36 @@ app.use("*", async (c, next) => {
 
 app.get("/health", (c) => {
   return c.json({ status: "ok", runtime: "edge-hono" });
+});
+
+app.get("/api/db-diagnostics", async (c) => {
+  if (!c.env?.DB) {
+    return c.json({ hasDb: false, message: "c.env.DB is undefined" });
+  }
+
+  try {
+    await ensureSchema(c.env.DB);
+    const tables = await c.env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
+    const countRes = await c.env.DB.prepare("SELECT COUNT(*) as count FROM posts").first<{ count: number }>();
+    const postsCols = await c.env.DB.prepare("PRAGMA table_info(posts)").all();
+    const firstPost = await c.env.DB.prepare("SELECT id, slug, title, is_published, is_ai_generated, views FROM posts LIMIT 1").first();
+    const revisions = await c.env.DB.prepare("SELECT * FROM post_revisions LIMIT 5").all();
+
+    return c.json({
+      hasDb: true,
+      tables: tables.results,
+      postsCount: countRes?.count ?? 0,
+      columns: postsCols.results,
+      samplePost: firstPost,
+      revisions: revisions.results,
+    });
+  } catch (err: any) {
+    return c.json({
+      hasDb: true,
+      error: err.message || String(err),
+      stack: err.stack,
+    }, 500);
+  }
 });
 
 app.get("/", (c) => {
@@ -373,23 +388,24 @@ app.post("/admin/posts", async (c) => {
           revisionNote: revision_note,
         });
       } catch (err) {
-        console.warn("D1 updatePost failed:", err);
+        console.error("D1 updatePost failed:", err);
       }
-    } else {
-      const idx = fallbackSeedPosts.findIndex((p) => p.slug === originalSlug);
-      if (idx !== -1) {
-        fallbackSeedPosts[idx] = {
-          ...fallbackSeedPosts[idx],
-          slug,
-          title,
-          summary,
-          content,
-          tags,
-          is_published,
-          is_ai_generated,
-          updated_at: new Date().toISOString(),
-        };
-      }
+    }
+
+    // Keep fallbackSeedPosts synchronized as well
+    const idx = fallbackSeedPosts.findIndex((p) => p.slug === originalSlug);
+    if (idx !== -1) {
+      fallbackSeedPosts[idx] = {
+        ...fallbackSeedPosts[idx],
+        slug,
+        title,
+        summary,
+        content,
+        tags,
+        is_published,
+        is_ai_generated,
+        updated_at: new Date().toISOString(),
+      };
     }
   } else {
     // Create new
@@ -406,23 +422,23 @@ app.post("/admin/posts", async (c) => {
           revisionNote: revision_note,
         });
       } catch (err) {
-        console.warn("D1 createPost failed:", err);
+        console.error("D1 createPost failed:", err);
       }
-    } else {
-      fallbackSeedPosts.unshift({
-        id: Date.now(),
-        slug,
-        title,
-        summary,
-        content,
-        tags,
-        is_published,
-        is_ai_generated,
-        views: 0,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
     }
+
+    fallbackSeedPosts.unshift({
+      id: Date.now(),
+      slug,
+      title,
+      summary,
+      content,
+      tags,
+      is_published,
+      is_ai_generated,
+      views: 0,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
   }
 
   return c.redirect("/admin");

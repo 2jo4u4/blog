@@ -55,10 +55,34 @@ function parsePostRow(row: RawPostRow): Post {
   };
 }
 
+export const DEFAULT_POST_SLUG = "edge-native-hono-d1-architecture";
+export const DEFAULT_POST_TITLE = "從 Next.js 遷移至 Cloudflare Workers + Hono Edge SSR + D1 的極速架構實踐";
+export const DEFAULT_POST_SUMMARY = "分享如何徹底摒棄肥大的客戶端運行時，改採 Cloudflare Workers 搭配 Hono Edge SSR 與 D1 分散式資料庫，實現毫秒級首屏渲染與 100/100 完整 SEO。";
+export const DEFAULT_POST_CONTENT = `## 為什麼需要邊緣原生 (Edge-Native)？
+
+在現代 Web 開發中，傳統全端框架往往夾帶龐大的客戶端 JavaScript runtime 與複雜的水合 (Hydration) 機制。當我們的目標是追求極致的效能、100/100 的 SEO 表現以及極低的邊緣延遲時，**Edge-Native Architecture** 成為了最佳解法。
+
+### 核心技術選型
+1. **Cloudflare Workers (V8 Isolates)**：全球超過 300+ 邊緣節點，毫秒級就近回應。
+2. **Hono + Hono JSX**：極簡零客戶端開銷的 JSX SSR 引擎，在 Edge 端直接輸出純粹語義化 HTML。
+3. **Cloudflare D1**：邊緣原生 SQLite，具備低延遲讀取與強一致性。
+4. **Tailwind CSS v4 AOT**：預先編譯並透過 Cloudflare Workers Static Assets 全球快取。
+
+\`\`\`typescript
+import { Hono } from 'hono';
+
+const app = new Hono();
+app.get('/', (c) => c.text('Hello from the Edge!'));
+export default app;
+\`\`\`
+
+隨時可以在後台直接以 Markdown 發布新文章，無需漫長的 CI/CD 構建，資料立即可見！`;
+
 export async function ensureSchema(db: D1Database): Promise<void> {
-  try {
-    await db.exec(`
-      CREATE TABLE IF NOT EXISTS posts (
+  // 1. Create posts table if not exists
+  await db
+    .prepare(
+      `CREATE TABLE IF NOT EXISTS posts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         slug TEXT NOT NULL UNIQUE,
         title TEXT NOT NULL,
@@ -70,29 +94,66 @@ export async function ensureSchema(db: D1Database): Promise<void> {
         views INTEGER NOT NULL DEFAULT 0,
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-      );
-      CREATE INDEX IF NOT EXISTS idx_posts_slug ON posts (slug);
-      CREATE INDEX IF NOT EXISTS idx_posts_published_created ON posts (is_published, created_at DESC);
+      )`
+    )
+    .run();
 
-      CREATE TABLE IF NOT EXISTS post_revisions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        post_slug TEXT NOT NULL,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        note TEXT NOT NULL DEFAULT '內容更新'
-      );
-      CREATE INDEX IF NOT EXISTS idx_revisions_slug ON post_revisions (post_slug, updated_at DESC);
-    `);
+  // 2. Create posts indexes
+  try {
+    await db.prepare("CREATE INDEX IF NOT EXISTS idx_posts_slug ON posts (slug)").run();
+    await db.prepare("CREATE INDEX IF NOT EXISTS idx_posts_published_created ON posts (is_published, created_at DESC)").run();
   } catch (err) {
-    console.warn("ensureSchema initial exec warning:", err);
+    console.warn("Index creation warning:", err);
   }
 
-  // Ensure is_ai_generated column exists even if table was created previously without it
+  // 3. Create post_revisions table and index
   try {
-    await db.exec(
-      "ALTER TABLE posts ADD COLUMN is_ai_generated INTEGER NOT NULL DEFAULT 0;"
-    );
-  } catch {
-    // Column already exists, safe to ignore
+    await db
+      .prepare(
+        `CREATE TABLE IF NOT EXISTS post_revisions (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          post_slug TEXT NOT NULL,
+          updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          note TEXT NOT NULL DEFAULT '內容更新'
+        )`
+      )
+      .run();
+    await db.prepare("CREATE INDEX IF NOT EXISTS idx_revisions_slug ON post_revisions (post_slug, updated_at DESC)").run();
+  } catch (err) {
+    console.warn("Revisions table creation warning:", err);
+  }
+
+  // 4. Ensure is_ai_generated column exists in posts table (if table was created before)
+  try {
+    const tableInfo = await db.prepare("PRAGMA table_info(posts)").all<{ name: string }>();
+    const hasAiCol = (tableInfo.results || []).some((col) => col.name === "is_ai_generated");
+    if (!hasAiCol) {
+      await db.prepare("ALTER TABLE posts ADD COLUMN is_ai_generated INTEGER NOT NULL DEFAULT 0").run();
+    }
+  } catch (err) {
+    console.warn("PRAGMA table_info or ALTER TABLE warning:", err);
+  }
+
+  // 5. Seed default article if posts table is empty
+  try {
+    const countRes = await db.prepare("SELECT COUNT(*) as count FROM posts").first<{ count: number }>();
+    if (!countRes || Number(countRes.count) === 0) {
+      await db
+        .prepare(
+          `INSERT INTO posts (slug, title, summary, content, tags, is_published, is_ai_generated, views, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, 1, 0, 42, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`
+        )
+        .bind(
+          DEFAULT_POST_SLUG,
+          DEFAULT_POST_TITLE,
+          DEFAULT_POST_SUMMARY,
+          DEFAULT_POST_CONTENT,
+          JSON.stringify(["Architecture", "Cloudflare", "Hono", "Edge Computing"])
+        )
+        .run();
+    }
+  } catch (err) {
+    console.warn("Seed post warning:", err);
   }
 }
 
