@@ -1,7 +1,7 @@
 import { Layout } from "./Layout";
 import { Navbar } from "./Navbar";
 import { Contact } from "./Contact";
-import { Terminal, Calendar, ArrowRight, Layers, Sparkles } from "./Icons";
+import { Terminal, Calendar, ArrowRight, Layers, Sparkles, Bot } from "./Icons";
 import type { Post } from "../lib/db";
 
 export interface BlogIndexPageProps {
@@ -134,6 +134,13 @@ export function BlogIndexPage({
                         )}
                         <span>•</span>
                         <span>{readingMinutes} min read</span>
+
+                        {post.is_ai_generated === 1 && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/15 text-purple-400 border border-purple-500/30">
+                            <Bot className="w-3 h-3" />
+                            <span>{locale === "zh" ? "AI 協作/生成" : "AI Generated"}</span>
+                          </span>
+                        )}
                       </div>
 
                       {post.views > 0 && (

@@ -65,6 +65,7 @@ export default app;
 隨時可以在後台直接以 Markdown 發布新文章，無需漫長的 CI/CD 構建，資料立即可見！`,
     tags: ["Architecture", "Cloudflare", "Hono", "Edge Computing"],
     is_published: 1,
+    is_ai_generated: 0,
     views: 42,
     created_at: "2026-10-26 12:00:00",
     updated_at: "2026-10-26 12:00:00",
@@ -334,6 +335,7 @@ app.post("/admin/posts", async (c) => {
     .map((t) => t.trim())
     .filter(Boolean);
   const is_published = body.is_published === "1" ? 1 : 0;
+  const is_ai_generated = body.is_ai_generated === "1" ? 1 : 0;
   const revision_note =
     ((body.revision_note as string) || "").trim() ||
     (originalSlug ? "內容更新" : "初版發布");
@@ -348,6 +350,7 @@ app.post("/admin/posts", async (c) => {
           content,
           tags,
           is_published,
+          is_ai_generated,
           revisionNote: revision_note,
         });
       } catch (err) {
@@ -364,6 +367,7 @@ app.post("/admin/posts", async (c) => {
           content,
           tags,
           is_published,
+          is_ai_generated,
           updated_at: new Date().toISOString(),
         };
       }
@@ -379,6 +383,7 @@ app.post("/admin/posts", async (c) => {
           content,
           tags,
           is_published,
+          is_ai_generated,
           revisionNote: revision_note,
         });
       } catch (err) {
@@ -393,6 +398,7 @@ app.post("/admin/posts", async (c) => {
         content,
         tags,
         is_published,
+        is_ai_generated,
         views: 0,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -434,7 +440,7 @@ app.post("/api/posts", async (c) => {
   }
 
   const body = await c.req.json();
-  const { slug, title, summary, content, tags = [], is_published = 1 } = body;
+  const { slug, title, summary, content, tags = [], is_published = 1, is_ai_generated = 0 } = body;
 
   if (!slug || !title || !summary || !content) {
     return c.json({ error: "Missing required fields" }, 400);
@@ -442,7 +448,15 @@ app.post("/api/posts", async (c) => {
 
   if (c.env?.DB) {
     try {
-      await createPost(c.env.DB, { slug, title, summary, content, tags, is_published });
+      await createPost(c.env.DB, {
+        slug,
+        title,
+        summary,
+        content,
+        tags,
+        is_published,
+        is_ai_generated,
+      });
     } catch (err) {
       console.warn("D1 createPost API failed:", err);
     }
@@ -455,6 +469,7 @@ app.post("/api/posts", async (c) => {
       content,
       tags,
       is_published,
+      is_ai_generated,
       views: 0,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

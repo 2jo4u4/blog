@@ -99,15 +99,22 @@ export function AdminDashboardPage({ posts }: AdminDashboardPageProps) {
                           </div>
                         </td>
                         <td className="py-4 px-4">
-                          <span
-                            className={`px-2 py-0.5 rounded-full font-mono font-bold text-[10px] ${
-                              post.is_published === 1
-                                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                                : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                            }`}
-                          >
-                            {post.is_published === 1 ? "PUBLISHED" : "DRAFT"}
-                          </span>
+                          <div className="flex flex-col gap-1 items-start">
+                            <span
+                              className={`px-2 py-0.5 rounded-full font-mono font-bold text-[10px] ${
+                                post.is_published === 1
+                                  ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                  : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                              }`}
+                            >
+                              {post.is_published === 1 ? "PUBLISHED" : "DRAFT"}
+                            </span>
+                            {post.is_ai_generated === 1 && (
+                              <span className="px-1.5 py-0.5 rounded-full font-mono font-bold text-[10px] bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                                🤖 AI
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex flex-wrap gap-1">

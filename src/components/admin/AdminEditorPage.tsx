@@ -1,4 +1,4 @@
-import { Terminal, ArrowRight, Calendar, Sparkles } from "../Icons";
+import { Terminal, ArrowRight, Calendar, Sparkles, Bot } from "../Icons";
 import type { Post } from "../../lib/db";
 
 export interface AdminEditorPageProps {
@@ -115,21 +115,41 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
                 />
               </div>
 
-              <div className="flex items-center gap-3 pt-6">
-                <input
-                  type="checkbox"
-                  name="is_published"
-                  id="is_published"
-                  value="1"
-                  checked={post ? post.is_published === 1 : true}
-                  className="w-4 h-4 rounded text-cyan-500 focus:ring-cyan-500 focus:ring-offset-0 bg-gray-900 border-gray-700"
-                />
-                <label
-                  htmlFor="is_published"
-                  className="text-xs font-mono font-bold text-cyan-400 cursor-pointer"
-                >
-                  發布此文章 (Publish Immediately)
-                </label>
+              <div className="flex flex-wrap items-center gap-6 pt-6">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="is_published"
+                    id="is_published"
+                    value="1"
+                    checked={post ? post.is_published === 1 : true}
+                    className="w-4 h-4 rounded text-cyan-500 focus:ring-cyan-500 focus:ring-offset-0 bg-gray-900 border-gray-700 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="is_published"
+                    className="text-xs font-mono font-bold text-cyan-400 cursor-pointer"
+                  >
+                    發布此文章 (Published)
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="is_ai_generated"
+                    id="is_ai_generated"
+                    value="1"
+                    checked={post ? post.is_ai_generated === 1 : false}
+                    className="w-4 h-4 rounded text-purple-500 focus:ring-purple-500 focus:ring-offset-0 bg-gray-900 border-gray-700 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="is_ai_generated"
+                    className="text-xs font-mono font-bold text-purple-400 cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Bot className="w-3.5 h-3.5" />
+                    <span>AI 協同/生成內容 (AI Generated)</span>
+                  </label>
+                </div>
               </div>
             </div>
 

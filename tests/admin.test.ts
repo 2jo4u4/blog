@@ -131,4 +131,39 @@ describe("Admin Authentication and Publishing Seam", () => {
     expect(html).toContain('>分享如何徹底摒棄肥大的客戶端運行時');
     expect(html).toContain('>## 為什麼需要邊緣原生');
   });
+
+  it("handles AI-generated checkbox flag and renders AI badge on frontend", async () => {
+    const validToken = await createSessionToken(SECRET);
+
+    // Create article with is_ai_generated = 1
+    const createRes = await app.request("http://localhost/api/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `admin_session=${validToken}`,
+      },
+      body: JSON.stringify({
+        slug: "ai-generated-deep-dive",
+        title: "AI 協同程式碼分析報告",
+        summary: "這是一篇由 AI 輔助撰寫的技術報告。",
+        content: "## 報告正文\n\nAI 生成測試。",
+        tags: ["AI", "LLM"],
+        is_published: 1,
+        is_ai_generated: 1,
+      }),
+    });
+    expect(createRes.status).toBe(201);
+
+    // Verify blog list displays AI badge
+    const blogRes = await app.request("http://localhost/blog");
+    expect(blogRes.status).toBe(200);
+    const blogHtml = await blogRes.text();
+    expect(blogHtml).toContain("AI 協作/生成");
+
+    // Verify article reader displays AI badge
+    const articleRes = await app.request("http://localhost/blog/ai-generated-deep-dive");
+    expect(articleRes.status).toBe(200);
+    const articleHtml = await articleRes.text();
+    expect(articleHtml).toContain("AI 協同/生成內容");
+  });
 });

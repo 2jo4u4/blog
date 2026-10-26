@@ -6,6 +6,7 @@ export interface Post {
   content: string;
   tags: string[];
   is_published: number;
+  is_ai_generated: number;
   views: number;
   created_at: string;
   updated_at: string;
@@ -19,6 +20,7 @@ export interface RawPostRow {
   content: string;
   tags: string;
   is_published: number;
+  is_ai_generated?: number;
   views: number;
   created_at: string;
   updated_at: string;
@@ -49,6 +51,7 @@ function parsePostRow(row: RawPostRow): Post {
   return {
     ...row,
     tags: Array.isArray(parsedTags) ? parsedTags : [],
+    is_ai_generated: Number(row.is_ai_generated || 0),
   };
 }
 
@@ -154,13 +157,14 @@ export async function createPost(
     content: string;
     tags: string[];
     is_published?: number;
+    is_ai_generated?: number;
     revisionNote?: string;
   }
 ): Promise<void> {
   await db
     .prepare(
-      `INSERT INTO posts (slug, title, summary, content, tags, is_published, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`
+      `INSERT INTO posts (slug, title, summary, content, tags, is_published, is_ai_generated, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`
     )
     .bind(
       data.slug,
@@ -168,7 +172,8 @@ export async function createPost(
       data.summary,
       data.content,
       JSON.stringify(data.tags),
-      data.is_published ?? 1
+      data.is_published ?? 1,
+      data.is_ai_generated ?? 0
     )
     .run();
 
@@ -184,6 +189,7 @@ export async function updatePost(
     content?: string;
     tags?: string[];
     is_published?: number;
+    is_ai_generated?: number;
     revisionNote?: string;
   }
 ): Promise<void> {
@@ -209,6 +215,10 @@ export async function updatePost(
   if (data.is_published !== undefined) {
     updates.push("is_published = ?");
     values.push(data.is_published);
+  }
+  if (data.is_ai_generated !== undefined) {
+    updates.push("is_ai_generated = ?");
+    values.push(data.is_ai_generated);
   }
 
   values.push(slug);

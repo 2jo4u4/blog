@@ -106,7 +106,7 @@ class MockD1Database implements Partial<D1Database> {
           const post = db.posts.find((p) => p.slug === slug);
           if (post) post.views += 1;
         } else if (query.includes("INSERT INTO posts")) {
-          const [slug, title, summary, content, tags, is_published] = boundArgs;
+          const [slug, title, summary, content, tags, is_published, is_ai_generated] = boundArgs;
           db.posts.push({
             id: db.nextId++,
             slug,
@@ -115,6 +115,7 @@ class MockD1Database implements Partial<D1Database> {
             content,
             tags,
             is_published,
+            is_ai_generated: is_ai_generated || 0,
             views: 0,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
