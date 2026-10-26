@@ -9,6 +9,7 @@ import { AdminDashboardPage } from "./components/admin/AdminDashboardPage";
 import { AdminEditorPage } from "./components/admin/AdminEditorPage";
 import {
   getPublishedPosts,
+  getPublishedPostsCount,
   getAllPostsAdmin,
   getPostBySlug,
   getPostsByTag,
@@ -41,22 +42,8 @@ const app = new Hono<{ Bindings: Env }>();
 // Helper to ensure standard HTML doctype is always prepended to avoid quirks mode
 const renderHtml = (component: any) => `<!DOCTYPE html>\n${component}`;
 
-// Seed fallback in memory for test runner environments where D1 is mock-injected or unmigrated
-let fallbackSeedPosts: Post[] = [
-  {
-    id: 1,
-    slug: DEFAULT_POST_SLUG,
-    title: DEFAULT_POST_TITLE,
-    summary: DEFAULT_POST_SUMMARY,
-    content: DEFAULT_POST_CONTENT,
-    tags: ["Architecture", "Cloudflare", "Hono", "Edge Computing"],
-    is_published: 1,
-    is_ai_generated: 0,
-    views: 42,
-    created_at: "2026-10-26 12:00:00",
-    updated_at: "2026-10-26 12:00:00",
-  },
-];
+// In-memory fallback (defaults to empty array)
+let fallbackSeedPosts: Post[] = [];
 
 const DEFAULT_SECRET = "portfolio-auth-secret-key-2026";
 const DEFAULT_PASSWORD = "jay-admin-2026";
@@ -168,13 +155,18 @@ app.get("/blog", async (c) => {
 
   let posts: Post[] = [];
   let tags: { tag: string; count: number }[] = [];
+  let totalPostsCount = 0;
   let d1Succeeded = false;
 
   if (c.env?.DB) {
     try {
-      posts = tag
-        ? await getPostsByTag(c.env.DB, tag)
-        : await getPublishedPosts(c.env.DB);
+      if (tag) {
+        posts = await getPostsByTag(c.env.DB, tag);
+        totalPostsCount = await getPublishedPostsCount(c.env.DB);
+      } else {
+        posts = await getPublishedPosts(c.env.DB);
+        totalPostsCount = posts.length;
+      }
       tags = await getAllTags(c.env.DB);
       d1Succeeded = true;
     } catch (err) {
@@ -186,6 +178,7 @@ app.get("/blog", async (c) => {
     posts = tag
       ? fallbackSeedPosts.filter((p) => p.is_published === 1 && p.tags.includes(tag))
       : fallbackSeedPosts.filter((p) => p.is_published === 1);
+    totalPostsCount = fallbackSeedPosts.filter((p) => p.is_published === 1).length;
     const tagMap = new Map<string, number>();
     for (const p of fallbackSeedPosts.filter((p) => p.is_published === 1)) {
       for (const itemTag of p.tags) tagMap.set(itemTag, (tagMap.get(itemTag) || 0) + 1);
@@ -199,6 +192,7 @@ app.get("/blog", async (c) => {
         posts={posts}
         tags={tags}
         currentTag={tag}
+        totalPostsCount={totalPostsCount}
         locale={locale}
         t={t}
         url={c.req.url}
@@ -239,9 +233,16 @@ app.get("/blog/:slug", async (c) => {
   if (c.env?.DB) {
     try {
       const updateViewsPromise = incrementPostViews(c.env.DB, slug);
-      if (c.executionCtx?.waitUntil) {
-        c.executionCtx.waitUntil(updateViewsPromise);
-      } else {
+      let hasExecutionCtx = false;
+      try {
+        if (c.executionCtx && typeof c.executionCtx.waitUntil === "function") {
+          c.executionCtx.waitUntil(updateViewsPromise);
+          hasExecutionCtx = true;
+        }
+      } catch {
+        // No execution context in synthetic testing environment
+      }
+      if (!hasExecutionCtx) {
         await updateViewsPromise;
       }
     } catch (err) {

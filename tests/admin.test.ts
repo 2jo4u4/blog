@@ -1,16 +1,22 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import app from "../src/index";
 import { createSessionToken } from "../src/lib/auth";
+import { MockD1Database } from "./helpers/mockDb";
 
 describe("Admin Authentication and Publishing Seam", () => {
   const SECRET = "portfolio-auth-secret-key-2026";
   const PASSWORD = "jay-admin-2026";
+  let mockDb: any;
+
+  beforeEach(() => {
+    mockDb = new MockD1Database();
+  });
 
   it("redirects unauthenticated /admin requests to /admin/login", async () => {
     const res = await app.request("http://localhost/admin", {
       method: "GET",
       redirect: "manual",
-    });
+    }, { DB: mockDb });
     expect(res.status).toBe(302);
     expect(res.headers.get("location")).toBe("/admin/login");
   });
@@ -23,7 +29,7 @@ describe("Admin Authentication and Publishing Seam", () => {
     const res = await app.request("http://localhost/admin/login", {
       method: "POST",
       body: formData,
-    });
+    }, { DB: mockDb });
     expect(res.status).toBe(401);
     const html = await res.text();
     expect(html).toContain("帳號或密碼錯誤");
@@ -38,7 +44,7 @@ describe("Admin Authentication and Publishing Seam", () => {
       method: "POST",
       body: formData,
       redirect: "manual",
-    });
+    }, { DB: mockDb });
 
     expect(loginRes.status).toBe(302);
     expect(loginRes.headers.get("location")).toBe("/admin");
@@ -48,15 +54,15 @@ describe("Admin Authentication and Publishing Seam", () => {
 
     // Access /admin with the session cookie
     const sessionCookie = cookieHeader!.split(";")[0];
-    const adminRes = await app.request("http://localhost/admin", {
+    const dashboardRes = await app.request("http://localhost/admin", {
       headers: {
         Cookie: sessionCookie,
       },
-    });
+    }, { DB: mockDb });
 
-    expect(adminRes.status).toBe(200);
-    const html = await adminRes.text();
-    expect(html).toContain("Admin Workspace");
+    expect(dashboardRes.status).toBe(200);
+    const html = await dashboardRes.text();
+    expect(html).toContain("Admin Dashboard");
     expect(html).toContain("+ New Article");
   });
 
@@ -70,7 +76,7 @@ describe("Admin Authentication and Publishing Seam", () => {
         summary: "Test",
         content: "Test",
       }),
-    });
+    }, { DB: mockDb });
     expect(res.status).toBe(401);
   });
 
@@ -92,19 +98,19 @@ describe("Admin Authentication and Publishing Seam", () => {
         tags: ["LiveDemo", "Edge"],
         is_published: 1,
       }),
-    });
+    }, { DB: mockDb });
 
     expect(createRes.status).toBe(201);
 
     // 2. Query /blog -> article must be listed immediately without rebuild
-    const blogRes = await app.request("http://localhost/blog");
+    const blogRes = await app.request("http://localhost/blog", {}, { DB: mockDb });
     expect(blogRes.status).toBe(200);
     const blogHtml = await blogRes.text();
     expect(blogHtml).toContain("即時發布邊緣測試文章");
     expect(blogHtml).toContain("#LiveDemo");
 
     // 3. Query /blog/:slug -> article reader renders prose and SEO immediately
-    const readerRes = await app.request("http://localhost/blog/instant-edge-post");
+    const readerRes = await app.request("http://localhost/blog/instant-edge-post", {}, { DB: mockDb });
     expect(readerRes.status).toBe(200);
     const readerHtml = await readerRes.text();
     expect(readerHtml).toContain("即時發布邊緣測試文章");
@@ -118,7 +124,7 @@ describe("Admin Authentication and Publishing Seam", () => {
       headers: {
         Cookie: `admin_session=${validToken}`,
       },
-    });
+    }, { DB: mockDb });
 
     expect(res.status).toBe(200);
     const html = await res.text();
@@ -151,17 +157,17 @@ describe("Admin Authentication and Publishing Seam", () => {
         is_published: 1,
         is_ai_generated: 1,
       }),
-    });
+    }, { DB: mockDb });
     expect(createRes.status).toBe(201);
 
     // Verify blog list displays AI badge
-    const blogRes = await app.request("http://localhost/blog");
+    const blogRes = await app.request("http://localhost/blog", {}, { DB: mockDb });
     expect(blogRes.status).toBe(200);
     const blogHtml = await blogRes.text();
     expect(blogHtml).toContain("AI 協作/生成");
 
     // Verify article reader displays AI badge
-    const articleRes = await app.request("http://localhost/blog/ai-generated-deep-dive");
+    const articleRes = await app.request("http://localhost/blog/ai-generated-deep-dive", {}, { DB: mockDb });
     expect(articleRes.status).toBe(200);
     const articleHtml = await articleRes.text();
     expect(articleHtml).toContain("AI 協同/生成內容");

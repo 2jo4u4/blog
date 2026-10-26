@@ -8,6 +8,7 @@ export interface BlogIndexPageProps {
   posts: Post[];
   tags: { tag: string; count: number }[];
   currentTag?: string;
+  totalPostsCount?: number;
   locale: "zh" | "en";
   t: any;
   url: string;
@@ -17,10 +18,17 @@ export function BlogIndexPage({
   posts,
   tags,
   currentTag,
+  totalPostsCount,
   locale,
   t,
   url,
 }: BlogIndexPageProps) {
+  const totalCount =
+    totalPostsCount !== undefined
+      ? totalPostsCount
+      : !currentTag
+      ? posts.length
+      : tags.reduce((acc, curr) => acc + curr.count, 0);
   const title =
     locale === "zh"
       ? "技術隨筆與筆記 | 黃冠傑 (Jay) Blog"
@@ -67,7 +75,7 @@ export function BlogIndexPage({
                     : "theme-surface border theme-border hover:border-cyan-500/40 theme-text-secondary"
                 }`}
               >
-                {locale === "zh" ? "全部文章" : "All"} ({tags.reduce((acc, curr) => acc + curr.count, 0)})
+                {locale === "zh" ? "全部文章" : "All"} ({totalCount})
               </a>
               {tags.map(({ tag, count }) => {
                 const isActive = currentTag === tag;
@@ -93,7 +101,13 @@ export function BlogIndexPage({
             <div className="p-12 text-center rounded-2xl theme-surface border theme-border">
               <Sparkles className="w-8 h-8 text-cyan-500 mx-auto mb-3" />
               <h3 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
-                {locale === "zh" ? "尚無相關文章" : "No articles found"}
+                {currentTag
+                  ? locale === "zh"
+                    ? "尚無相關文章"
+                    : "No related articles"
+                  : locale === "zh"
+                  ? "尚無文章發布"
+                  : "No articles published"}
               </h3>
               <p className="text-sm theme-text-secondary mb-4">
                 {currentTag
@@ -101,16 +115,18 @@ export function BlogIndexPage({
                     ? `標籤 #${currentTag} 下目前沒有已發布的文章。`
                     : `No published articles under #${currentTag}.`
                   : locale === "zh"
-                  ? "目前還沒有已發布的文章。"
-                  : "No articles published yet."}
+                  ? "目前尚無文章發布，請稍後再嘗試。"
+                  : "No articles published yet. Please check back later."}
               </p>
-              <a
-                href="/blog"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-500 hover:opacity-80"
-              >
-                <span>{locale === "zh" ? "查看全部文章" : "View all articles"}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
+              {currentTag && (
+                <a
+                  href="/blog"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-500 hover:opacity-80"
+                >
+                  <span>{locale === "zh" ? "查看全部文章" : "View all articles"}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              )}
             </div>
           ) : (
             <div className="space-y-6">

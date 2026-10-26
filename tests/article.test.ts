@@ -1,9 +1,20 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import app from "../src/index";
+import { MockD1Database } from "./helpers/mockDb";
 
 describe("Dynamic Article Reader Edge SSR Seam", () => {
+  let mockDb: any;
+
+  beforeEach(() => {
+    mockDb = new MockD1Database();
+  });
+
   it("renders published article by slug with full SEO and parsed Markdown", async () => {
-    const res = await app.request("http://localhost/blog/edge-native-hono-d1-architecture");
+    const res = await app.request(
+      "http://localhost/blog/edge-native-hono-d1-architecture",
+      {},
+      { DB: mockDb }
+    );
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("text/html");
 
@@ -38,7 +49,11 @@ describe("Dynamic Article Reader Edge SSR Seam", () => {
   });
 
   it("returns HTTP 404 with custom error page when slug is not found", async () => {
-    const res = await app.request("http://localhost/blog/non-existent-article-slug");
+    const res = await app.request(
+      "http://localhost/blog/non-existent-article-slug",
+      {},
+      { DB: mockDb }
+    );
     expect(res.status).toBe(404);
 
     const html = await res.text();

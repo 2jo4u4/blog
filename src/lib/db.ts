@@ -165,6 +165,14 @@ export async function getPublishedPosts(db: D1Database): Promise<Post[]> {
   return (result.results || []).map(parsePostRow);
 }
 
+export async function getPublishedPostsCount(db: D1Database): Promise<number> {
+  const result = await db
+    .prepare("SELECT COUNT(*) as count FROM posts WHERE is_published = 1")
+    .first<{ count: number }>();
+
+  return Number(result?.count || 0);
+}
+
 export async function getAllPostsAdmin(db: D1Database): Promise<Post[]> {
   const result = await db
     .prepare("SELECT * FROM posts ORDER BY created_at DESC")
