@@ -8,12 +8,13 @@ export interface NavbarProps {
 
 export function Navbar({ locale, t }: NavbarProps) {
   const navLinks = [
-    { label: t.nav.about, href: "#about" },
-    { label: t.nav.metrics, href: "#metrics" },
-    { label: t.nav.projects, href: "#projects" },
-    { label: t.nav.skills, href: "#skills" },
-    { label: t.nav.experience, href: "#experience" },
-    { label: t.nav.contact, href: "#contact" },
+    { label: t.nav.about, href: "/#about" },
+    { label: t.nav.metrics, href: "/#metrics" },
+    { label: t.nav.projects, href: "/#projects" },
+    { label: t.nav.skills, href: "/#skills" },
+    { label: t.nav.experience, href: "/#experience" },
+    { label: locale === "zh" ? "技術隨筆" : "Blog", href: "/blog" },
+    { label: t.nav.contact, href: "/#contact" },
   ];
 
   const githubLink = data.profile.socialLinks.find((s) => s.name === "GitHub")?.url || "https://github.com/2jo4u4";

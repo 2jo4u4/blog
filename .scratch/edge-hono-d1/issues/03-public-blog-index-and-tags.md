@@ -5,11 +5,11 @@ Create the public technical blog index route (`GET /blog`) powered by Hono Edge 
 
 **Blocked by:** 02-cloudflare-d1-binding-and-schema
 
-**Status:** ready-for-agent
+**Status:** closed
 
-- [ ] Hono route `GET /blog` queries published articles directly from D1 edge database.
-- [ ] Blog index is rendered server-side via Hono JSX with semantic `<article>`, `<time>`, and heading tags.
-- [ ] Tag filtering mechanism allows filtering articles by tag parameter (e.g. `/blog?tag=React`).
-- [ ] Dedicated SEO meta tags (`og:title`, `og:description`, canonical URL) and JSON-LD `CollectionPage` schema are injected in the HTML `<head>`.
-- [ ] Visual styling seamlessly matches the dark/light design tokens established in Ticket 01.
-- [ ] Unauthenticated requests to `/blog` never expose draft (`is_published = false`) articles.
+- [x] Hono route `GET /blog` queries published articles directly from D1 edge database.
+- [x] Blog index is rendered server-side via Hono JSX with semantic `<article>`, `<time>`, and heading tags.
+- [x] Tag filtering mechanism allows filtering articles by tag parameter (e.g. `/blog?tag=React`).
+- [x] Dedicated SEO meta tags (`og:title`, `og:description`, canonical URL) and JSON-LD `CollectionPage` schema are injected in the HTML `<head>`.
+- [x] Visual styling seamlessly matches the dark/light design tokens established in Ticket 01.
+- [x] Unauthenticated requests to `/blog` never expose draft (`is_published = false`) articles.
