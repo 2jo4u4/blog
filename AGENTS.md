@@ -8,3 +8,5 @@ This project is an edge-native portfolio and technical blog built with **Cloudfl
 - **Styling**: Tailwind CSS v4 compiled via `@tailwindcss/cli -i ./src/styles/globals.css -o ./public/styles.css --minify`.
 - **Static Assets**: Stored in `./public` and served by Cloudflare Workers Static Assets.
 - **Data Persistence**: Articles and tags stored in Cloudflare D1.
+- **Verification Guardrail**: Run `npm run check` (runs TypeScript typecheck and Vitest suite in parallel).
+- **Environment**: On Windows PowerShell, invoke tools via `.cmd` (e.g. `npm.cmd`, `npx.cmd`), chain commands with `;`, and search with `git grep`.
