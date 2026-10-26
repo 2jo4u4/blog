@@ -5,12 +5,12 @@ Create the dynamic article reader route (`GET /blog/:slug`). Hono retrieves the 
 
 **Blocked by:** 03-public-blog-index-and-tags
 
-**Status:** ready-for-agent
+**Status:** closed
 
-- [ ] Hono route `GET /blog/:slug` loads article record from Cloudflare D1 and returns HTTP 404 with custom error page if not found or unpublished.
-- [ ] Raw Markdown content is parsed into sanitized HTML on the edge with security safeguards against XSS.
-- [ ] Code snippets feature syntax highlighting, language badge, and a client-side one-click copy script.
-- [ ] Automatically extracted headings form a jumpable Table of Contents (TOC).
-- [ ] Pre-rendered HTML `<head>` contains dynamic OpenGraph tags, Twitter Card tags, and JSON-LD `TechArticle` schema.
-- [ ] Article page view count is incremented in D1 upon page visit.
-- [ ] Raw HTML response inspected via tests contains full article prose and code before client script execution.
+- [x] Hono route `GET /blog/:slug` loads article record from Cloudflare D1 and returns HTTP 404 with custom error page if not found or unpublished.
+- [x] Raw Markdown content is parsed into sanitized HTML on the edge with security safeguards against XSS.
+- [x] Code snippets feature syntax highlighting, language badge, and a client-side one-click copy script.
+- [x] Automatically extracted headings form a jumpable Table of Contents (TOC).
+- [x] Pre-rendered HTML `<head>` contains dynamic OpenGraph tags, Twitter Card tags, and JSON-LD `TechArticle` schema.
+- [x] Article page view count is incremented in D1 upon page visit.
+- [x] Raw HTML response inspected via tests contains full article prose and code before client script execution.
