@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run test",
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
-    "db:migrate:remote": "wrangler d1 migrations apply DB --remote"
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "prepare": "husky"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^5.0.0",
@@ -24,7 +25,8 @@
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22.20.5",
+    "husky": "^9.1.7",
     "typescript": "^5",
     "vitest": "^3.0.0",
     "wrangler": "^4.0.0"

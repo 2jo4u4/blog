@@ -7,6 +7,8 @@ This project is an edge-native portfolio and technical blog built with **Cloudfl
 - **Edge SSR for SEO**: Landing page (`/`) and Blog pages (`/blog`, `/blog/:slug`) are rendered directly to HTML on the edge with complete SEO metadata (`<title>`, OpenGraph, Twitter Cards, JSON-LD Schema).
 - **Styling**: Tailwind CSS v4 compiled via `@tailwindcss/cli -i ./src/styles/globals.css -o ./public/styles.css --minify`.
 - **Static Assets**: Stored in `./public` and served by Cloudflare Workers Static Assets.
-- **Data Persistence**: Articles and tags stored in Cloudflare D1.
-- **Verification Guardrail**: Run `npm run check` (runs TypeScript typecheck and Vitest suite in parallel).
-- **Environment**: On Windows PowerShell, invoke tools via `.cmd` (e.g. `npm.cmd`, `npx.cmd`), chain commands with `;`, and search with `git grep`.
+- **Data Persistence**: Articles and tags stored in Cloudflare D1. Migrations live in `./migrations/`.
+- **Standards & Invariants**: Enforce [CODING_STANDARDS.md](file:///d:/project/cv/CODING_STANDARDS.md) for database-only auth, fail-closed handling, and test isolation.
+- **Testing & Mock Seam**: Tests in `tests/` supply mock D1 via `tests/helpers/mockDb.ts`.
+- **Verification Guardrail**: Run `npm run check` (TypeScript typecheck and Vitest suite in parallel). Enforced by Husky pre-commit hook and GitHub Actions CI.
+- **Environment**: On Windows PowerShell, invoke npm/npx tools via `.cmd` (e.g. `npm.cmd`, `npx.cmd`); invoke native executables (e.g. `git`, `node`) directly without `.cmd`. Chain commands with `;` and search with `git grep`.
