@@ -47,14 +47,9 @@ const renderHtml = (component: any) => `<!DOCTYPE html>\n${component}`;
 let fallbackSeedPosts: Post[] = [];
 
 const DEFAULT_SECRET = "portfolio-auth-secret-key-2026";
-const DEFAULT_PASSWORD = "jay-admin-2026";
 
 function getSecret(env?: Env): string {
   return env?.AUTH_SECRET || DEFAULT_SECRET;
-}
-
-function getAdminPassword(env?: Env): string {
-  return env?.ADMIN_PASSWORD || DEFAULT_PASSWORD;
 }
 
 async function isAuthorized(c: any): Promise<boolean> {
@@ -66,8 +61,9 @@ async function isAuthorized(c: any): Promise<boolean> {
   const authHeader = c.req.header("Authorization");
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const bearerToken = authHeader.slice(7);
-    if (bearerToken === getAdminPassword(c.env)) return true;
-    if (await verifySessionToken(bearerToken, secret)) return true;
+    if (await verifySessionToken(bearerToken, secret)) {
+      return true;
+    }
   }
   return false;
 }
@@ -296,24 +292,15 @@ app.post("/admin/login", async (c) => {
 
   let authenticated = false;
 
-  // 1. Check D1 database admin_users
-  if (c.env?.DB) {
+  // Strict database authentication via Cloudflare D1
+  if (username && password && c.env?.DB) {
     try {
       const user = await getAdminUser(c.env.DB, username);
       if (user && (await verifyPassword(password, user.password_hash))) {
         authenticated = true;
       }
     } catch (err) {
-      console.warn("D1 getAdminUser check failed:", err);
-    }
-  }
-
-  // 2. Allow fallback credentials (huangjay_is_admin / qwe159753aa or legacy admin / DEFAULT_PASSWORD)
-  if (!authenticated) {
-    if (username === "huangjay_is_admin" && password === "qwe159753aa") {
-      authenticated = true;
-    } else if (username === "admin" && password === getAdminPassword(c.env)) {
-      authenticated = true;
+      console.error("D1 getAdminUser check failed:", err);
     }
   }
 

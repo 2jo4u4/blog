@@ -6,7 +6,6 @@ export interface AdminLoginPageProps {
 }
 
 export function AdminLoginPage({ error, initialUsername }: AdminLoginPageProps) {
-  const defaultUsername = initialUsername !== undefined ? initialUsername : "huangjay_is_admin";
   return (
     <html lang="zh" class="dark">
       <head>
@@ -26,7 +25,7 @@ export function AdminLoginPage({ error, initialUsername }: AdminLoginPageProps) 
               Admin Console
             </h1>
             <p className="text-xs theme-text-secondary">
-              請輸入管理員密碼以進入即時 Markdown 發布後台
+              請輸入管理員帳號與密碼以進入即時 Markdown 發布後台
             </p>
           </div>
 
@@ -44,9 +43,10 @@ export function AdminLoginPage({ error, initialUsername }: AdminLoginPageProps) 
               <input
                 type="text"
                 name="username"
-                value={defaultUsername}
-                placeholder="e.g. huangjay_is_admin"
+                value={initialUsername || ""}
+                placeholder="請輸入管理員帳號"
                 required
+                autoComplete="username"
                 className="w-full px-4 py-2.5 rounded-xl text-sm theme-surface-subtle border theme-border focus:outline-none focus:border-cyan-500"
                 style={{ color: "var(--text-primary)" }}
               />
@@ -59,8 +59,9 @@ export function AdminLoginPage({ error, initialUsername }: AdminLoginPageProps) 
               <input
                 type="password"
                 name="password"
-                placeholder="••••••••••••"
+                placeholder="請輸入管理員密碼"
                 required
+                autoComplete="current-password"
                 className="w-full px-4 py-2.5 rounded-xl text-sm theme-surface-subtle border theme-border focus:outline-none focus:border-cyan-500"
                 style={{ color: "var(--text-primary)" }}
               />

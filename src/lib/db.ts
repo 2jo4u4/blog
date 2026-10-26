@@ -1,5 +1,3 @@
-import { hashPassword } from "./auth";
-
 export interface Post {
   id: number;
   slug: string;
@@ -158,7 +156,7 @@ export async function ensureSchema(db: D1Database): Promise<void> {
     console.warn("Seed post warning:", err);
   }
 
-  // 6. Ensure admin_users table exists and seed default admin user
+  // 6. Ensure admin_users table exists
   try {
     await db
       .prepare(
@@ -170,29 +168,8 @@ export async function ensureSchema(db: D1Database): Promise<void> {
         )`
       )
       .run();
-
-    const adminUser = "huangjay_is_admin";
-    const adminPass = "qwe159753aa";
-    const passwordHash = await hashPassword(adminPass);
-
-    const existing = await db
-      .prepare("SELECT id FROM admin_users WHERE username = ?")
-      .bind(adminUser)
-      .first<{ id: number }>();
-
-    if (!existing) {
-      await db
-        .prepare("INSERT INTO admin_users (username, password_hash) VALUES (?, ?)")
-        .bind(adminUser, passwordHash)
-        .run();
-    } else {
-      await db
-        .prepare("UPDATE admin_users SET password_hash = ? WHERE username = ?")
-        .bind(passwordHash, adminUser)
-        .run();
-    }
   } catch (err) {
-    console.warn("admin_users migration/seed warning:", err);
+    console.warn("admin_users table creation warning:", err);
   }
 }
 

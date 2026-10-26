@@ -5,7 +5,6 @@ import { MockD1Database } from "./helpers/mockDb";
 
 describe("Admin Authentication and Publishing Seam", () => {
   const SECRET = "portfolio-auth-secret-key-2026";
-  const PASSWORD = "jay-admin-2026";
   let mockDb: any;
 
   beforeEach(() => {
@@ -66,19 +65,32 @@ describe("Admin Authentication and Publishing Seam", () => {
     expect(html).toContain("+ New Article");
   });
 
-  it("authenticates legacy admin credentials for backward compatibility", async () => {
+  it("rejects login when user is not in database (fail closed)", async () => {
     const formData = new FormData();
-    formData.append("username", "admin");
-    formData.append("password", PASSWORD);
+    formData.append("username", "unknown_user");
+    formData.append("password", "any_password");
 
     const loginRes = await app.request("http://localhost/admin/login", {
       method: "POST",
       body: formData,
-      redirect: "manual",
     }, { DB: mockDb });
 
-    expect(loginRes.status).toBe(302);
-    expect(loginRes.headers.get("location")).toBe("/admin");
+    expect(loginRes.status).toBe(401);
+    const html = await loginRes.text();
+    expect(html).toContain("帳號或密碼錯誤");
+  });
+
+  it("rejects legacy hardcoded credentials without DB account", async () => {
+    const formData = new FormData();
+    formData.append("username", "admin");
+    formData.append("password", "jay-admin-2026");
+
+    const loginRes = await app.request("http://localhost/admin/login", {
+      method: "POST",
+      body: formData,
+    }, { DB: mockDb });
+
+    expect(loginRes.status).toBe(401);
   });
 
   it("rejects unauthenticated API requests with 401", async () => {
