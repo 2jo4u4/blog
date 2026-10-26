@@ -1,17 +1,17 @@
-"use client";
+import { Zap, Cpu, History, Users } from "./Icons";
 
-import { Zap, Cpu, History, Users } from "lucide-react";
-import { useApp } from "@/lib/AppContext";
+export interface MetricsProps {
+  t: any;
+}
 
-export function Metrics() {
-  const { t } = useApp();
+export function Metrics({ t }: MetricsProps) {
   const icons = [Zap, Cpu, History, Users];
 
   return (
     <section id="metrics" className="py-12 border-y theme-border theme-surface-subtle">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {t.metrics.items.map((metric, idx) => {
+          {t.metrics.items.map((metric: any, idx: number) => {
             const Icon = icons[idx] || Zap;
             return (
               <div

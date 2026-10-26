@@ -1,11 +1,10 @@
-"use client";
+import { Briefcase, Calendar, GraduationCap, Building2 } from "./Icons";
 
-import { Briefcase, Calendar, GraduationCap, Building2 } from "lucide-react";
-import { useApp } from "@/lib/AppContext";
+export interface ExperienceProps {
+  t: any;
+}
 
-export function Experience() {
-  const { t } = useApp();
-
+export function Experience({ t }: ExperienceProps) {
   return (
     <section id="experience" className="py-20 md:py-28 relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
@@ -25,7 +24,7 @@ export function Experience() {
 
         {/* Timeline */}
         <div className="relative border-l border-cyan-500/30 ml-4 sm:ml-8 space-y-10">
-          {t.experience.items.map((exp, idx) => {
+          {t.experience.items.map((exp: any, idx: number) => {
             const isRecent = idx < 2;
             return (
               <div key={idx} className="relative pl-6 sm:pl-8 group">

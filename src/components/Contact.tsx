@@ -1,11 +1,14 @@
-"use client";
+import { Mail, ArrowUpRight, Heart } from "./Icons";
+import { data } from "../lib/data";
 
-import { Mail, ArrowUpRight, Heart } from "lucide-react";
-import { useApp } from "@/lib/AppContext";
-import { data } from "@/lib/data";
+export interface ContactProps {
+  t: any;
+}
 
-export function Contact() {
-  const { t } = useApp();
+export function Contact({ t }: ContactProps) {
+  const githubLink = data.profile.socialLinks.find((s) => s.name === "GitHub")?.url || "https://github.com/2jo4u4";
+  const linkedInLink = data.profile.socialLinks.find((s) => s.name === "LinkedIn")?.url || "https://www.linkedin.com/in/huang-jay";
+  const cakeLink = data.profile.socialLinks.find((s) => s.name === "CakeResume")?.url || "https://www.cake.me/me/HuangJay";
 
   return (
     <footer id="contact" className="py-20 border-t theme-border theme-surface-subtle relative overflow-hidden">
@@ -37,35 +40,35 @@ export function Contact() {
         {/* Social Links Grid */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
           <a
-            href={data.profile.socialLinks.find((s) => s.name === "GitHub")?.url}
+            href={githubLink}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl theme-surface border theme-border hover:border-cyan-500/40 transition-all text-xs font-mono shadow-sm hover:opacity-90"
             style={{ color: "var(--text-primary)" }}
           >
-            GitHub Profile
+            <span>GitHub Profile</span>
             <ArrowUpRight className="w-3.5 h-3.5 text-cyan-500" />
           </a>
 
           <a
-            href={data.profile.socialLinks.find((s) => s.name === "LinkedIn")?.url}
+            href={linkedInLink}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl theme-surface border theme-border hover:border-cyan-500/40 transition-all text-xs font-mono shadow-sm hover:opacity-90"
             style={{ color: "var(--text-primary)" }}
           >
-            LinkedIn Profile
+            <span>LinkedIn Profile</span>
             <ArrowUpRight className="w-3.5 h-3.5 text-cyan-500" />
           </a>
 
           <a
-            href={data.profile.socialLinks.find((s) => s.name === "CakeResume")?.url}
+            href={cakeLink}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl theme-surface border theme-border hover:border-cyan-500/40 transition-all text-xs font-mono shadow-sm hover:opacity-90"
             style={{ color: "var(--text-primary)" }}
           >
-            CakeResume
+            <span>CakeResume</span>
             <ArrowUpRight className="w-3.5 h-3.5 text-cyan-500" />
           </a>
         </div>

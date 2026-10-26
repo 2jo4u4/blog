@@ -1,19 +1,10 @@
-"use client";
+import { Sparkles, MapPin, ArrowRight, Mail } from "./Icons";
 
-import { ArrowRight, Sparkles, MapPin, Mail, Layers, Cpu, Zap, Code2 } from "lucide-react";
-import { useApp } from "@/lib/AppContext";
+export interface HeroProps {
+  t: any;
+}
 
-export function Hero() {
-  const { t } = useApp();
-
-  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
+export function Hero({ t }: HeroProps) {
   const coreTags = [
     "React",
     "TypeScript",
@@ -22,7 +13,7 @@ export function Hero() {
     "Turborepo & pnpm",
     "Docker & CI/CD",
     "Web Performance",
-    "AI Agent Workflows"
+    "AI Agent Workflows",
   ];
 
   return (
@@ -33,7 +24,6 @@ export function Hero() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative text-center">
         <div className="space-y-6 flex flex-col items-center">
-          
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 text-xs font-mono">
             <Sparkles className="w-3.5 h-3.5" />
@@ -81,7 +71,6 @@ export function Hero() {
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <a
               href="#projects"
-              onClick={(e) => handleScrollTo(e, "#projects")}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-gray-950 shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               {t.hero.exploreProjects}
@@ -89,7 +78,6 @@ export function Hero() {
             </a>
             <a
               href="#contact"
-              onClick={(e) => handleScrollTo(e, "#contact")}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm theme-surface hover:opacity-80 transition-all border theme-border shadow-sm"
               style={{ color: "var(--text-primary)" }}
             >
@@ -97,7 +85,6 @@ export function Hero() {
               {t.hero.contactMe}
             </a>
           </div>
-
         </div>
       </div>
     </section>

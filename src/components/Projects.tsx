@@ -1,12 +1,11 @@
-"use client";
+import { Layers, CheckCircle2, Cpu, Sparkles, Bot, Gamepad2, ExternalLink } from "./Icons";
+import { data } from "../lib/data";
 
-import Image from "next/image";
-import { ExternalLink, CheckCircle2, Layers, Cpu, Sparkles, Bot, Gamepad2 } from "lucide-react";
-import { useApp } from "@/lib/AppContext";
-import { data } from "@/lib/data";
+export interface ProjectsProps {
+  t: any;
+}
 
-export function Projects() {
-  const { t } = useApp();
+export function Projects({ t }: ProjectsProps) {
   const rawProjects = data.projects;
 
   return (
@@ -71,7 +70,7 @@ export function Projects() {
 
                     {/* Highlights */}
                     <div className="space-y-2.5 pt-2">
-                      {item.highlights.map((h, i) => (
+                      {item.highlights.map((h: string, i: number) => (
                         <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm theme-text-secondary">
                           <CheckCircle2 className="w-4 h-4 text-cyan-400 mt-0.5 shrink-0" />
                           <span>{h}</span>
@@ -81,7 +80,7 @@ export function Projects() {
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 pt-2">
-                      {raw.tags.map((tag) => (
+                      {raw.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
@@ -110,11 +109,13 @@ export function Projects() {
                   {/* Right Column: Screenshot */}
                   <div className="lg:col-span-5">
                     <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
-                      <Image
+                      <img
                         src="/images/projects/dreamcity.png"
                         alt={item.title}
                         width={1280}
                         height={800}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-cover"
                       />
                     </div>
@@ -160,7 +161,7 @@ export function Projects() {
 
                     {/* Highlights */}
                     <div className="space-y-2.5 pt-2">
-                      {item.highlights.map((h, i) => (
+                      {item.highlights.map((h: string, i: number) => (
                         <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm theme-text-secondary">
                           <CheckCircle2 className="w-4 h-4 text-cyan-500 mt-0.5 shrink-0" />
                           <span>{h}</span>
@@ -170,7 +171,7 @@ export function Projects() {
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 pt-2">
-                      {raw.tags.map((tag) => (
+                      {raw.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
@@ -199,11 +200,13 @@ export function Projects() {
                   {/* Right Column: Screenshot */}
                   <div className="lg:col-span-5">
                     <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
-                      <Image
+                      <img
                         src="/images/projects/creative-board.png"
                         alt={item.title}
                         width={1280}
                         height={800}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-cover"
                       />
                     </div>
@@ -251,7 +254,7 @@ export function Projects() {
 
                   {/* 4 Performance Metric Pillars */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                    {item.highlights.map((h, i) => (
+                    {item.highlights.map((h: string, i: number) => (
                       <div
                         key={i}
                         className="p-4 rounded-xl theme-surface-subtle border theme-border hover:border-emerald-500/30 transition-colors space-y-1"
@@ -269,7 +272,7 @@ export function Projects() {
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 pt-2">
-                    {raw.tags.map((tag) => (
+                    {raw.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
@@ -292,11 +295,13 @@ export function Projects() {
               <div className="lg:col-span-6 rounded-3xl theme-surface border theme-border hover:border-cyan-500/30 transition-all p-6 sm:p-8 shadow-xl flex flex-col justify-between group">
                 <div className="space-y-4">
                   <div className="relative rounded-xl overflow-hidden border theme-border bg-gray-900 mb-4">
-                    <Image
+                    <img
                       src="/images/projects/equalizer.png"
                       alt={item.title}
                       width={1280}
                       height={800}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-48 object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
@@ -315,7 +320,7 @@ export function Projects() {
                   </p>
 
                   <div className="space-y-2 pt-1">
-                    {item.highlights.map((h, i) => (
+                    {item.highlights.map((h: string, i: number) => (
                       <div key={i} className="flex items-start gap-2 text-xs theme-text-secondary">
                         <CheckCircle2 className="w-3.5 h-3.5 text-cyan-500 mt-0.5 shrink-0" />
                         <span>{h}</span>
@@ -326,7 +331,7 @@ export function Projects() {
 
                 <div className="pt-6 space-y-4">
                   <div className="flex flex-wrap gap-1.5">
-                    {raw.tags.map((tag) => (
+                    {raw.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="px-2 py-0.5 rounded text-[11px] font-mono theme-surface-subtle border theme-border"
@@ -360,11 +365,13 @@ export function Projects() {
               <div className="lg:col-span-6 rounded-3xl theme-surface border theme-border hover:border-cyan-500/30 transition-all p-6 sm:p-8 shadow-xl flex flex-col justify-between group">
                 <div className="space-y-4">
                   <div className="relative rounded-xl overflow-hidden border theme-border bg-gray-900 mb-4">
-                    <Image
+                    <img
                       src="/images/projects/vegeking.png"
                       alt={item.title}
                       width={1280}
                       height={800}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-48 object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
@@ -383,7 +390,7 @@ export function Projects() {
                   </p>
 
                   <div className="space-y-2 pt-1">
-                    {item.highlights.map((h, i) => (
+                    {item.highlights.map((h: string, i: number) => (
                       <div key={i} className="flex items-start gap-2 text-xs theme-text-secondary">
                         <CheckCircle2 className="w-3.5 h-3.5 text-cyan-500 mt-0.5 shrink-0" />
                         <span>{h}</span>
@@ -394,7 +401,7 @@ export function Projects() {
 
                 <div className="pt-6 space-y-4">
                   <div className="flex flex-wrap gap-1.5">
-                    {raw.tags.map((tag) => (
+                    {raw.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="px-2 py-0.5 rounded text-[11px] font-mono theme-surface-subtle border theme-border"

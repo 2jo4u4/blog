@@ -1,11 +1,11 @@
-"use client";
+import { Code2, Server, Terminal, Bot } from "./Icons";
+import { data } from "../lib/data";
 
-import { Code2, Server, Terminal, Bot } from "lucide-react";
-import { useApp } from "@/lib/AppContext";
-import { data } from "@/lib/data";
+export interface SkillsProps {
+  t: any;
+}
 
-export function Skills() {
-  const { t } = useApp();
+export function Skills({ t }: SkillsProps) {
   const categoryIcons = [Code2, Server, Terminal, Bot];
 
   return (

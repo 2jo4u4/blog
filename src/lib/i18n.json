@@ -20,7 +20,7 @@
     },
     "terminal": {
       "title": "jay@craftsman-dev:~",
-      "status": "UTF-8 • Next.js 16",
+      "status": "UTF-8 • Hono Edge SSR",
       "ready": "TypeScript Ready"
     },
     "metrics": {
@@ -195,7 +195,7 @@
     },
     "terminal": {
       "title": "jay@craftsman-dev:~",
-      "status": "UTF-8 • Next.js 16",
+      "status": "UTF-8 • Hono Edge SSR",
       "ready": "TypeScript Ready"
     },
     "metrics": {

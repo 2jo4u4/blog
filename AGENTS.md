@@ -1,9 +1,10 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# Project Conventions & Guidelines: Edge-Native Hono + Cloudflare D1
 
-## This is NOT the Next.js you know
+This project is an edge-native portfolio and technical blog built with **Cloudflare Workers**, **Hono (with Hono JSX/TSX Edge SSR)**, **Cloudflare D1 (edge SQLite)**, and **Tailwind CSS v4**.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+## Key Guidelines
+- **Zero Next.js / Zero Node.js Heavy Runtime**: Do not add Next.js or heavy server frameworks. All routes are handled by Hono workers.
+- **Edge SSR for SEO**: Landing page (`/`) and Blog pages (`/blog`, `/blog/:slug`) are rendered directly to HTML on the edge with complete SEO metadata (`<title>`, OpenGraph, Twitter Cards, JSON-LD Schema).
+- **Styling**: Tailwind CSS v4 compiled via `@tailwindcss/cli -i ./src/styles/globals.css -o ./public/styles.css --minify`.
+- **Static Assets**: Stored in `./public` and served by Cloudflare Workers Static Assets.
+- **Data Persistence**: Articles and tags stored in Cloudflare D1.
