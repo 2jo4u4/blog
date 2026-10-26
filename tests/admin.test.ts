@@ -34,10 +34,10 @@ describe("Admin Authentication and Publishing Seam", () => {
     expect(html).toContain("帳號或密碼錯誤");
   });
 
-  it("authenticates valid credentials (huangjay_is_admin / qwe159753aa), sets session cookie, and allows dashboard access", async () => {
+  it("authenticates valid test credentials, sets session cookie, and allows dashboard access", async () => {
     const formData = new FormData();
-    formData.append("username", "huangjay_is_admin");
-    formData.append("password", "qwe159753aa");
+    formData.append("username", "test_admin");
+    formData.append("password", "test_password_123");
 
     const loginRes = await app.request("http://localhost/admin/login", {
       method: "POST",

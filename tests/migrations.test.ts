@@ -73,15 +73,15 @@ describe("D1 Database Migrations", () => {
     expect(userColumnNames).toContain("username");
     expect(userColumnNames).toContain("password_hash");
 
-    // Verify seeded admin user exists
+    // Verify seeded admin user exists with valid schema
     const adminUser = db
-      .prepare("SELECT username, password_hash FROM admin_users WHERE username = ?")
-      .get("huangjay_is_admin") as { username: string; password_hash: string } | undefined;
+      .prepare("SELECT username, password_hash FROM admin_users LIMIT 1")
+      .get() as { username: string; password_hash: string } | undefined;
 
     expect(adminUser).toBeDefined();
-    expect(adminUser?.username).toBe("huangjay_is_admin");
-    expect(adminUser?.password_hash).toBe(
-      "8afdd9bdf9cff0505fe36b1e36b5587259db7e84d5b87aafc14cbb39f0de04b1"
-    );
+    expect(adminUser?.username).toBeTruthy();
+    expect(adminUser?.username.length).toBeGreaterThan(0);
+    // SHA-256 hash format (64-character hex string)
+    expect(adminUser?.password_hash).toMatch(/^[a-f0-9]{64}$/i);
   });
 });

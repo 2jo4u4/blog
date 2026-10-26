@@ -33,8 +33,9 @@ This document defines the strict architectural standards and review criteria for
 
 ## 4. Test Hygiene & Seams (測試隔離規範)
 
-- **Test Isolation**:
+- **Test Isolation & Dummy Credentials**:
   - Mock databases, synthetic fixtures, and in-memory mock stores belong exclusively in `tests/` (e.g., `tests/helpers/mockDb.ts`).
+  - Test fixtures and unit test cases MUST NEVER use real production credentials or personal usernames/passwords. All tests must exclusively use generic dummy test credentials (e.g., `test_admin` and `test_password_123`).
   - Tests exercising route handlers must supply a mock database instance via `{ DB: mockDb }` in `app.request()`.
 - **Migration Verification**:
   - All SQL files in `migrations/*.sql` must be sequentially executable on standard SQLite and verified by `tests/migrations.test.ts`.
