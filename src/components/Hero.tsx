@@ -1,4 +1,5 @@
 import { Sparkles, MapPin, ArrowRight, Mail } from "./Icons";
+import { SectionBadge } from "./SectionBadge";
 
 export interface HeroProps {
   t: any;
@@ -25,10 +26,7 @@ export function Hero({ t }: HeroProps) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative text-center">
         <div className="space-y-6 flex flex-col items-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50/80 border border-cyan-200 text-cyan-800 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-400 text-xs font-mono shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
-            <span>{t.hero.badge}</span>
-          </div>
+          <SectionBadge icon={Sparkles} label={t.hero.badge} className="px-3.5 py-1.5" />
 
           {/* Heading */}
           <div className="space-y-3">
@@ -38,7 +36,7 @@ export function Hero({ t }: HeroProps) {
                 {t.hero.name}
               </span>
             </h1>
-            <p className="text-xl sm:text-2xl font-semibold text-cyan-800 dark:text-cyan-400 max-w-2xl">
+            <p className="text-xl sm:text-2xl font-semibold text-cyan-950 dark:text-cyan-400 max-w-2xl">
               {t.hero.title}
             </p>
           </div>
@@ -70,7 +68,7 @@ export function Hero({ t }: HeroProps) {
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <a
               href="#projects"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white dark:from-cyan-500 dark:to-teal-500 dark:text-gray-950 shadow-md shadow-cyan-600/15 dark:shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 hover:from-cyan-700 hover:via-teal-700 hover:to-emerald-700 text-white dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400 dark:text-gray-950 shadow-md shadow-slate-900/10 dark:shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               {t.hero.exploreProjects}
               <ArrowRight className="w-4 h-4" />

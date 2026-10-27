@@ -80,7 +80,7 @@ export function Navbar({ locale, t }: NavbarProps) {
             href={githubLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-cyan-500 hover:bg-cyan-400 text-gray-950 transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 hover:from-cyan-700 hover:via-teal-700 hover:to-emerald-700 text-white dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400 dark:text-gray-950 transition-all shadow-sm shadow-slate-900/10 dark:shadow-cyan-500/20"
           >
             <Github className="w-3.5 h-3.5" />
             <span>GitHub</span>
@@ -159,7 +159,7 @@ export function Navbar({ locale, t }: NavbarProps) {
               href={githubLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-xs font-mono font-semibold bg-cyan-500 text-gray-950 shadow-sm"
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-xs font-mono font-bold bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 hover:from-cyan-700 hover:via-teal-700 hover:to-emerald-700 text-white dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400 dark:text-gray-950 shadow-sm shadow-slate-900/10 dark:shadow-cyan-500/20"
             >
               <Github className="w-4 h-4" />
               <span>GitHub Profile</span>

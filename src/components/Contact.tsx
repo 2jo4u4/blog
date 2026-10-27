@@ -1,4 +1,5 @@
 import { Mail, ArrowUpRight, Heart } from "./Icons";
+import { SectionBadge } from "./SectionBadge";
 import { data } from "../lib/data";
 
 export interface ContactProps {
@@ -14,10 +15,7 @@ export function Contact({ t }: ContactProps) {
     <footer id="contact" className="py-20 border-t theme-border theme-surface-subtle relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-8 relative">
         <div className="space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50/80 border border-cyan-200 text-cyan-800 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-400 text-xs font-mono">
-            <Mail className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
-            <span>{t.contact.badge}</span>
-          </div>
+          <SectionBadge icon={Mail} label={t.contact.badge} />
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ color: "var(--text-primary)" }}>
             {t.contact.title}
           </h2>
@@ -30,7 +28,7 @@ export function Contact({ t }: ContactProps) {
         <div>
           <a
             href="mailto:2jo4u4@gmail.com"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-base sm:text-lg bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 text-gray-950 shadow-xl shadow-cyan-500/20 hover:scale-105 active:scale-95 transition-all"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-base sm:text-lg bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 hover:from-cyan-700 hover:via-teal-700 hover:to-emerald-700 text-white dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400 dark:text-gray-950 shadow-md shadow-slate-900/10 dark:shadow-cyan-500/20 hover:scale-105 active:scale-95 transition-all"
           >
             <Mail className="w-5 h-5" />
             <span>2jo4u4@gmail.com</span>
