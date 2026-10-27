@@ -25,7 +25,7 @@ export function Metrics({ t }: MetricsProps) {
                   </div>
                 </div>
 
-                <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-700 via-teal-700 to-emerald-700 dark:from-cyan-400 dark:via-teal-300 dark:to-emerald-400 mb-2">
+                <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-700 via-teal-700 to-emerald-700 dark:from-cyan-400 dark:via-teal-400 dark:to-emerald-400 mb-2">
                   {metric.value}
                 </div>
 

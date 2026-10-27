@@ -145,7 +145,7 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
 
                 // Navbar Scroll Effect
                 var header = document.getElementById('main-navbar');
-                window.addEventListener('scroll', function() {
+                function updateNavbar() {
                   if (!header) return;
                   if (window.scrollY > 20) {
                     header.classList.add('backdrop-blur-md', 'py-3', 'shadow-sm', 'theme-border');
@@ -156,7 +156,9 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
                     header.classList.add('py-5', 'bg-transparent', 'border-transparent');
                     header.style.backgroundColor = 'transparent';
                   }
-                });
+                }
+                window.addEventListener('scroll', updateNavbar);
+                updateNavbar();
 
                 // Browser Local Timezone Progressive Enhancement
                 try {

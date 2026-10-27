@@ -14,8 +14,8 @@ export function Contact({ t }: ContactProps) {
     <footer id="contact" className="py-20 border-t theme-border theme-surface-subtle relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-8 relative">
         <div className="space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 text-xs font-mono">
-            <Mail className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50/80 border border-cyan-200 text-cyan-800 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-400 text-xs font-mono">
+            <Mail className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
             <span>{t.contact.badge}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ color: "var(--text-primary)" }}>
