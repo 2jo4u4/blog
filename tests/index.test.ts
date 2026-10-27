@@ -13,8 +13,7 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(html).toContain("<!DOCTYPE html>");
 
     // Verification of SEO meta tags in <head>
-    expect(html).toContain("<title>");
-    expect(html).toContain("黃冠傑 (Jay)");
+    expect(html).toContain("<title>Jay | 前端工程師</title>");
     expect(html).toContain('property="og:title"');
     expect(html).toContain('property="og:description"');
     expect(html).toContain('property="og:image"');
@@ -45,6 +44,7 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(res.status).toBe(200);
 
     const html = await res.text();
+    expect(html).toContain("<title>Jay | Frontend Engineer</title>");
     expect(html).toContain("Jay Huang");
     expect(html).toContain("Senior Frontend Engineer");
     expect(html).toContain("DreamCity");

@@ -20,12 +20,12 @@
     --surface-card: #ffffff;
     --surface-card-subtle: #f1f5f9;
     --surface-hover: #e2e8f0;
-    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-subtle: rgba(15, 23, 42, 0.08);
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --text-muted: #64748b;
-    --accent-cyan: #0284c7;
-    --accent-emerald: #059669;
+    --accent-cyan: #0369a1;
+    --accent-emerald: #047857;
     --nav-bg: rgba(255, 255, 255, 0.85);
   }
 

@@ -20,12 +20,12 @@ export function Metrics({ t }: MetricsProps) {
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-mono theme-text-secondary">{metric.label}</span>
-                  <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-500 group-hover:scale-110 transition-transform">
+                  <div className="p-2 rounded-lg bg-cyan-50 text-cyan-800 dark:bg-cyan-500/10 dark:text-cyan-400 group-hover:scale-110 transition-transform">
                     <Icon className="w-4 h-4" />
                   </div>
                 </div>
 
-                <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 mb-2">
+                <div className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-700 via-teal-700 to-emerald-700 dark:from-cyan-400 dark:via-teal-300 dark:to-emerald-400 mb-2">
                   {metric.value}
                 </div>
 

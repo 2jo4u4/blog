@@ -16,8 +16,8 @@ export interface LandingPageProps {
 export function LandingPage({ locale, t, url }: LandingPageProps) {
   const title =
     locale === "zh"
-      ? "黃冠傑 (Jay) | 資深前端工程師 • 全端架構師 Portfolio"
-      : "Jay Huang | Senior Frontend Engineer • Fullstack Architect Portfolio";
+      ? "Jay | 前端工程師"
+      : "Jay | Frontend Engineer";
 
   const description =
     locale === "zh"

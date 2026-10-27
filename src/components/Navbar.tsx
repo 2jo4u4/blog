@@ -22,7 +22,7 @@ export function Navbar({ locale, t }: NavbarProps) {
   return (
     <header
       id="main-navbar"
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent py-5 border-b border-transparent"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
         {/* Brand Logo */}

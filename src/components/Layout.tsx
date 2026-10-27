@@ -148,12 +148,12 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
                 window.addEventListener('scroll', function() {
                   if (!header) return;
                   if (window.scrollY > 20) {
-                    header.classList.add('backdrop-blur-md', 'py-3', 'shadow-lg', 'border-b', 'theme-border');
-                    header.classList.remove('py-5', 'bg-transparent');
+                    header.classList.add('backdrop-blur-md', 'py-3', 'shadow-sm', 'theme-border');
+                    header.classList.remove('py-5', 'bg-transparent', 'border-transparent');
                     header.style.backgroundColor = 'var(--nav-bg)';
                   } else {
-                    header.classList.remove('backdrop-blur-md', 'py-3', 'shadow-lg', 'border-b', 'theme-border');
-                    header.classList.add('py-5', 'bg-transparent');
+                    header.classList.remove('backdrop-blur-md', 'py-3', 'shadow-sm', 'theme-border');
+                    header.classList.add('py-5', 'bg-transparent', 'border-transparent');
                     header.style.backgroundColor = 'transparent';
                   }
                 });
