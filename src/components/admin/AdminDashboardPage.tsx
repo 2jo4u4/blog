@@ -1,5 +1,6 @@
 import { Terminal, Sparkles, ArrowRight, ArrowUpRight } from "../Icons";
 import type { Post } from "../../lib/db";
+import { formatTaipeiDate } from "../../lib/date";
 
 export interface AdminDashboardPageProps {
   posts: Post[];
@@ -132,7 +133,7 @@ export function AdminDashboardPage({ posts }: AdminDashboardPageProps) {
                           {post.views}
                         </td>
                         <td className="py-4 px-4 font-mono theme-text-secondary">
-                          {post.created_at.split(" ")[0]}
+                          {formatTaipeiDate(post.created_at)}
                         </td>
                         <td className="py-4 px-4 sm:px-6 text-right">
                           <div className="flex items-center justify-end gap-2 font-mono">

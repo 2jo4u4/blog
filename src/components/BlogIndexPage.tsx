@@ -3,6 +3,7 @@ import { Navbar } from "./Navbar";
 import { Contact } from "./Contact";
 import { Terminal, Calendar, ArrowRight, Layers, Sparkles, Bot } from "./Icons";
 import type { Post } from "../lib/db";
+import { formatTaipeiDate, toTaipeiISO } from "../lib/date";
 
 export interface BlogIndexPageProps {
   posts: Post[];
@@ -140,12 +141,12 @@ export function BlogIndexPage({
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                       <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-cyan-400">
                         <Calendar className="w-3.5 h-3.5" />
-                        <time dateTime={post.created_at}>
-                          {post.created_at.split(" ")[0]}
+                        <time dateTime={toTaipeiISO(post.created_at)}>
+                          {formatTaipeiDate(post.created_at)}
                         </time>
                         {post.updated_at && post.updated_at !== post.created_at && (
                           <span className="text-[11px] text-amber-400 font-mono">
-                            (修訂於 {post.updated_at.split(" ")[0]})
+                            (修訂於 {formatTaipeiDate(post.updated_at)})
                           </span>
                         )}
                         <span>•</span>

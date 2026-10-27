@@ -4,6 +4,7 @@ import { Contact } from "./Contact";
 import { Calendar, ArrowRight, ArrowUpRight, Github, Sparkles, Terminal, History, Bot } from "./Icons";
 import type { Post, PostRevision } from "../lib/db";
 import type { TocItem } from "../lib/markdown";
+import { formatTaipeiDateTime, formatTaipeiDate, toTaipeiISO } from "../lib/date";
 
 export interface ArticleReaderPageProps {
   post: Post;
@@ -44,8 +45,8 @@ export function ArticleReaderPage({
     "@type": "TechArticle",
     headline: post.title,
     description: post.summary,
-    datePublished: post.created_at,
-    dateModified: post.updated_at,
+    datePublished: toTaipeiISO(post.created_at),
+    dateModified: toTaipeiISO(post.updated_at),
     url: canonicalUrl,
     author: {
       "@type": "Person",
@@ -131,14 +132,14 @@ export function ArticleReaderPage({
               <div className="flex items-center gap-1.5 text-cyan-400">
                 <Calendar className="w-3.5 h-3.5" />
                 <span>{locale === "zh" ? "發布：" : "Published: "}</span>
-                <time dateTime={post.created_at}>{post.created_at}</time>
+                <time dateTime={toTaipeiISO(post.created_at)}>{formatTaipeiDate(post.created_at)}</time>
               </div>
 
               {isEdited && (
                 <div className="flex items-center gap-1.5 text-amber-400">
                   <History className="w-3.5 h-3.5" />
                   <span>{locale === "zh" ? "修訂：" : "Updated: "}</span>
-                  <time dateTime={post.updated_at}>{post.updated_at}</time>
+                  <time dateTime={toTaipeiISO(post.updated_at)}>{formatTaipeiDate(post.updated_at)}</time>
                 </div>
               )}
 
@@ -230,7 +231,7 @@ export function ArticleReaderPage({
                         {rev.note}
                       </div>
                       <div className="text-[11px] theme-text-secondary">
-                        {rev.updated_at}
+                        {formatTaipeiDateTime(rev.updated_at)}
                       </div>
                     </div>
                   ))}

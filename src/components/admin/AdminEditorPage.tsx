@@ -1,5 +1,6 @@
 import { Terminal, ArrowRight, Calendar, Sparkles, Bot } from "../Icons";
 import type { Post } from "../../lib/db";
+import { formatTaipeiDateTime } from "../../lib/date";
 
 export interface AdminEditorPageProps {
   post?: Post | null;
@@ -43,10 +44,10 @@ export function AdminEditorPage({ post, error }: AdminEditorPageProps) {
               <div className="flex flex-wrap items-center gap-3 text-xs font-mono theme-text-secondary">
                 <div className="flex items-center gap-1 text-cyan-500">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>發布：{post.created_at}</span>
+                  <span>發布：{formatTaipeiDateTime(post.created_at)}</span>
                 </div>
                 <span>•</span>
-                <span>更新：{post.updated_at}</span>
+                <span>更新：{formatTaipeiDateTime(post.updated_at)}</span>
               </div>
             )}
 

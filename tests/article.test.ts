@@ -39,10 +39,12 @@ describe("Dynamic Article Reader Edge SSR Seam", () => {
     // Table of contents
     expect(html).toContain("Table of Contents");
 
-    // Publication date & Revision history
+    // Publication date & Revision history with Taipei timezone (+08:00)
     expect(html).toContain("發布：");
+    expect(html).toContain('dateTime="2026-10-26T20:00:00+08:00"');
     expect(html).toContain("文章歷史紀錄");
     expect(html).toContain("初版發布");
+    expect(html).toContain("2026-10-26 20:00:00");
 
     // Author card
     expect(html).toContain("黃冠傑 (Jay Huang)");
