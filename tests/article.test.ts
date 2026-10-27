@@ -36,14 +36,17 @@ describe("Dynamic Article Reader Edge SSR Seam", () => {
     expect(html).toContain("language-typescript");
     expect(html).toContain("copy-btn");
 
-    // Table of contents
+    // Table of contents & Unified Sticky Sidebar
     expect(html).toContain("Table of Contents");
+    expect(html).toContain("sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto");
 
-    // Publication date & Revision history with Taipei timezone (+08:00)
+    // Publication date & Revision history with local timezone attributes
     expect(html).toContain("發布：");
     expect(html).toContain('dateTime="2026-10-26T20:00:00+08:00"');
+    expect(html).toContain('data-local-format="date"');
     expect(html).toContain("文章歷史紀錄");
     expect(html).toContain("初版發布");
+    expect(html).toContain('data-local-format="datetime"');
     expect(html).toContain("2026-10-26 20:00:00");
 
     // Author card

@@ -27,6 +27,7 @@ describe("Technical Blog Index Edge SSR Seam", () => {
     // Semantic HTML tags
     expect(html).toContain("<article");
     expect(html).toContain("<time");
+    expect(html).toContain('data-local-format="date"');
 
     // Content checks
     expect(html).toContain("從 Next.js 遷移至 Cloudflare Workers");

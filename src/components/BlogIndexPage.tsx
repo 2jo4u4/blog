@@ -141,12 +141,12 @@ export function BlogIndexPage({
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                       <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-cyan-400">
                         <Calendar className="w-3.5 h-3.5" />
-                        <time dateTime={toTaipeiISO(post.created_at)}>
+                        <time dateTime={toTaipeiISO(post.created_at)} data-local-format="date">
                           {formatTaipeiDate(post.created_at)}
                         </time>
                         {post.updated_at && post.updated_at !== post.created_at && (
                           <span className="text-[11px] text-amber-400 font-mono">
-                            (修訂於 {formatTaipeiDate(post.updated_at)})
+                            (修訂於 <time dateTime={toTaipeiISO(post.updated_at)} data-local-format="date">{formatTaipeiDate(post.updated_at)}</time>)
                           </span>
                         )}
                         <span>•</span>

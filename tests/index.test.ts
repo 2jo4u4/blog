@@ -34,9 +34,10 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(html).toContain("Cloudflare");
     expect(html).toContain("2jo4u4@gmail.com");
 
-    // Theme & stylesheet
+    // Theme & stylesheet & client scripts
     expect(html).toContain('href="/styles.css"');
     expect(html).toContain('href="/favicon.ico"');
+    expect(html).toContain("data-local-format");
   });
 
   it("renders English landing page when ?lang=en is requested", async () => {

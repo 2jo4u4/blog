@@ -132,14 +132,14 @@ export function ArticleReaderPage({
               <div className="flex items-center gap-1.5 text-cyan-400">
                 <Calendar className="w-3.5 h-3.5" />
                 <span>{locale === "zh" ? "發布：" : "Published: "}</span>
-                <time dateTime={toTaipeiISO(post.created_at)}>{formatTaipeiDate(post.created_at)}</time>
+                <time dateTime={toTaipeiISO(post.created_at)} data-local-format="date">{formatTaipeiDate(post.created_at)}</time>
               </div>
 
               {isEdited && (
                 <div className="flex items-center gap-1.5 text-amber-400">
                   <History className="w-3.5 h-3.5" />
                   <span>{locale === "zh" ? "修訂：" : "Updated: "}</span>
-                  <time dateTime={toTaipeiISO(post.updated_at)}>{formatTaipeiDate(post.updated_at)}</time>
+                  <time dateTime={toTaipeiISO(post.updated_at)} data-local-format="date">{formatTaipeiDate(post.updated_at)}</time>
                 </div>
               )}
 
@@ -185,81 +185,87 @@ export function ArticleReaderPage({
             </div>
 
             {/* Sidebar: Table of Contents, Revision History, Author */}
-            <aside className="lg:col-span-4 space-y-8">
-              {/* Table of Contents */}
-              {toc.length > 0 && (
-                <div className="sticky top-28 p-6 rounded-2xl theme-surface border theme-border shadow-sm">
-                  <div className="flex items-center gap-2 font-mono text-xs font-bold text-cyan-400 uppercase tracking-wider mb-4 pb-2 border-b theme-border">
-                    <Terminal className="w-3.5 h-3.5" />
-                    <span>Table of Contents</span>
-                  </div>
-                  <nav className="space-y-2 text-xs font-mono max-h-[40vh] overflow-y-auto">
-                    {toc.map((item) => (
-                      <a
-                        key={item.id}
-                        href={`#${item.id}`}
-                        className={`block transition-colors hover:text-cyan-400 leading-snug ${
-                          item.level === 3 ? "pl-3 theme-text-secondary" : "font-medium"
-                        }`}
-                        style={{ color: "var(--text-secondary)" }}
-                      >
-                        {item.text}
-                      </a>
-                    ))}
-                  </nav>
-                </div>
-              )}
-
-              {/* Revision / Edit History Card */}
-              <div className="p-6 rounded-2xl theme-surface border theme-border shadow-sm space-y-4">
-                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider pb-2 border-b theme-border">
-                  <History className="w-3.5 h-3.5" />
-                  <span>{locale === "zh" ? "文章歷史紀錄" : "Revision History"}</span>
-                </div>
-
-                <div className="relative pl-4 border-l border-cyan-500/30 space-y-3 font-mono text-xs">
-                  {displayRevisions.map((rev, idx) => (
-                    <div key={idx} className="relative group">
-                      <div
-                        className={`absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 ${
-                          idx === 0
-                            ? "bg-cyan-500 border-cyan-300 shadow-sm shadow-cyan-500/50"
-                            : "bg-gray-700 border-gray-600"
-                        }`}
-                      />
-                      <div className="font-semibold text-cyan-400 mb-0.5">
-                        {rev.note}
-                      </div>
-                      <div className="text-[11px] theme-text-secondary">
-                        {formatTaipeiDateTime(rev.updated_at)}
-                      </div>
+            <aside className="lg:col-span-4">
+              <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto space-y-6 pr-2">
+                {/* Table of Contents */}
+                {toc.length > 0 && (
+                  <div className="p-6 rounded-2xl theme-surface border theme-border shadow-sm">
+                    <div className="flex items-center gap-2 font-mono text-xs font-bold text-cyan-400 uppercase tracking-wider mb-4 pb-2 border-b theme-border">
+                      <Terminal className="w-3.5 h-3.5" />
+                      <span>Table of Contents</span>
                     </div>
-                  ))}
-                </div>
-              </div>
+                    <nav className="space-y-2 text-xs font-mono max-h-[40vh] overflow-y-auto">
+                      {toc.map((item) => (
+                        <a
+                          key={item.id}
+                          href={`#${item.id}`}
+                          className={`block transition-colors hover:text-cyan-400 leading-snug ${
+                            item.level === 3 ? "pl-3 theme-text-secondary" : "font-medium"
+                          }`}
+                          style={{ color: "var(--text-secondary)" }}
+                        >
+                          {item.text}
+                        </a>
+                      ))}
+                    </nav>
+                  </div>
+                )}
 
-              {/* Author Card */}
-              <div className="p-6 rounded-2xl theme-surface-subtle border theme-border space-y-3">
-                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Author</span>
+                {/* Revision / Edit History Card */}
+                <div className="p-6 rounded-2xl theme-surface border theme-border shadow-sm space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider pb-2 border-b theme-border">
+                    <History className="w-3.5 h-3.5" />
+                    <span>{locale === "zh" ? "文章歷史紀錄" : "Revision History"}</span>
+                  </div>
+
+                  <div className="relative pl-4 border-l border-cyan-500/30 space-y-3 font-mono text-xs">
+                    {displayRevisions.map((rev, idx) => (
+                      <div key={idx} className="relative group">
+                        <div
+                          className={`absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 ${
+                            idx === 0
+                              ? "bg-cyan-500 border-cyan-300 shadow-sm shadow-cyan-500/50"
+                              : "bg-gray-700 border-gray-600"
+                          }`}
+                        />
+                        <div className="font-semibold text-cyan-400 mb-0.5">
+                          {rev.note}
+                        </div>
+                        <time
+                          dateTime={toTaipeiISO(rev.updated_at)}
+                          data-local-format="datetime"
+                          className="text-[11px] theme-text-secondary block"
+                        >
+                          {formatTaipeiDateTime(rev.updated_at)}
+                        </time>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <h4 className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>
-                  黃冠傑 (Jay Huang)
-                </h4>
-                <p className="text-xs theme-text-secondary leading-relaxed">
-                  資深前端工程師與全端架構師，專注於 React、TypeScript、Canvas 圖形引擎與邊緣原生 Cloudflare Workers 架構。
-                </p>
-                <div className="pt-2">
-                  <a
-                    href="https://github.com/2jo4u4"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs font-mono text-cyan-400 hover:underline"
-                  >
-                    <span>GitHub Profile</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
+
+                {/* Author Card */}
+                <div className="p-6 rounded-2xl theme-surface-subtle border theme-border space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Author</span>
+                  </div>
+                  <h4 className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>
+                    黃冠傑 (Jay Huang)
+                  </h4>
+                  <p className="text-xs theme-text-secondary leading-relaxed">
+                    資深前端工程師與全端架構師，專注於 React、TypeScript、Canvas 圖形引擎與邊緣原生 Cloudflare Workers 架構。
+                  </p>
+                  <div className="pt-2">
+                    <a
+                      href="https://github.com/2jo4u4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-mono text-cyan-400 hover:underline"
+                    >
+                      <span>GitHub Profile</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </aside>

@@ -157,6 +157,50 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
                     header.style.backgroundColor = 'transparent';
                   }
                 });
+
+                // Browser Local Timezone Progressive Enhancement
+                try {
+                  var timeElements = document.querySelectorAll('time[data-local-format]');
+                  if (timeElements.length > 0 && typeof Intl !== 'undefined' && Intl.DateTimeFormat) {
+                    var dFmt = new Intl.DateTimeFormat(undefined, {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                    });
+                    var dtFmt = new Intl.DateTimeFormat(undefined, {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit',
+                      hourCycle: 'h23',
+                    });
+
+                    function formatParts(parts) {
+                      var map = {};
+                      for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].type !== 'literal') map[parts[i].type] = parts[i].value;
+                      }
+                      return map;
+                    }
+
+                    timeElements.forEach(function(el) {
+                      var raw = el.getAttribute('datetime');
+                      if (!raw) return;
+                      var d = new Date(raw);
+                      if (isNaN(d.getTime())) return;
+                      var formatType = el.getAttribute('data-local-format');
+                      if (formatType === 'datetime') {
+                        var p = formatParts(dtFmt.formatToParts(d));
+                        el.textContent = p.year + '-' + p.month + '-' + p.day + ' ' + (p.hour || '00') + ':' + p.minute + ':' + p.second;
+                      } else {
+                        var p = formatParts(dFmt.formatToParts(d));
+                        el.textContent = p.year + '-' + p.month + '-' + p.day;
+                      }
+                    });
+                  }
+                } catch (e) {}
               });
             `,
           }}
