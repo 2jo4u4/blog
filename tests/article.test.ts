@@ -39,6 +39,8 @@ describe("Dynamic Article Reader Edge SSR Seam", () => {
     // Table of contents & Unified Sticky Sidebar
     expect(html).toContain("Table of Contents");
     expect(html).toContain("sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto");
+    // Verify child TOC card does not contain conflicting sticky classes
+    expect(html).not.toMatch(/Table of Contents[\s\S]*?class="[^"]*sticky/);
 
     // Publication date & Revision history with local timezone attributes
     expect(html).toContain("發布：");

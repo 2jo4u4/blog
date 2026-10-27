@@ -61,6 +61,26 @@ describe("Timezone Localization (Asia/Taipei, UTC+8)", () => {
     expect(toTaipeiISO(utcStr)).toBe("2026-10-27T13:00:19+08:00");
   });
 
+  it("client formatting logic formats ISO to YYYY-MM-DD deterministically even with non-Gregorian locales", () => {
+    // Test the client script logic using th-TH (which defaults to Buddhist calendar)
+    const testDate = new Date("2026-10-27T05:00:19Z");
+    const dFmt = new Intl.DateTimeFormat("th-TH", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      calendar: "gregory",
+      numberingSystem: "latn",
+      timeZone: "UTC",
+    });
+    const parts = dFmt.formatToParts(testDate);
+    const map: Record<string, string> = {};
+    for (const p of parts) {
+      if (p.type !== "literal") map[p.type] = p.value;
+    }
+    const formatted = `${map.year}-${map.month}-${map.day}`;
+    expect(formatted).toBe("2026-10-27");
+  });
+
   it("handles empty or invalid date strings gracefully without throwing", () => {
     expect(formatTaipeiDateTime("")).toBe("");
     expect(formatTaipeiDate("")).toBe("");

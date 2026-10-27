@@ -160,14 +160,16 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
 
                 // Browser Local Timezone Progressive Enhancement
                 try {
-                  var timeElements = document.querySelectorAll('time[data-local-format]');
+                  var timeElements = document.querySelectorAll('time[datetime][data-local-format]');
                   if (timeElements.length > 0 && typeof Intl !== 'undefined' && Intl.DateTimeFormat) {
-                    var dFmt = new Intl.DateTimeFormat(undefined, {
+                    var dateFormatter = new Intl.DateTimeFormat(undefined, {
                       year: 'numeric',
                       month: '2-digit',
                       day: '2-digit',
+                      calendar: 'gregory',
+                      numberingSystem: 'latn',
                     });
-                    var dtFmt = new Intl.DateTimeFormat(undefined, {
+                    var dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
                       year: 'numeric',
                       month: '2-digit',
                       day: '2-digit',
@@ -175,9 +177,12 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
                       minute: '2-digit',
                       second: '2-digit',
                       hourCycle: 'h23',
+                      calendar: 'gregory',
+                      numberingSystem: 'latn',
                     });
 
-                    function formatParts(parts) {
+                    function extractParts(formatter, dateObj) {
+                      var parts = formatter.formatToParts(dateObj);
                       var map = {};
                       for (var i = 0; i < parts.length; i++) {
                         if (parts[i].type !== 'literal') map[parts[i].type] = parts[i].value;
@@ -188,15 +193,17 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
                     timeElements.forEach(function(el) {
                       var raw = el.getAttribute('datetime');
                       if (!raw) return;
-                      var d = new Date(raw);
-                      if (isNaN(d.getTime())) return;
+                      var dateObj = new Date(raw);
+                      if (isNaN(dateObj.getTime())) return;
                       var formatType = el.getAttribute('data-local-format');
+                      var dateParts = extractParts(dateFormatter, dateObj);
+                      var dateString = dateParts.year + '-' + dateParts.month + '-' + dateParts.day;
+
                       if (formatType === 'datetime') {
-                        var p = formatParts(dtFmt.formatToParts(d));
-                        el.textContent = p.year + '-' + p.month + '-' + p.day + ' ' + (p.hour || '00') + ':' + p.minute + ':' + p.second;
+                        var dtParts = extractParts(dateTimeFormatter, dateObj);
+                        el.textContent = dateString + ' ' + (dtParts.hour || '00') + ':' + dtParts.minute + ':' + dtParts.second;
                       } else {
-                        var p = formatParts(dFmt.formatToParts(d));
-                        el.textContent = p.year + '-' + p.month + '-' + p.day;
+                        el.textContent = dateString;
                       }
                     });
                   }

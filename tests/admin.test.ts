@@ -63,6 +63,7 @@ describe("Admin Authentication and Publishing Seam", () => {
     const html = await dashboardRes.text();
     expect(html).toContain("Admin Dashboard");
     expect(html).toContain("+ New Article");
+    expect(html).toContain('data-local-format="date"');
   });
 
   it("rejects login when user is not in database (fail closed)", async () => {

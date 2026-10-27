@@ -186,7 +186,7 @@ export function ArticleReaderPage({
 
             {/* Sidebar: Table of Contents, Revision History, Author */}
             <aside className="lg:col-span-4">
-              <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto space-y-6 pr-2">
+              <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto space-y-6 pr-2 custom-scrollbar">
                 {/* Table of Contents */}
                 {toc.length > 0 && (
                   <div className="p-6 rounded-2xl theme-surface border theme-border shadow-sm">
