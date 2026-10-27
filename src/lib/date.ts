@@ -88,7 +88,7 @@ export function formatTaipeiDate(raw: string): string {
 export function formatTaipeiDateTime(raw: string): string {
   const parts = getTaipeiParts(raw);
   if (!parts) return raw;
-  return `${formatTaipeiDate(raw)} ${parts.hours}:${parts.minutes}:${parts.seconds}`;
+  return `${parts.year}-${parts.month}-${parts.day} ${parts.hours}:${parts.minutes}:${parts.seconds}`;
 }
 
 /**
@@ -98,5 +98,5 @@ export function formatTaipeiDateTime(raw: string): string {
 export function toTaipeiISO(raw: string): string {
   const parts = getTaipeiParts(raw);
   if (!parts) return raw;
-  return `${formatTaipeiDate(raw)}T${parts.hours}:${parts.minutes}:${parts.seconds}+08:00`;
+  return `${parts.year}-${parts.month}-${parts.day}T${parts.hours}:${parts.minutes}:${parts.seconds}+08:00`;
 }

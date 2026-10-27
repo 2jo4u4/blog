@@ -1,4 +1,5 @@
 import { Code2, Server, Terminal, Bot } from "./Icons";
+import { SectionBadge } from "./SectionBadge";
 import { data } from "../lib/data";
 
 export interface SkillsProps {
@@ -12,10 +13,7 @@ export function Skills({ t }: SkillsProps) {
     <section id="skills" className="py-20 theme-surface-subtle border-t theme-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50/80 border border-cyan-200 text-cyan-800 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-400 text-xs font-mono mb-3">
-            <Terminal className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
-            <span>{t.skills.badge}</span>
-          </div>
+          <SectionBadge icon={Terminal} label={t.skills.badge} className="mb-3" />
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ color: "var(--text-primary)" }}>
             {t.skills.title}
           </h2>

@@ -1,4 +1,5 @@
 import { Briefcase, Calendar, GraduationCap, Building2 } from "./Icons";
+import { SectionBadge } from "./SectionBadge";
 
 export interface ExperienceProps {
   t: any;
@@ -10,10 +11,7 @@ export function Experience({ t }: ExperienceProps) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="mb-14 text-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50/80 border border-cyan-200 text-cyan-800 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-400 text-xs font-mono mb-3">
-            <Briefcase className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
-            <span>{t.experience.badge}</span>
-          </div>
+          <SectionBadge icon={Briefcase} label={t.experience.badge} className="mb-3" />
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ color: "var(--text-primary)" }}>
             {t.experience.title}
           </h2>
