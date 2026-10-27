@@ -30,6 +30,8 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(html).toContain("多人非對稱對抗");
     expect(html).toContain("Optoma");
     expect(html).toContain("Canvas");
+    expect(html).toContain("SoundCraft EQ");
+    expect(html).toContain("v1.0 架構重構・新版維護審核中");
     expect(html).toContain("Cloudflare");
     expect(html).toContain("2jo4u4@gmail.com");
 
@@ -48,6 +50,8 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(html).toContain("Jay Huang");
     expect(html).toContain("Senior Frontend Engineer");
     expect(html).toContain("DreamCity");
+    expect(html).toContain("SoundCraft EQ");
+    expect(html).toContain("v1.0 Refactored");
   });
 
   it("responds to /health check endpoint", async () => {

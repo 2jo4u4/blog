@@ -61,6 +61,10 @@
       "infraBadge": "Architecture & Performance",
       "infraTagline": "生產環境工程革新",
       "sideProjectBadge": "Personal Side Project",
+      "maintenanceBadge": "v1.0 架構重構・新版維護審核中",
+      "dualPlatformBadge": "Chrome & Firefox 雙平台支援",
+      "viewStoreFirefox": "Firefox AMO 商店連結 ↗",
+      "viewStoreChrome": "Chrome Web Store 審核發布中",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
         "dreamcity": {
@@ -100,12 +104,15 @@
           ]
         },
         "equalizer": {
-          "title": "網頁等化器 (Web Audio Equalizer)",
-          "subtitle": "瀏覽器音訊增強與頻率調校擴充套件",
-          "summary": "專為瀏覽器分頁設計的擴充套件，能即時攔截並處理網頁中所有影音元素的音訊串流，提供多頻段 EQ 調校與個人化設定儲存。",
+          "title": "SoundCraft EQ - 專業音訊調音等化器",
+          "subtitle": "5 頻段 Web Audio DSP 濾波鏈、防破音限制器與畫面元素拾取擴充功能",
+          "period": "2024 - 2026",
+          "summary": "專為 YouTube、Spotify Web、Bilibili、Netflix 與各串流影音打造的高音質 5 頻段 Web Audio 等化器。具備防破音峰值限制器、硬體級 0ms 透明直通、多分頁獨立記憶，以及智慧畫面元素拾取功能。",
           "highlights": [
-            "底層 Web Audio 串流接軌：透過 AudioContext 與 BiquadFilterNode 陣列即時重整聲音訊號，提供無延遲的即時濾波回饋。",
-            "個人化喜好持久化：設計頻率配置記錄與即時切換設定檔功能，兼具極簡清爽的 MUI 操作面板。"
+            "5 頻段錄音室級濾波鏈 (60Hz～14kHz)：精選調音黃金頻段，支援 -12dB 至 +12dB 即時平滑微調，杜絕爆音失真。",
+            "透明防破音峰值限制器 (Peak Limiter)：後端串接專業級動態壓縮限制器（DynamicsCompressorNode，-0.5dB 門檻、20:1 壓縮比、3ms 起音），大幅推滿頻段亦絕不數位削波破音。",
+            "視覺化畫面元素智慧拾取器 (In-Page Picker)：全螢幕巡檢模式，懸停虛線高亮多媒體容器一鍵綁定音訊，並自動為無像素背景音樂生成懸浮膠囊。",
+            "多分頁獨立狀態記憶與 0ms 直通 (True Bypass)：分頁間調音數值完全隔離記憶，一鍵關閉直通揚聲器，實現 0 延遲與 0 CPU 開銷。"
           ]
         },
         "vegeking": {
@@ -236,6 +243,10 @@
       "infraBadge": "Architecture & Performance",
       "infraTagline": "Production Engineering",
       "sideProjectBadge": "Personal Side Project",
+      "maintenanceBadge": "v1.0 Refactored • Store Review & Maintenance",
+      "dualPlatformBadge": "Dual-Platform (Chrome & Firefox)",
+      "viewStoreFirefox": "View Firefox Add-on ↗",
+      "viewStoreChrome": "Chrome Web Store (Review in Progress)",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
         "dreamcity": {
@@ -275,12 +286,15 @@
           ]
         },
         "equalizer": {
-          "title": "Web Audio Equalizer",
-          "subtitle": "Browser Audio Enhancement & Frequency Filter Extension",
-          "summary": "WebExtension that intercepts and processes audio streams from any active web media element, providing multi-band equalization and custom preference persistence.",
+          "title": "SoundCraft EQ - Audio Equalizer",
+          "subtitle": "Studio-Grade 5-Band Web Audio DSP Filter Chain & Peak Limiter WebExtension",
+          "period": "2024 - 2026",
+          "summary": "High-fidelity 5-band Web Audio equalizer engineered for YouTube, Spotify, and streaming media. Features transparent peak limiter, true hardware-grade bypass, per-tab preset isolation, and intelligent in-page media picker.",
           "highlights": [
-            "Low-level Web Audio Processing: Built with AudioContext and BiquadFilterNode cascades to provide zero-latency real-time audio filtering.",
-            "Preference State Persistence: Designed custom preset storage with instant profile toggles and an intuitive MUI control interface."
+            "5-Band Studio Grade Filter Chain: Covers 60Hz to 14kHz golden frequency bands with -12dB to +12dB smooth, click-free parameter transitions.",
+            "Transparent Peak Limiter (Anti-Clipping): Integrated DynamicsCompressorNode (-0.5dB threshold, 20:1 ratio, 3ms attack) prevents digital clipping even under extreme boosts.",
+            "In-Page Visual Media Picker Overlay: Full-screen overlay to inspect and bind media containers with dashed highlight bounding boxes and background audio capsule.",
+            "Per-Tab Preset Isolation & True Bypass: Independent state memory per tab with 0ms latency and 0 CPU overhead when bypassed."
           ]
         },
         "vegeking": {

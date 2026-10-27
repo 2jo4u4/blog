@@ -1,4 +1,5 @@
 import { Layers, CheckCircle2, Cpu, Sparkles, Bot, Gamepad2, ExternalLink } from "./Icons";
+import { SectionBadge } from "./SectionBadge";
 import { data } from "../lib/data";
 
 export interface ProjectsProps {
@@ -14,10 +15,7 @@ export function Projects({ t }: ProjectsProps) {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50/80 border border-cyan-200 text-cyan-800 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-400 text-xs font-mono mb-3">
-              <Layers className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
-              <span>{t.projects.badge}</span>
-            </div>
+            <SectionBadge icon={Layers} label={t.projects.badge} className="mb-3" />
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight" style={{ color: "var(--text-primary)" }}>
               {t.projects.title}
             </h2>
@@ -97,7 +95,7 @@ export function Projects({ t }: ProjectsProps) {
                           href={raw.links.live}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 text-gray-950 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-cyan-500/25"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 hover:from-cyan-700 hover:via-teal-700 hover:to-emerald-700 text-white dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400 dark:text-gray-950 hover:scale-105 active:scale-95 transition-all shadow-md shadow-slate-900/10 dark:shadow-cyan-500/25"
                         >
                           {t.projects.viewLive}
                           <ExternalLink className="w-4 h-4" />
@@ -286,141 +284,200 @@ export function Projects({ t }: ProjectsProps) {
             );
           })()}
 
-          {/* Bento Item 4: Web Audio Equalizer (Span 6) */}
+          {/* Bento Item 4: SoundCraft EQ (Web Audio Equalizer) (Span 12) */}
           {(() => {
-            const raw = rawProjects.find((item) => item.id === "web-audio-equalizer");
+            const raw = rawProjects.find((item) => item.id === "soundcraft-eq" || item.id === "web-audio-equalizer");
             const item = t.projects.items.equalizer;
             if (!raw || !item) return null;
             return (
-              <div className="lg:col-span-6 rounded-3xl theme-surface border theme-border hover:border-cyan-500/30 transition-all p-6 sm:p-8 shadow-xl flex flex-col justify-between group">
-                <div className="space-y-4">
-                  <div className="relative rounded-xl overflow-hidden border theme-border bg-gray-900 mb-4">
-                    <img
-                      src="/images/projects/equalizer.png"
-                      alt={item.title}
-                      width={1280}
-                      height={800}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-48 object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2 text-xs font-mono text-cyan-500">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>{t.projects.sideProjectBadge}</span>
-                  </div>
-
-                  <h3 className="text-xl sm:text-2xl font-bold group-hover:text-cyan-500 transition-colors" style={{ color: "var(--text-primary)" }}>
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm leading-relaxed theme-text-secondary">
-                    {item.summary}
-                  </p>
-
-                  <div className="space-y-2 pt-1">
-                    {item.highlights.map((h: string, i: number) => (
-                      <div key={i} className="flex items-start gap-2 text-xs theme-text-secondary">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-cyan-500 mt-0.5 shrink-0" />
-                        <span>{h}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-6 space-y-4">
-                  <div className="flex flex-wrap gap-1.5">
-                    {raw.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 rounded text-[11px] font-mono theme-surface-subtle border theme-border"
-                      >
-                        {tag}
+              <div className="lg:col-span-12 rounded-3xl theme-surface border theme-border hover:border-cyan-500/40 transition-all p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden group">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  
+                  {/* Left Column: Details */}
+                  <div className="lg:col-span-7 space-y-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-cyan-500/20 text-cyan-800 dark:text-cyan-400 border border-cyan-500/40 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
+                        {t.projects.sideProjectBadge}
                       </span>
-                    ))}
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 flex items-center gap-1.5 shadow-2xs">
+                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                        {t.projects.maintenanceBadge}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+                        {t.projects.dualPlatformBadge}
+                      </span>
+                      <span className="text-xs font-mono theme-text-secondary">
+                        {item.period}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-1 group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors" style={{ color: "var(--text-primary)" }}>
+                        {item.title}
+                      </h3>
+                      <p className="text-cyan-800 dark:text-cyan-400 font-medium text-sm sm:text-base">
+                        {item.subtitle}
+                      </p>
+                    </div>
+
+                    <p className="text-sm sm:text-base leading-relaxed theme-text-secondary">
+                      {item.summary}
+                    </p>
+
+                    {/* Highlights */}
+                    <div className="space-y-2.5 pt-2">
+                      {item.highlights.map((h: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm theme-text-secondary">
+                          <CheckCircle2 className="w-4 h-4 text-cyan-700 dark:text-cyan-400 mt-0.5 shrink-0" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {raw.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action CTAs */}
+                    <div className="flex flex-wrap items-center gap-3 pt-3">
+                      {raw.links?.store && (
+                        <a
+                          href={raw.links.store}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 hover:from-cyan-700 hover:via-teal-700 hover:to-emerald-700 text-white dark:from-cyan-500 dark:via-teal-400 dark:to-emerald-400 dark:text-gray-950 hover:scale-105 active:scale-95 transition-all shadow-md shadow-slate-900/10 dark:shadow-cyan-500/25"
+                        >
+                          {t.projects.viewStoreFirefox}
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                      <div className="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-mono font-medium theme-surface border theme-border text-slate-700 dark:text-slate-300">
+                        <span className="w-2 h-2 rounded-full bg-cyan-600 dark:bg-cyan-400" />
+                        <span>{t.projects.viewStoreChrome}</span>
+                      </div>
+                    </div>
                   </div>
 
-                  {raw.links?.store && (
-                    <a
-                      href={raw.links.store}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-500 hover:opacity-80 transition-opacity"
-                    >
-                      {t.projects.viewStore}
-                    </a>
-                  )}
+                  {/* Right Column: Screenshot Showcase */}
+                  <div className="lg:col-span-5 space-y-4">
+                    <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
+                      <img
+                        src={raw.image || "/images/projects/soundcraft-eq.png"}
+                        alt={item.title}
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                    <div className="relative rounded-xl overflow-hidden border theme-border shadow-md bg-gray-900 opacity-90 hover:opacity-100 transition-opacity">
+                      <img
+                        src="/images/projects/03_inpage_picker_overlay.png"
+                        alt="SoundCraft EQ In-Page Media Picker"
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                  </div>
+
                 </div>
               </div>
             );
           })()}
 
-          {/* Bento Item 5: Vegeking E-commerce (Span 6) */}
+          {/* Bento Item 5: Vegeking E-commerce (Span 12) */}
           {(() => {
             const raw = rawProjects.find((item) => item.id === "vegeking-ecommerce");
             const item = t.projects.items.vegeking;
             if (!raw || !item) return null;
             return (
-              <div className="lg:col-span-6 rounded-3xl theme-surface border theme-border hover:border-cyan-500/30 transition-all p-6 sm:p-8 shadow-xl flex flex-col justify-between group">
-                <div className="space-y-4">
-                  <div className="relative rounded-xl overflow-hidden border theme-border bg-gray-900 mb-4">
-                    <img
-                      src="/images/projects/vegeking.png"
-                      alt={item.title}
-                      width={1280}
-                      height={800}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-48 object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
+              <div className="lg:col-span-12 rounded-3xl theme-surface border theme-border hover:border-cyan-500/30 transition-all p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden group">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  
+                  {/* Left Column: Details */}
+                  <div className="lg:col-span-7 space-y-5">
+                    <div className="flex items-center gap-2 text-xs font-mono text-cyan-700 dark:text-cyan-400">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>{t.projects.commercialBadge}</span>
+                    </div>
 
-                  <div className="flex items-center gap-2 text-xs font-mono text-cyan-500">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>{t.projects.commercialBadge}</span>
-                  </div>
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-1 group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors" style={{ color: "var(--text-primary)" }}>
+                        {item.title}
+                      </h3>
+                      <p className="text-sm sm:text-base font-medium theme-text-secondary">
+                        {item.subtitle}
+                      </p>
+                    </div>
 
-                  <h3 className="text-xl sm:text-2xl font-bold group-hover:text-cyan-500 transition-colors" style={{ color: "var(--text-primary)" }}>
-                    {item.title}
-                  </h3>
+                    <p className="text-sm sm:text-base leading-relaxed theme-text-secondary">
+                      {item.summary}
+                    </p>
 
-                  <p className="text-xs sm:text-sm leading-relaxed theme-text-secondary">
-                    {item.summary}
-                  </p>
+                    <div className="space-y-2.5 pt-2">
+                      {item.highlights.map((h: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm theme-text-secondary">
+                          <CheckCircle2 className="w-4 h-4 text-cyan-700 dark:text-cyan-400 mt-0.5 shrink-0" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
 
-                  <div className="space-y-2 pt-1">
-                    {item.highlights.map((h: string, i: number) => (
-                      <div key={i} className="flex items-start gap-2 text-xs theme-text-secondary">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-cyan-500 mt-0.5 shrink-0" />
-                        <span>{h}</span>
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {raw.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {raw.links?.live && (
+                      <div className="pt-3">
+                        <a
+                          href={raw.links.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-semibold theme-surface border theme-border hover:border-cyan-500/50 shadow-sm transition-all"
+                          style={{ color: "var(--text-primary)" }}
+                        >
+                          {t.projects.viewShop}
+                          <ExternalLink className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                        </a>
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-6 space-y-4">
-                  <div className="flex flex-wrap gap-1.5">
-                    {raw.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 rounded text-[11px] font-mono theme-surface-subtle border theme-border"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    )}
                   </div>
 
-                  {raw.links?.live && (
-                    <a
-                      href={raw.links.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-500 hover:opacity-80 transition-opacity"
-                    >
-                      {t.projects.viewShop}
-                    </a>
-                  )}
+                  {/* Right Column: Screenshot */}
+                  <div className="lg:col-span-5">
+                    <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
+                      <img
+                        src="/images/projects/vegeking.png"
+                        alt={item.title}
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                  </div>
+
                 </div>
               </div>
             );

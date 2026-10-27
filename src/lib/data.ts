@@ -15,9 +15,11 @@ export interface ProjectMetadata {
   links: {
     live?: string;
     store?: string;
+    chrome?: string;
     note?: string;
   };
   image: string;
+  screenshots?: string[];
 }
 
 export const socialLinks: SocialLink[] = [
@@ -142,19 +144,25 @@ export const projectsMetadata: ProjectMetadata[] = [
     image: "/images/projects/infra-performance.png",
   },
   {
-    id: "web-audio-equalizer",
+    id: "soundcraft-eq",
     tags: [
-      "React",
+      "React 18",
       "TypeScript",
-      "Web Audio API",
-      "Webpack",
-      "Material UI",
-      "Firefox WebExtension",
+      "Web Audio API (DSP)",
+      "DynamicsCompressor",
+      "Chrome / Firefox Extension",
+      "True Bypass",
+      "Per-Tab Isolation",
     ],
     links: {
       store: "https://addons.mozilla.org/en-US/firefox/addon/euqalizer/",
+      chrome: "https://chrome.google.com/webstore",
     },
-    image: "/images/projects/equalizer.png",
+    image: "/images/projects/soundcraft-eq.png",
+    screenshots: [
+      "/images/projects/01_hero_equalizer.png",
+      "/images/projects/03_inpage_picker_overlay.png",
+    ],
   },
   {
     id: "vegeking-ecommerce",
