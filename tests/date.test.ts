@@ -27,6 +27,18 @@ describe("Timezone Localization (Asia/Taipei, UTC+8)", () => {
     expect(formatTaipeiDate(utcStr)).toBe("2026-11-01");
   });
 
+  it("handles leap-year boundary transitions correctly", () => {
+    // Leap year (2024): Feb 28 20:00 UTC should cross into Feb 29 04:00 Taipei
+    const leapUtc = "2024-02-28 20:00:00";
+    expect(formatTaipeiDateTime(leapUtc)).toBe("2024-02-29 04:00:00");
+    expect(formatTaipeiDate(leapUtc)).toBe("2024-02-29");
+
+    // Non-leap year (2025): Feb 28 20:00 UTC should cross into Mar 01 04:00 Taipei
+    const nonLeapUtc = "2025-02-28 20:00:00";
+    expect(formatTaipeiDateTime(nonLeapUtc)).toBe("2025-03-01 04:00:00");
+    expect(formatTaipeiDate(nonLeapUtc)).toBe("2025-03-01");
+  });
+
   it("handles year-boundary crossing correctly", () => {
     // Dec 31 20:00 UTC should cross into next year Jan 01 04:00 Taipei
     const utcStr = "2026-12-31 20:00:00";
@@ -34,10 +46,14 @@ describe("Timezone Localization (Asia/Taipei, UTC+8)", () => {
     expect(formatTaipeiDate(utcStr)).toBe("2027-01-01");
   });
 
-  it("handles ISO-8601 UTC input with T and Z", () => {
+  it("handles ISO-8601 UTC input with T and Z, as well as existing offsets", () => {
     const isoUtc = "2026-10-27T05:00:19Z";
     expect(formatTaipeiDateTime(isoUtc)).toBe("2026-10-27 13:00:19");
     expect(formatTaipeiDate(isoUtc)).toBe("2026-10-27");
+
+    const isoOffset = "2026-10-27T05:00:19+00:00";
+    expect(formatTaipeiDateTime(isoOffset)).toBe("2026-10-27 13:00:19");
+    expect(formatTaipeiDate(isoOffset)).toBe("2026-10-27");
   });
 
   it("generates correct ISO string with +08:00 offset for HTML time and SEO metadata", () => {
