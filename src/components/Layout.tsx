@@ -297,7 +297,7 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
 
                   if (lightbox) {
                     lightbox.addEventListener('click', function(e) {
-                      if (e.target === lightbox || e.target === lightboxCloseBtn || (lightboxCloseBtn && lightboxCloseBtn.contains(e.target))) {
+                      if (e.target === lightbox) {
                         closeLightbox();
                       }
                     });

@@ -167,6 +167,7 @@ html {
 
 /* Zoomable Image Styling & Lightbox Cursor */
 .zoomable-img,
+[data-zoomable],
 #projects img,
 .article-prose img {
   cursor: zoom-in;
