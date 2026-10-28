@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
+import { secureHeaders } from "hono/secure-headers";
 import { LandingPage } from "./components/LandingPage";
 import { BlogIndexPage } from "./components/BlogIndexPage";
 import { ArticleReaderPage } from "./components/ArticleReaderPage";
@@ -26,6 +27,7 @@ import {
 } from "./lib/db";
 import { extractTocAndParseMarkdown } from "./lib/markdown";
 import { createSessionToken, verifySessionToken, verifyPassword } from "./lib/auth";
+import { LoginRateLimiter } from "./lib/rateLimit";
 import translations from "./lib/i18n.json";
 
 export interface Env {
@@ -33,7 +35,27 @@ export interface Env {
   AUTH_SECRET?: string;
 }
 
+export const loginRateLimiter = new LoginRateLimiter();
+
 const app = new Hono<{ Bindings: Env }>();
+
+// Mount comprehensive defensive HTTP security headers
+app.use(
+  "*",
+  secureHeaders({
+    xFrameOptions: "DENY",
+    xContentTypeOptions: "nosniff",
+    strictTransportSecurity: "max-age=31536000; includeSubDomains",
+    referrerPolicy: "strict-origin-when-cross-origin",
+    contentSecurityPolicy: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+    },
+  })
+);
 
 // Helper to ensure standard HTML doctype is always prepended to avoid quirks mode
 const renderHtml = (component: any) => `<!DOCTYPE html>\n${component}`;
@@ -229,6 +251,24 @@ app.get("/admin/login", (c) => {
 });
 
 app.post("/admin/login", async (c) => {
+  const clientIp =
+    c.req.header("cf-connecting-ip") ||
+    c.req.header("x-forwarded-for")?.split(",")[0].trim() ||
+    "127.0.0.1";
+
+  // Rate Limiting Guardrail: Short-circuit on excessive failed attempts
+  if (loginRateLimiter.isBlocked(clientIp)) {
+    return c.html(
+      renderHtml(
+        <AdminLoginPage
+          error="嘗試登入失敗次數過多，請稍後再試 (Too many failed login attempts)。"
+          initialUsername=""
+        />
+      ),
+      429
+    );
+  }
+
   const body = await c.req.parseBody();
   const username = ((body.username as string) || "").trim();
   const password = (body.password as string) || "";
@@ -248,6 +288,7 @@ app.post("/admin/login", async (c) => {
   }
 
   if (authenticated) {
+    loginRateLimiter.reset(clientIp);
     const token = await createSessionToken(getSecret(c.env));
     setCookie(c, "admin_session", token, {
       path: "/",
@@ -259,6 +300,7 @@ app.post("/admin/login", async (c) => {
     return c.redirect("/admin");
   }
 
+  loginRateLimiter.recordFailure(clientIp);
   return c.html(
     renderHtml(<AdminLoginPage error="帳號或密碼錯誤，請重新輸入。" initialUsername={username} />),
     401
