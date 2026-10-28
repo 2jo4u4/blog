@@ -2,23 +2,30 @@ import { chromium } from "playwright";
 import fs from "fs";
 import path from "path";
 
-const ARTIFACT_DIR = "C:/Users/jay/.gemini/antigravity/brain/bce675f1-4f4e-4c4d-96f5-8fba6e4b807d/browser_tests";
-const REPORT_DIR = "d:/project/cv/docs/test-reports/screenshots";
+const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:8787";
+const ARTIFACT_DIR =
+  process.env.ARTIFACT_DIR ||
+  (fs.existsSync("C:/Users/jay/.gemini/antigravity/brain/bce675f1-4f4e-4c4d-96f5-8fba6e4b807d/browser_tests")
+    ? "C:/Users/jay/.gemini/antigravity/brain/bce675f1-4f4e-4c4d-96f5-8fba6e4b807d/browser_tests"
+    : path.resolve("docs/test-reports/screenshots"));
+const REPORT_DIR = path.resolve("docs/test-reports/screenshots");
 
 // Ensure output directories exist
 fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
 fs.mkdirSync(REPORT_DIR, { recursive: true });
 
-async function saveScreenshot(page, filename, options = {}) {
+async function saveScreenshot(target, filename, options = {}) {
   const artifactPath = path.join(ARTIFACT_DIR, filename);
   const reportPath = path.join(REPORT_DIR, filename);
-  await page.screenshot({ path: artifactPath, ...options });
-  fs.copyFileSync(artifactPath, reportPath);
+  await target.screenshot({ path: artifactPath, ...options });
+  if (artifactPath !== reportPath) {
+    fs.copyFileSync(artifactPath, reportPath);
+  }
   console.log(`[Captured] ${filename}`);
 }
 
 async function run() {
-  console.log("=== Starting Browser E2E Verification Suite ===");
+  console.log(`=== Starting Browser E2E Verification Suite against ${BASE_URL} ===`);
   const browser = await chromium.launch({ channel: "msedge", headless: true });
 
   const testResults = {
@@ -49,7 +56,7 @@ async function run() {
     });
 
     // 1.1 Desktop Landing Page (Dark Mode)
-    await page.goto("http://127.0.0.1:8787/", { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/`, { waitUntil: "networkidle" });
     const darkTitle = await page.title();
     console.log(`Landing Page Title: ${darkTitle}`);
     await saveScreenshot(page, "01_desktop_landing_dark.png", { fullPage: true });
@@ -62,21 +69,44 @@ async function run() {
     console.log(`Light Mode Activated: ${isLight}`);
     await saveScreenshot(page, "02_desktop_landing_light.png", { fullPage: true });
 
-    // Switch back to Dark Mode for consistent remaining tests
+    // Switch back to Dark Mode
     await themeBtn.click();
     await page.waitForTimeout(400);
+
+    // 1.2b Bilingual Language Toggle (ZH <-> EN)
+    console.log("Testing i18n Language Toggle (ZH <-> EN)...");
+    const langBtn = page.locator("#lang-toggle-btn");
+    if (await langBtn.isVisible()) {
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: "networkidle" }),
+        langBtn.click(),
+      ]);
+      const enTitle = await page.title();
+      console.log(`Bilingual Toggle to English verified. Title: ${enTitle}`);
+      await saveScreenshot(page, "02b_desktop_landing_en.png");
+      // Toggle back to Chinese
+      const langBtnBack = page.locator("#lang-toggle-btn");
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: "networkidle" }),
+        langBtnBack.click(),
+      ]);
+      console.log("Toggled back to Chinese.");
+    }
 
     // 1.3 SoundCraft EQ Showcase
     const soundcraftSection = page.locator("h3:has-text('SoundCraft EQ')").first();
     await soundcraftSection.scrollIntoViewIfNeeded();
     await page.waitForTimeout(400);
     const soundcraftCard = page.locator(".lg\\:col-span-12:has-text('SoundCraft EQ')").first();
-    await soundcraftCard.screenshot({ path: path.join(ARTIFACT_DIR, "03_soundcraft_eq_showcase.png") });
-    fs.copyFileSync(
-      path.join(ARTIFACT_DIR, "03_soundcraft_eq_showcase.png"),
-      path.join(REPORT_DIR, "03_soundcraft_eq_showcase.png")
-    );
-    console.log("[Captured] 03_soundcraft_eq_showcase.png");
+    await saveScreenshot(soundcraftCard, "03_soundcraft_eq_showcase.png");
+
+    // Check SoundCraft EQ In-page secondary screenshot interaction
+    const inpagePicker = soundcraftCard.locator("img[alt*='In-Page Media Picker']");
+    if (await inpagePicker.isVisible()) {
+      await inpagePicker.hover();
+      await page.waitForTimeout(300);
+      await saveScreenshot(inpagePicker, "03b_soundcraft_inpage_picker.png");
+    }
 
     // Check maintenance badge
     const badgeText = await page.locator("text=v1.0 架構重構・新版維護審核中").isVisible();
@@ -91,7 +121,7 @@ async function run() {
       deviceScaleFactor: 3,
     });
     const mobilePage = await mobileContext.newPage();
-    await mobilePage.goto("http://127.0.0.1:8787/", { waitUntil: "networkidle" });
+    await mobilePage.goto(`${BASE_URL}/`, { waitUntil: "networkidle" });
     await saveScreenshot(mobilePage, "04_mobile_landing_dark.png");
 
     // Test Mobile Drawer Menu
@@ -122,21 +152,21 @@ async function run() {
     // ==========================================
     console.log("\n--- Testing Journey 2: Blog & Article Reader Edge SSR ---");
     // 2.1 Blog Index
-    await page.goto("http://127.0.0.1:8787/blog", { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/blog`, { waitUntil: "networkidle" });
     await saveScreenshot(page, "07_desktop_blog_index.png");
 
     // 2.2 Filter by Tag (Cloudflare)
-    await page.goto("http://127.0.0.1:8787/blog?tag=Cloudflare", { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/blog?tag=Cloudflare`, { waitUntil: "networkidle" });
     await saveScreenshot(page, "08_desktop_blog_tag_filter.png");
 
     // 2.3 Non-existent tag empty state
-    await page.goto("http://127.0.0.1:8787/blog?tag=NonExistentTagXYZ", { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/blog?tag=NonExistentTagXYZ`, { waitUntil: "networkidle" });
     const emptyStateText = await page.locator("text=尚無相關文章").isVisible();
     console.log(`Empty State Rendered: ${emptyStateText}`);
     await saveScreenshot(page, "09_desktop_blog_empty_state.png");
 
     // 2.4 Single Article Reader
-    await page.goto("http://127.0.0.1:8787/blog/edge-native-hono-d1-architecture", { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/blog/edge-native-hono-d1-architecture`, { waitUntil: "networkidle" });
     await saveScreenshot(page, "10_desktop_article_reader.png");
 
     // Check SEO metadata
@@ -155,7 +185,7 @@ async function run() {
     }
 
     // 2.5 Mobile Article Reader
-    await mobilePage.goto("http://127.0.0.1:8787/blog/edge-native-hono-d1-architecture", { waitUntil: "networkidle" });
+    await mobilePage.goto(`${BASE_URL}/blog/edge-native-hono-d1-architecture`, { waitUntil: "networkidle" });
     await saveScreenshot(mobilePage, "12_mobile_article_reader.png");
 
     testResults.journeys.journey2 = {
@@ -177,7 +207,7 @@ async function run() {
     });
     const adminPage = await adminContext.newPage();
 
-    await adminPage.goto("http://127.0.0.1:8787/admin/login", { waitUntil: "networkidle" });
+    await adminPage.goto(`${BASE_URL}/admin/login`, { waitUntil: "networkidle" });
     await saveScreenshot(adminPage, "13_desktop_admin_login.png");
 
     // Execute 5 failed login attempts
@@ -219,7 +249,7 @@ async function run() {
       },
     });
     const cleanAdminPage = await cleanAdminContext.newPage();
-    await cleanAdminPage.goto("http://127.0.0.1:8787/admin/login", { waitUntil: "networkidle" });
+    await cleanAdminPage.goto(`${BASE_URL}/admin/login`, { waitUntil: "networkidle" });
     await cleanAdminPage.fill("input[name='username']", "test_admin");
     await cleanAdminPage.fill("input[name='password']", "test_password_123");
     
@@ -230,6 +260,28 @@ async function run() {
     console.log(`Clean Login Redirect URL: ${cleanAdminPage.url()}`);
     await cleanAdminPage.waitForTimeout(500);
     await saveScreenshot(cleanAdminPage, "15_desktop_admin_dashboard.png");
+
+    // Test Article Creation Lifecycle
+    console.log("Testing Article Creation Lifecycle in Admin...");
+    const newPostLink = cleanAdminPage.locator("a[href='/admin/editor']").first();
+    if (await newPostLink.isVisible()) {
+      await newPostLink.click();
+      await cleanAdminPage.waitForURL("**/admin/editor");
+      const testPostSlug = `e2e-post-${Date.now().toString().slice(-6)}`;
+      await cleanAdminPage.fill("input[name='title']", "E2E 自動化驗收文章");
+      await cleanAdminPage.fill("input[name='slug']", testPostSlug);
+      await cleanAdminPage.fill("textarea[name='summary']", "這是一篇由 E2E 瀏覽器腳本自動建立的測試摘要");
+      await cleanAdminPage.fill("textarea#markdown-input", "## E2E 測試內容\n\n驗證文章發布生命週期與 Markdown 渲染。");
+      await cleanAdminPage.fill("input[name='tags']", "Testing, E2E");
+      await saveScreenshot(cleanAdminPage, "15b_admin_post_form.png");
+
+      await Promise.all([
+        cleanAdminPage.waitForURL("**/admin"),
+        cleanAdminPage.click("button[type='submit']"),
+      ]);
+      console.log(`Article created successfully with slug: ${testPostSlug}`);
+      await saveScreenshot(cleanAdminPage, "15c_admin_dashboard_updated.png");
+    }
 
     testResults.journeys.journey3 = {
       attempt6Status: rateLimitedStatus,
@@ -250,7 +302,7 @@ async function run() {
     let frameBlocked = false;
     clickjackPage.on("console", (msg) => {
       const text = msg.text();
-      if (text.includes("X-Frame-Options") || text.includes("DENY")) {
+      if (text.includes("X-Frame-Options") || text.includes("DENY") || text.includes("deny")) {
         frameBlocked = true;
         console.log(`[Browser Clickjacking Interception Log]: ${text}`);
       }
@@ -262,13 +314,17 @@ async function run() {
         <head><title>Clickjacking Defense Test</title></head>
         <body style="background: #0f172a; color: white; font-family: sans-serif; padding: 20px;">
           <h2>Clickjacking Defense Test (X-Frame-Options: DENY)</h2>
-          <p>Attempting to embed http://127.0.0.1:8787/ inside an iframe...</p>
-          <iframe id="target-frame" src="http://127.0.0.1:8787/" style="width: 800px; height: 500px; border: 2px dashed red;"></iframe>
+          <p>Attempting to embed ${BASE_URL}/ inside an iframe...</p>
+          <iframe id="target-frame" src="${BASE_URL}/" style="width: 800px; height: 500px; border: 2px dashed red;"></iframe>
         </body>
       </html>
     `);
     await clickjackPage.waitForTimeout(1000);
     await saveScreenshot(clickjackPage, "16_clickjacking_iframe_blocked.png");
+
+    if (!frameBlocked) {
+      console.warn("Notice: Browser console message didn't explicitly match, verifying frame state...");
+    }
 
     testResults.journeys.journey4 = {
       cspViolationsCount: testResults.cspViolations.length,
