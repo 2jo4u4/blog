@@ -55,7 +55,8 @@
       "viewLive": "前往線上體驗 ↗",
       "viewLiveAuth": "前往線上體驗 (需要註冊登入)",
       "viewStore": "前往 Firefox Add-ons 商店 ↗",
-      "viewShop": "前往菜霸子線上商城 ↗",
+      "viewShop": "前往電商平台",
+      "dbBadge": "Database Architecture",
       "featuredBadge": "Featured",
       "aiAgentBadge": "AI Agent 自主研發",
       "infraBadge": "Architecture & Performance",
@@ -122,6 +123,18 @@
           "highlights": [
             "全客製化管理後台獨立開發：主導後台管理系統建置，因應內部無專職 UI Designer 需求，以 MUI 模組化組件快速搭建高可用性後台介面。",
             "全域通訊與攔截機制：利用 Axios 攔截器 (Interceptors) 集中管理 API 認證、錯誤捕捉與全域訊息彈窗提示。"
+          ]
+        },
+        "retailDb": {
+          "title": "零售交易關聯式資料庫設計與進階 SQL 分析",
+          "subtitle": "3NF 正規化、視窗分析函數 (Window Functions) 與集合代數商業模型",
+          "period": "2018 (大學資工核心專業實作)",
+          "summary": "針對多通路實體零售（超商、量販、加油站、餐飲）之複雜交易流進行關聯式架構建模。自 DFD 資料流程圖與 ERD 實體關聯出發，建立符合第三正規化 (3NF) 的嚴謹資料庫結構，並撰寫進階 T-SQL 進行銷售排名、視窗分組與非對稱集合差分析。",
+          "highlights": [
+            "嚴謹關聯架構與 3NF 正規化：設計門市通路、發票主檔、品項型錄、訂單明細與客戶資料表，以發票與品項之複合主鍵 (Composite PK) 解耦多對多關係，徹底杜絕更新異常與資料冗餘。",
+            "分析型視窗函數 (Window Functions)：運用 RANK() OVER (PARTITION BY 店家 ORDER BY 銷售量 DESC) 動態計算各通路熱銷排行榜，擺脫子查詢效能瓶頸，快速萃取商業情報。",
+            "關聯集合差集與視圖分層抽象：透過 LEFT JOIN ... WHERE ... IS NULL 實作關聯式代數差集 (Set Difference)，精準探勘客戶間互斥之偏好品項孤島，並以 View 封裝多層關聯邏輯。",
+            "端對端交易與防弊容錯建模：自 DFD 結帳流程至實體表結構，完整考量隨機碼防偽驗證、跨月份帳務歸屬，以及已退貨發票之註記隔離機制。"
           ]
         }
       }
@@ -237,7 +250,8 @@
       "viewLive": "Launch Live Demo ↗",
       "viewLiveAuth": "Launch Live Demo (Auth Required)",
       "viewStore": "View Firefox Add-on ↗",
-      "viewShop": "Visit Vegeking Store ↗",
+      "viewShop": "Visit E-commerce Platform",
+      "dbBadge": "Database Architecture",
       "featuredBadge": "Featured Project",
       "aiAgentBadge": "Built with AI Agents",
       "infraBadge": "Architecture & Performance",
@@ -304,6 +318,18 @@
           "highlights": [
             "Independent Admin Portal Development: Led end-to-end admin portal implementation without dedicated UI designers, leveraging Material UI components for complex operational workflows.",
             "Global API Interceptors: Standardized authentication, token refreshing, and global error notification toast dispatching via Axios interceptors."
+          ]
+        },
+        "retailDb": {
+          "title": "Retail Transaction Database Design & Advanced SQL Analytics",
+          "subtitle": "3NF Normalization, Window Functions & Set Difference Business Modeling",
+          "period": "2018 (Academic CS Foundation Project)",
+          "summary": "Designed an end-to-end relational data model for omnichannel retail and invoicing workflows (supermarkets, convenience stores, gas stations, dining). Starting from Level 0/1 DFDs and ER diagrams, established a 3NF schema and engineered analytical T-SQL queries for dynamic rankings, windowed grouping, and relational set difference operations.",
+          "highlights": [
+            "3NF Relational Normalization & Integrity: Modeled retail channels, invoice master, product catalog, order line items, and sanitized customer entities. Eliminated update anomalies and data redundancy using composite primary keys (Invoice_No, Product_ID).",
+            "Analytical Window Functions: Implemented RANK() OVER (PARTITION BY Store ORDER BY Quantity DESC) to dynamically identify top-selling products per retail channel without costly nested subqueries.",
+            "Relational Set Algebra & View Abstraction: Utilized LEFT JOIN ... WHERE ... IS NULL to compute asymmetrical set difference, identifying mutually exclusive product preferences between customer cohorts while encapsulating logic in database views.",
+            "Omnichannel Invoicing & Return Lifecycle: Modeled the complete transaction cycle from DFD checkout to relational tables, incorporating invoice anti-counterfeiting random codes, fiscal month partitioning, and voided return invoice flags."
           ]
         }
       }

@@ -1,4 +1,4 @@
-import { Layers, CheckCircle2, Cpu, Sparkles, Bot, Gamepad2, ExternalLink } from "./Icons";
+import { Layers, CheckCircle2, Cpu, Sparkles, Bot, Gamepad2, ExternalLink, Database } from "./Icons";
 import { SectionBadge } from "./SectionBadge";
 import { data } from "../lib/data";
 
@@ -468,6 +468,83 @@ export function Projects({ t }: ProjectsProps) {
                     <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
                       <img
                         src="/images/projects/vegeking.png"
+                        alt={item.title}
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Bento Item 6: Retail Database & SQL Analytics (Span 12) */}
+          {(() => {
+            const raw = rawProjects.find((item) => item.id === "retail-db-analytics");
+            const item = t.projects.items.retailDb;
+            if (!raw || !item) return null;
+            return (
+              <div className="lg:col-span-12 rounded-3xl theme-surface border theme-border hover:border-cyan-500/30 transition-all p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden group">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  
+                  {/* Left Column: Details */}
+                  <div className="lg:col-span-7 space-y-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5 shadow-2xs">
+                        <Database className="w-3.5 h-3.5 text-cyan-700 dark:text-cyan-400" />
+                        {t.projects.dbBadge || "Database Architecture"}
+                      </span>
+                      {item.period && (
+                        <span className="text-xs font-mono theme-text-secondary">
+                          {item.period}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-1 group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors" style={{ color: "var(--text-primary)" }}>
+                        {item.title}
+                      </h3>
+                      <p className="text-sm sm:text-base font-medium theme-text-secondary">
+                        {item.subtitle}
+                      </p>
+                    </div>
+
+                    <p className="text-sm sm:text-base leading-relaxed theme-text-secondary">
+                      {item.summary}
+                    </p>
+
+                    <div className="space-y-2.5 pt-2">
+                      {item.highlights.map((h: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm theme-text-secondary">
+                          <CheckCircle2 className="w-4 h-4 text-cyan-700 dark:text-cyan-400 mt-0.5 shrink-0" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {raw.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right Column: Schema Diagram & SQL Showcase */}
+                  <div className="lg:col-span-5">
+                    <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
+                      <img
+                        src={raw.image || "/images/projects/retail-db-schema.png"}
                         alt={item.title}
                         width={1280}
                         height={800}

@@ -179,6 +179,20 @@ export const projectsMetadata: ProjectMetadata[] = [
     },
     image: "/images/projects/vegeking.png",
   },
+  {
+    id: "retail-db-analytics",
+    tags: [
+      "Database Systems",
+      "3NF Normalization",
+      "Relational Modeling (ERD)",
+      "T-SQL / MS SQL",
+      "Window Functions (RANK)",
+      "Set Operations (Outer Join)",
+      "DFD Level 0/1",
+    ],
+    links: {},
+    image: "/images/projects/retail-db-schema.png",
+  },
 ];
 
 export const data = {
