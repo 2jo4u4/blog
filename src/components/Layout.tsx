@@ -1,4 +1,5 @@
 import type { Child } from "hono/jsx";
+import { X } from "./Icons";
 
 export interface LayoutProps {
   title: string;
@@ -100,17 +101,7 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
             aria-label="Close Lightbox"
             className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer z-10"
           >
-            <svg
-              className="w-6 h-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
+            <X className="w-6 h-6" />
           </button>
           <div className="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center justify-center pointer-events-none">
             <img

@@ -323,7 +323,7 @@
         "retailDb": {
           "title": "Retail Transaction Database Design & Advanced SQL Analytics",
           "subtitle": "3NF Normalization, Window Functions & Set Difference Business Modeling",
-          "period": "2018 (Academic CS Foundation Project)",
+          "period": "2018 (CS Undergraduate Core Coursework)",
           "summary": "Designed an end-to-end relational data model for omnichannel retail and invoicing workflows (supermarkets, convenience stores, gas stations, dining). Starting from Level 0/1 DFDs and ER diagrams, established a 3NF schema and engineered analytical T-SQL queries for dynamic rankings, windowed grouping, and relational set difference operations.",
           "highlights": [
             "3NF Relational Normalization & Integrity: Modeled retail channels, invoice master, product catalog, order line items, and sanitized customer entities. Eliminated update anomalies and data redundancy using composite primary keys (Invoice_No, Product_ID).",
