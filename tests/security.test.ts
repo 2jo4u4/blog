@@ -5,6 +5,22 @@ import { MockD1Database } from "./helpers/mockDb";
 
 const SECRET = "portfolio-auth-secret-key-2026";
 
+async function signTestPayload(payload: string, secret: string): Promise<string> {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, enc.encode(payload));
+  const sigHex = Array.from(new Uint8Array(signature))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return `${payload}.${sigHex}`;
+}
+
 describe("Security Hardening & Verification Suite", () => {
   let mockDb: any;
 
@@ -62,22 +78,7 @@ describe("Security Hardening & Verification Suite", () => {
     it("rejects token older than 7 days (fail-closed 7-day hard expiry)", async () => {
       // Create a token from 8 days ago
       const eightDaysAgo = Date.now() - 8 * 24 * 60 * 60 * 1000;
-      const expiredPayload = `admin_${eightDaysAgo}`;
-
-      // Sign the payload with the legitimate secret
-      const enc = new TextEncoder();
-      const key = await crypto.subtle.importKey(
-        "raw",
-        enc.encode(SECRET),
-        { name: "HMAC", hash: "SHA-256" },
-        false,
-        ["sign"]
-      );
-      const signature = await crypto.subtle.sign("HMAC", key, enc.encode(expiredPayload));
-      const sigHex = Array.from(new Uint8Array(signature))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-      const expiredToken = `${expiredPayload}.${sigHex}`;
+      const expiredToken = await signTestPayload(`admin_${eightDaysAgo}`, SECRET);
 
       const isValid = await verifySessionToken(expiredToken, SECRET);
       expect(isValid).toBe(false);
@@ -85,21 +86,7 @@ describe("Security Hardening & Verification Suite", () => {
 
     it("rejects future-skewed token (clock tamper beyond 1 minute)", async () => {
       const futureTime = Date.now() + 5 * 60 * 1000; // 5 minutes in future
-      const futurePayload = `admin_${futureTime}`;
-
-      const enc = new TextEncoder();
-      const key = await crypto.subtle.importKey(
-        "raw",
-        enc.encode(SECRET),
-        { name: "HMAC", hash: "SHA-256" },
-        false,
-        ["sign"]
-      );
-      const signature = await crypto.subtle.sign("HMAC", key, enc.encode(futurePayload));
-      const sigHex = Array.from(new Uint8Array(signature))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-      const futureToken = `${futurePayload}.${sigHex}`;
+      const futureToken = await signTestPayload(`admin_${futureTime}`, SECRET);
 
       const isValid = await verifySessionToken(futureToken, SECRET);
       expect(isValid).toBe(false);
