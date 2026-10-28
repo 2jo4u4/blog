@@ -164,3 +164,19 @@ html {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* Zoomable Image Styling & Lightbox Cursor */
+.zoomable-img,
+#projects img,
+.article-prose img {
+  cursor: zoom-in;
+}
+
+.article-prose img {
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 100%;
+  height: auto;
+}

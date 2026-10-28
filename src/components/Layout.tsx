@@ -85,6 +85,47 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
       <body className="min-h-screen relative selection:bg-cyan-500/30 selection:text-cyan-200">
         {children}
 
+        {/* Global Image Lightbox Modal */}
+        <div
+          id="global-lightbox"
+          className="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-200 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-8"
+          style={{ touchAction: "none" }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image Lightbox"
+        >
+          <button
+            id="lightbox-close-btn"
+            type="button"
+            aria-label="Close Lightbox"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer z-10"
+          >
+            <svg
+              className="w-6 h-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+          <div className="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center justify-center pointer-events-none">
+            <img
+              id="lightbox-img"
+              src=""
+              alt=""
+              className="max-w-full max-h-[75vh] sm:max-h-[80vh] object-contain rounded-xl shadow-2xl transition-transform duration-200 transform scale-95 pointer-events-auto"
+            />
+            <div
+              id="lightbox-caption"
+              className="mt-3 px-4 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/60 text-slate-200 text-xs sm:text-sm font-mono tracking-wide hidden max-w-[85vw] text-center truncate shadow-lg pointer-events-auto"
+            />
+          </div>
+        </div>
+
         {/* Client Interactive Helper */}
         <script
           dangerouslySetInnerHTML={{
@@ -210,6 +251,80 @@ export function Layout({ title, description, locale, url, children }: LayoutProp
                     });
                   }
                 } catch (e) {}
+
+                // Global Image Lightbox Handler
+                try {
+                  var lightbox = document.getElementById('global-lightbox');
+                  var lightboxImg = document.getElementById('lightbox-img');
+                  var lightboxCaption = document.getElementById('lightbox-caption');
+                  var lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+
+                  function openLightbox(src, alt) {
+                    if (!lightbox || !lightboxImg) return;
+                    lightboxImg.src = src;
+                    lightboxImg.alt = alt || '';
+                    if (alt && alt.trim() && lightboxCaption) {
+                      lightboxCaption.textContent = alt.trim();
+                      lightboxCaption.classList.remove('hidden');
+                    } else if (lightboxCaption) {
+                      lightboxCaption.classList.add('hidden');
+                    }
+                    lightbox.classList.remove('hidden');
+                    setTimeout(function() {
+                      lightbox.classList.remove('opacity-0');
+                      lightboxImg.classList.remove('scale-95');
+                      lightboxImg.classList.add('scale-100');
+                    }, 10);
+                    document.body.style.overflow = 'hidden';
+                  }
+
+                  function closeLightbox() {
+                    if (!lightbox || !lightboxImg) return;
+                    lightbox.classList.add('opacity-0');
+                    lightboxImg.classList.remove('scale-100');
+                    lightboxImg.classList.add('scale-95');
+                    setTimeout(function() {
+                      lightbox.classList.add('hidden');
+                      lightboxImg.src = '';
+                      lightboxImg.alt = '';
+                      document.body.style.overflow = '';
+                    }, 200);
+                  }
+
+                  if (lightboxCloseBtn) {
+                    lightboxCloseBtn.addEventListener('click', closeLightbox);
+                  }
+
+                  if (lightbox) {
+                    lightbox.addEventListener('click', function(e) {
+                      if (e.target === lightbox || e.target === lightboxCloseBtn || (lightboxCloseBtn && lightboxCloseBtn.contains(e.target))) {
+                        closeLightbox();
+                      }
+                    });
+                  }
+
+                  document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && lightbox && !lightbox.classList.contains('hidden')) {
+                      closeLightbox();
+                    }
+                  });
+
+                  // Event delegation on zoomable images
+                  document.addEventListener('click', function(e) {
+                    var target = e.target;
+                    if (!target || target.tagName !== 'IMG') return;
+                    if (target.id === 'lightbox-img') return;
+                    if (
+                      target.classList.contains('zoomable-img') ||
+                      target.closest('#projects') ||
+                      target.closest('.article-prose') ||
+                      target.hasAttribute('data-zoomable')
+                    ) {
+                      e.preventDefault();
+                      openLightbox(target.currentSrc || target.src, target.alt);
+                    }
+                  });
+                } catch (err) {}
               });
             `,
           }}
