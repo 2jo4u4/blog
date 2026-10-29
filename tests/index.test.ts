@@ -28,6 +28,8 @@ describe("Landing Page Edge SSR Seam", () => {
     // Verification of pre-rendered content without client hydration
     expect(html).toContain("DreamCity");
     expect(html).toContain("多人非對稱對抗");
+    expect(html).toContain("前往線上體驗");
+    expect(html).not.toContain("前往線上體驗 ↗");
     expect(html).toContain("Optoma");
     expect(html).toContain("Canvas");
     expect(html).toContain("SoundCraft EQ");
@@ -51,6 +53,8 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(html).toContain("Jay Huang");
     expect(html).toContain("Senior Frontend Engineer");
     expect(html).toContain("DreamCity");
+    expect(html).toContain("Launch Live Demo");
+    expect(html).not.toContain("Launch Live Demo ↗");
     expect(html).toContain("SoundCraft EQ");
     expect(html).toContain("View on Chrome Web Store");
     expect(html).toContain("Firefox AMO (Review in Progress)");
