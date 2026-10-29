@@ -34,7 +34,8 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(html).toContain("Canvas");
     expect(html).toContain("SoundCraft EQ");
     expect(html).toContain("前往 Chrome 線上商店");
-    expect(html).toContain("Firefox AMO 審核中");
+    expect(html).toContain("前往 Firefox 附加元件商店");
+    expect(html).not.toContain("Firefox AMO 審核中");
     expect(html).toContain("Cloudflare");
     expect(html).toContain("2jo4u4@gmail.com");
 
@@ -57,7 +58,8 @@ describe("Landing Page Edge SSR Seam", () => {
     expect(html).not.toContain("Launch Live Demo ↗");
     expect(html).toContain("SoundCraft EQ");
     expect(html).toContain("View on Chrome Web Store");
-    expect(html).toContain("Firefox AMO (Review in Progress)");
+    expect(html).toContain("View on Firefox Add-ons");
+    expect(html).not.toContain("Firefox AMO (Review in Progress)");
   });
 
   it("responds to /health check endpoint", async () => {

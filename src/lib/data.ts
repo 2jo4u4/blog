@@ -108,7 +108,7 @@ export const projectsMetadata: ProjectMetadata[] = [
     ],
     links: {
       chrome: "https://chromewebstore.google.com/detail/soundcraft-eq-audio-equal/nfkljeighcefimkcgmcfbkmojnpggljf",
-      store: "https://addons.mozilla.org/en-US/firefox/addon/euqalizer/",
+      store: "https://addons.mozilla.org/en-US/firefox/addon/soundcraft-eq-audio-equalizer/",
     },
     image: "/images/projects/soundcraft-eq.png",
     screenshots: [

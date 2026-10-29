@@ -100,10 +100,18 @@ export function Projects({ t }: ProjectsProps) {
                           <ExternalLink className="w-4 h-4" />
                         </a>
                       )}
-                      <div className="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-mono font-medium theme-surface border theme-border text-slate-700 dark:text-slate-300">
-                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                        <span>{t.projects.viewStoreFirefox}</span>
-                      </div>
+                      {raw.links?.store && (
+                        <a
+                          href={raw.links.store}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-semibold theme-surface border theme-border hover:border-cyan-500/50 hover:scale-105 active:scale-95 transition-all shadow-sm"
+                          style={{ color: "var(--text-primary)" }}
+                        >
+                          {t.projects.viewStoreFirefox}
+                          <ExternalLink className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                        </a>
+                      )}
                     </div>
                   </div>
 

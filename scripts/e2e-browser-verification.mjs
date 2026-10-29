@@ -110,8 +110,8 @@ async function run() {
 
     // Check store CTAs
     const chromeStoreBtn = await page.locator("text=前往 Chrome 線上商店").isVisible();
-    const firefoxReviewBadge = await page.locator("text=Firefox AMO 審核中").isVisible();
-    console.log(`Chrome Store CTA Visible: ${chromeStoreBtn}, Firefox Review Badge Visible: ${firefoxReviewBadge}`);
+    const firefoxStoreBtn = await page.locator("text=前往 Firefox 附加元件商店").isVisible();
+    console.log(`Chrome Store CTA Visible: ${chromeStoreBtn}, Firefox Store CTA Visible: ${firefoxStoreBtn}`);
 
     // 1.4 Mobile Landing Page (390x844)
     console.log("\n--- Testing Mobile Viewport (390x844) ---");
@@ -146,7 +146,7 @@ async function run() {
       darkTitle,
       lightModeVerified: isLight,
       chromeStoreBtnVisible: chromeStoreBtn,
-      firefoxReviewBadgeVisible: firefoxReviewBadge,
+      firefoxStoreBtnVisible: firefoxStoreBtn,
     };
 
     // ==========================================
