@@ -145,7 +145,8 @@ async function run() {
     testResults.journeys.journey1 = {
       darkTitle,
       lightModeVerified: isLight,
-      maintenanceBadgeVisible: badgeText,
+      chromeStoreBtnVisible: chromeStoreBtn,
+      firefoxReviewBadgeVisible: firefoxReviewBadge,
     };
 
     // ==========================================

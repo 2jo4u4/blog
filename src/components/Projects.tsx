@@ -30,7 +30,7 @@ export function Projects({ t }: ProjectsProps) {
           
           {/* Bento Item 1: SoundCraft EQ (Web Audio Equalizer) (Span 12) */}
           {(() => {
-            const raw = rawProjects.find((item) => item.id === "soundcraft-eq" || item.id === "web-audio-equalizer");
+            const raw = rawProjects.find((item) => item.id === "soundcraft-eq");
             const item = t.projects.items.equalizer;
             if (!raw || !item) return null;
             return (
