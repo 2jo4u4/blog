@@ -64,8 +64,8 @@
       "sideProjectBadge": "Personal Side Project",
       "maintenanceBadge": "v1.0 架構重構・新版維護審核中",
       "dualPlatformBadge": "Chrome & Firefox 雙平台支援",
-      "viewStoreFirefox": "Firefox AMO 商店連結 ↗",
-      "viewStoreChrome": "Chrome Web Store 審核發布中",
+      "viewStoreFirefox": "Firefox AMO 審核中",
+      "viewStoreChrome": "前往 Chrome 線上商店",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
         "dreamcity": {
@@ -259,8 +259,8 @@
       "sideProjectBadge": "Personal Side Project",
       "maintenanceBadge": "v1.0 Refactored • Store Review & Maintenance",
       "dualPlatformBadge": "Dual-Platform (Chrome & Firefox)",
-      "viewStoreFirefox": "View Firefox Add-on ↗",
-      "viewStoreChrome": "Chrome Web Store (Review in Progress)",
+      "viewStoreFirefox": "Firefox AMO (Review in Progress)",
+      "viewStoreChrome": "View on Chrome Web Store",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
         "dreamcity": {

@@ -108,9 +108,10 @@ async function run() {
       await saveScreenshot(inpagePicker, "03b_soundcraft_inpage_picker.png");
     }
 
-    // Check maintenance badge
-    const badgeText = await page.locator("text=v1.0 架構重構・新版維護審核中").isVisible();
-    console.log(`Maintenance Badge Visible: ${badgeText}`);
+    // Check store CTAs
+    const chromeStoreBtn = await page.locator("text=前往 Chrome 線上商店").isVisible();
+    const firefoxReviewBadge = await page.locator("text=Firefox AMO 審核中").isVisible();
+    console.log(`Chrome Store CTA Visible: ${chromeStoreBtn}, Firefox Review Badge Visible: ${firefoxReviewBadge}`);
 
     // 1.4 Mobile Landing Page (390x844)
     console.log("\n--- Testing Mobile Viewport (390x844) ---");

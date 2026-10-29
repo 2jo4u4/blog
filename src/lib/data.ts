@@ -96,6 +96,27 @@ export const skillCategories: SkillCategory[] = [
 
 export const projectsMetadata: ProjectMetadata[] = [
   {
+    id: "soundcraft-eq",
+    tags: [
+      "React 18",
+      "TypeScript",
+      "Web Audio API (DSP)",
+      "DynamicsCompressor",
+      "Chrome / Firefox Extension",
+      "True Bypass",
+      "Per-Tab Isolation",
+    ],
+    links: {
+      chrome: "https://chromewebstore.google.com/detail/soundcraft-eq-audio-equal/nfkljeighcefimkcgmcfbkmojnpggljf",
+      store: "https://addons.mozilla.org/en-US/firefox/addon/euqalizer/",
+    },
+    image: "/images/projects/soundcraft-eq.png",
+    screenshots: [
+      "/images/projects/01_hero_equalizer.png",
+      "/images/projects/03_inpage_picker_overlay.png",
+    ],
+  },
+  {
     id: "dreamcity",
     tags: [
       "React",
@@ -113,6 +134,20 @@ export const projectsMetadata: ProjectMetadata[] = [
     image: "/images/projects/dreamcity.png",
   },
   {
+    id: "infra-performance",
+    tags: [
+      "pnpm",
+      "Turborepo",
+      "Docker",
+      "CircleCI",
+      "GCP",
+      "Webpack",
+      "Verdaccio",
+    ],
+    links: {},
+    image: "/images/projects/infra-performance.png",
+  },
+  {
     id: "creative-board",
     tags: [
       "React",
@@ -128,41 +163,6 @@ export const projectsMetadata: ProjectMetadata[] = [
       note: "需登入體驗",
     },
     image: "/images/projects/creative-board.png",
-  },
-  {
-    id: "infra-performance",
-    tags: [
-      "pnpm",
-      "Turborepo",
-      "Docker",
-      "CircleCI",
-      "GCP",
-      "Webpack",
-      "Verdaccio",
-    ],
-    links: {},
-    image: "/images/projects/infra-performance.png",
-  },
-  {
-    id: "soundcraft-eq",
-    tags: [
-      "React 18",
-      "TypeScript",
-      "Web Audio API (DSP)",
-      "DynamicsCompressor",
-      "Chrome / Firefox Extension",
-      "True Bypass",
-      "Per-Tab Isolation",
-    ],
-    links: {
-      store: "https://addons.mozilla.org/en-US/firefox/addon/euqalizer/",
-      chrome: "https://chrome.google.com/webstore",
-    },
-    image: "/images/projects/soundcraft-eq.png",
-    screenshots: [
-      "/images/projects/01_hero_equalizer.png",
-      "/images/projects/03_inpage_picker_overlay.png",
-    ],
   },
   {
     id: "vegeking-ecommerce",
