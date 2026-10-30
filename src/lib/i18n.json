@@ -62,11 +62,25 @@
       "infraBadge": "Architecture & Performance",
       "infraTagline": "生產環境工程革新",
       "sideProjectBadge": "Personal Side Project",
+      "chromeExtensionBadge": "Chrome Side Panel 擴充功能",
+      "chromeStorePending": "Chrome 線上商店審核中",
       "dualPlatformBadge": "Chrome & Firefox 雙平台支援",
       "viewStoreFirefox": "前往 Firefox 附加元件商店",
       "viewStoreChrome": "前往 Chrome 線上商店",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
+        "clipnote": {
+          "title": "ClipNote - 網域感知側邊欄筆記與快速填表工具",
+          "subtitle": "輕量、感知網域的個人備忘、全域快捷記錄與一鍵複製 Chrome 擴充功能",
+          "period": "2026 ~ 至今",
+          "summary": "專為頻繁需要填表、投遞履歷、整理網頁片段或暫存常用資訊的使用者設計的瀏覽器側邊欄筆記本。當在不同標籤頁間切換時，自動識別當前網站並切換至專屬筆記頁，提供一鍵複製、Shadow DOM 全域快速記錄與 100% 本機隱私儲存。",
+          "highlights": [
+            "網域感知自動切換（Domain Awareness）：瀏覽求職平台、開發者社群或各類線上服務時，側邊欄即時偵測當前網域並自動切換至綁定的專屬筆記頁。",
+            "一鍵複製與快速填表（One-Click Copy）：單擊任何筆記卡片立即複製完整內容至剪貼簿並伴隨細緻視覺回饋，求職投履歷、填寫表單與社群發文一氣呵成。",
+            "快捷全域記錄與右鍵採集（Quick Capture）：按下 Alt + N 即可於任意網頁喚起 Shadow DOM 隔離浮層搜尋與新增筆記；支援選取文字右鍵一鍵擷取內文與來源網址。",
+            "結構化欄位、隨筆管理與 100% 本機隱私：同時支援具名欄位（Field，Key-Value）與隨筆（Jot），提供分類折疊與批次管理；全數儲存於 chrome.storage.local，零外部傳輸、離線可用。"
+          ]
+        },
         "dreamcity": {
           "title": "多人非對稱對抗",
           "subtitle": "即時在線非對稱陣營博弈桌遊 • AI Agent 全自主驅動開發",
@@ -256,11 +270,25 @@
       "infraBadge": "Architecture & Performance",
       "infraTagline": "Production Engineering",
       "sideProjectBadge": "Personal Side Project",
+      "chromeExtensionBadge": "Chrome Side Panel Extension",
+      "chromeStorePending": "Chrome Web Store (Under Review)",
       "dualPlatformBadge": "Dual-Platform (Chrome & Firefox)",
       "viewStoreFirefox": "View on Firefox Add-ons",
       "viewStoreChrome": "View on Chrome Web Store",
       "commercialBadge": "Commercial B2C / B2B Platform",
       "items": {
+        "clipnote": {
+          "title": "ClipNote - Domain-Aware Side Panel Scratchpad",
+          "subtitle": "Lightweight, domain-aware scratchpad, quick form-filling notepad & instant capture for Chrome",
+          "period": "2026 ~ Present",
+          "summary": "A lightweight, domain-aware scratchpad built directly into Chrome's native Side Panel for job seekers, developers, and power users. Intelligently detects active websites to switch to domain-specific notebook pages, featuring one-click copy, Shadow DOM quick capture, and 100% local privacy.",
+          "highlights": [
+            "Domain-Aware Page Switching: Automatically identifies the active tab's hostname and presents the exact notes, templates, and profile snippets bound to that site.",
+            "One-Click Copy & Quick Paste: Single-click any note card to copy 100% of its content with subtle visual feedback, accelerating job applications and repetitive form submissions.",
+            "Quick Capture Anywhere (Alt + N): Summon an isolated Shadow DOM overlay on any webpage to search or add notes, or right-click highlighted text to clip with source attribution.",
+            "Structured Fields, Free-Form Jots & 100% Local Privacy: Organize Key-Value Fields and plain-text Jots with batch management and collapsible categories—stored strictly in chrome.storage.local with zero external servers."
+          ]
+        },
         "dreamcity": {
           "title": "Asymmetrical Multiplayer Battle",
           "subtitle": "Real-time Online Asymmetrical Strategy Board Game • 100% Autonomous AI Agent Engineering",

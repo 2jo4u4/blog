@@ -96,6 +96,24 @@ export const skillCategories: SkillCategory[] = [
 
 export const projectsMetadata: ProjectMetadata[] = [
   {
+    id: "clipnote",
+    tags: [
+      "React 18",
+      "TypeScript",
+      "WXT Framework",
+      "Chrome Side Panel API",
+      "Shadow DOM Isolation",
+      "Tailwind CSS",
+      "Local-First Storage",
+    ],
+    links: {},
+    image: "/images/projects/clipnote-sidepanel.png",
+    screenshots: [
+      "/images/projects/clipnote-sidepanel.png",
+      "/images/projects/clipnote-quick-capture.png",
+    ],
+  },
+  {
     id: "soundcraft-eq",
     tags: [
       "React 18",

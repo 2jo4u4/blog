@@ -28,6 +28,117 @@ export function Projects({ t }: ProjectsProps) {
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
+          {/* Bento Item 0: ClipNote (Domain-Aware Side Panel Scratchpad) (Span 12) */}
+          {(() => {
+            const raw = rawProjects.find((item) => item.id === "clipnote");
+            const item = t.projects.items.clipnote;
+            if (!raw || !item) return null;
+            return (
+              <div className="lg:col-span-12 rounded-3xl theme-surface border theme-border hover:border-amber-500/40 transition-all p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden group">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  
+                  {/* Left Column: Details */}
+                  <div className="lg:col-span-7 space-y-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-amber-500/20 text-amber-800 dark:text-amber-400 border border-amber-500/40 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+                        {t.projects.sideProjectBadge}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-cyan-500/10 text-cyan-800 dark:text-cyan-300 border border-cyan-500/20">
+                        {t.projects.chromeExtensionBadge}
+                      </span>
+                      <span className="text-xs font-mono theme-text-secondary">
+                        {item.period}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors" style={{ color: "var(--text-primary)" }}>
+                        {item.title}
+                      </h3>
+                      <p className="text-amber-700 dark:text-amber-400 font-medium text-sm sm:text-base">
+                        {item.subtitle}
+                      </p>
+                    </div>
+
+                    <p className="text-sm sm:text-base leading-relaxed theme-text-secondary">
+                      {item.summary}
+                    </p>
+
+                    {/* Highlights */}
+                    <div className="space-y-2.5 pt-2">
+                      {item.highlights.map((h: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm theme-text-secondary">
+                          <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {raw.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 rounded-lg text-xs font-mono theme-surface-subtle border theme-border"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action CTAs */}
+                    <div className="flex flex-wrap items-center gap-3 pt-3">
+                      {raw.links?.chrome ? (
+                        <a
+                          href={raw.links.chrome}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-gray-950 hover:scale-105 active:scale-95 transition-all shadow-md shadow-slate-900/10 dark:shadow-amber-500/25"
+                        >
+                          {t.projects.viewStoreChrome}
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      ) : (
+                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30 cursor-default select-none">
+                          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                          {t.projects.chromeStorePending}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right Column: Screenshot Showcase */}
+                  <div className="lg:col-span-5 space-y-4">
+                    <div className="relative rounded-2xl overflow-hidden border theme-border shadow-2xl bg-gray-900 group-hover:scale-[1.02] transition-transform">
+                      <img
+                        src={raw.image || "/images/projects/clipnote-sidepanel.png"}
+                        alt={item.title}
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                    <div className="relative rounded-xl overflow-hidden border theme-border shadow-md bg-gray-900 opacity-90 hover:opacity-100 transition-opacity">
+                      <img
+                        src="/images/projects/clipnote-quick-capture.png"
+                        alt="ClipNote Quick Capture Overlay"
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            );
+          })()}
+
           {/* Bento Item 1: SoundCraft EQ (Web Audio Equalizer) (Span 12) */}
           {(() => {
             const raw = rawProjects.find((item) => item.id === "soundcraft-eq");
